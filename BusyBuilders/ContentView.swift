@@ -12,27 +12,32 @@ struct ContentView: View {
     
     @State private var isShowingBusinessAddSheet = false
     @State private var isShowingBusinessShowSheet = false
+    @State var theSelectedView = 0
+    @State var theMakeNewBusiness = false
     @Query var businesses : [BusinessDataModel]
     
     var body: some View {
-        TabView {
-            Group {
-                HomeView()
-                    .tabItem {
-                        Image(systemName: "house")
-                            .foregroundStyle(.white)
-                        Text("Home")
-                    }
-                TestView1()
-                    .tabItem {
-                        Image(systemName: "rectangle.3.group")
-                        Text("Home")
-                    }
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
+            
+            VStack {
+                if(theSelectedView == 0) {
+                    HomeView()
+                }
+                if(theSelectedView == 2) {
+                    CalendarView()
+                }
             }
-            .accentColor(.black)
-            .toolbarBackground(.red, for: .tabBar)
-            .toolbarBackground(.visible, for: .tabBar)
-
+            .sheet(isPresented: $theMakeNewBusiness, content: {
+                CreateBusiness()
+            })
+            
+            VStack {
+                Spacer()
+                
+                NavigationBar(selectedView: $theSelectedView, makeNewBusiness: $theMakeNewBusiness)
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ import SwiftData
 struct CreateBusiness: View {
     
     @Environment(\.modelContext) var context
+    @Environment(\.dismiss) var dismiss
     
     @State private var businessName : String = ""
     @State private var businessCategory: String = ""
@@ -52,6 +53,7 @@ struct CreateBusiness: View {
         Button("Create"){
             let newBusiness = BusinessDataModel(businessName: businessName, businessCategory: businessCategory, businessDescription: businessDescription, businessIcon: businessIcon, businessInvestment: businessInvestment,businessLevel: businessLevel,businessRevenueAmount: businessRevenueAmount,businessBadges: businessBadge, taskName: taskName, taskDescription: taskDescription, taskCategory: taskCategory, taskGoal: taskGoal, taskDeadline: taskDeadline, taskStartDate: taskStartDate)
             context.insert(newBusiness)
+            dismiss()
         }
         
     }
