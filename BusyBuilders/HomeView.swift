@@ -11,11 +11,12 @@ import SwiftData
 struct HomeView: View {
     
     @State var showingSettings = false
+    @State var showingProfile = false
     
     @State var username : String
     @State var totalRevenue : CDouble
     
-    @Query var user : [UserDataModel]
+//    @Query var user : [UserDataModel]
     @State var bestPerfoming : String
     
     
@@ -26,7 +27,7 @@ struct HomeView: View {
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing
             )
-                .ignoresSafeArea()
+            .ignoresSafeArea()
             
             VStack {
                 // Settings
@@ -53,6 +54,7 @@ struct HomeView: View {
                         }
                     .onTapGesture {
                         print("Show Profile")
+                        showingProfile.toggle()
                     }
                     Spacer()
                     Text("$\(totalRevenue, specifier: "%.2f")M")
@@ -82,6 +84,10 @@ struct HomeView: View {
             .padding(.vertical)
         }
         .foregroundStyle(.white)
+        .sheet(isPresented: $showingProfile, content: {
+            Profile(usernameTest: username)
+                .presentationDetents([.medium])
+        })
         .sheet(isPresented: $showingSettings, content: {
             Settings()
                 .presentationDetents([.medium])
@@ -90,7 +96,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(username: "Kian", totalRevenue: 1.45, bestPerfoming: "")
+    HomeView(username: "Kian Breslin", totalRevenue: 1.45, bestPerfoming: "")
         .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
 }
  

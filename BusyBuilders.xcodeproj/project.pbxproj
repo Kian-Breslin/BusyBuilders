@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1014C9E62C07626200DC2834 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1014C9E52C07626200DC2834 /* Profile.swift */; };
 		102A6C9A2BFBF37D0005FB8F /* CreateBusiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102A6C992BFBF37D0005FB8F /* CreateBusiness.swift */; };
 		102A6C9C2BFBF4340005FB8F /* BusinessDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102A6C9B2BFBF4340005FB8F /* BusinessDataModel.swift */; };
 		102A6CA02BFCC3D70005FB8F /* SmallMainWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1014C9E52C07626200DC2834 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		102A6C992BFBF37D0005FB8F /* CreateBusiness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBusiness.swift; sourceTree = "<group>"; };
 		102A6C9B2BFBF4340005FB8F /* BusinessDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDataModel.swift; sourceTree = "<group>"; };
 		102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMainWidget.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				102A6CA32BFCCC0C0005FB8F /* HomeView.swift */,
 				10D10EF52C063D67009406A4 /* ShowBusinesses.swift */,
 				10D10EF32C063A93009406A4 /* Settings.swift */,
+				1014C9E52C07626200DC2834 /* Profile.swift */,
 				102A6CA72BFCD7870005FB8F /* CalendarView.swift */,
 				102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */,
 				102A6CA12BFCC66D0005FB8F /* LargeMainWidget.swift */,
@@ -173,6 +176,7 @@
 				10D10EEF2C062991009406A4 /* CreateUserData.swift in Sources */,
 				102A6CA82BFCD7870005FB8F /* CalendarView.swift in Sources */,
 				10D10EF42C063A93009406A4 /* Settings.swift in Sources */,
+				1014C9E62C07626200DC2834 /* Profile.swift in Sources */,
 				10DB6CF62BFBB89200288EB2 /* ContentView.swift in Sources */,
 				102A6C9C2BFBF4340005FB8F /* BusinessDataModel.swift in Sources */,
 				102A6CA02BFCC3D70005FB8F /* SmallMainWidget.swift in Sources */,
