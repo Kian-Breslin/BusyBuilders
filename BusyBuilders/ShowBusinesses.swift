@@ -11,14 +11,8 @@ import SwiftData
 struct ShowBusinesses: View {
     
     @State var addNewBusinessSheet = false
-    
+    @Environment(\.modelContext) var context
     @Query var businesses : [BusinessDataModel]
-    
-//    var BusinessesArray : [MockBusinesses] = [
-//        MockBusinesses(businessName: "Exercise Gym", businessIcon: "figure.run.circle", businessDescription: "This is the gym business which will earn money when the user works out. It will connect to Apple Health and track their workout times", businessTheme: .red),
-//        MockBusinesses(businessName: "School", businessIcon: "graduationcap.circle", businessDescription: "This will track the time studied and what subject", businessTheme: .indigo),
-//        MockBusinesses(businessName: "Hotel", businessIcon: "building.2.crop.circle", businessDescription: "This will use apple health to track sleep and will then show how many hours of sleep you got and turn that into money for the hotel", businessTheme: .orange)
-//    ]
     
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red]
@@ -39,7 +33,7 @@ struct ShowBusinesses: View {
                             NavigationLink(value: b){
                                 HStack {
                                     Image(systemName: b.businessIcon)
-                                        .font(.system(size: 40))
+                                        .font(.system(size: 30))
                                     Text("\(b.businessName)")
                                 }
                                 .font(.system(size: 25))
@@ -53,6 +47,11 @@ struct ShowBusinesses: View {
                             )
                             .listRowSeparator(.hidden)
                         }
+                        .onDelete(perform: { indexes in
+                            for index in indexes {
+                                deleteBusiness(businesses[index])
+                            }
+                        })
                     }
                     .navigationTitle("List Of Businesses")
                     .navigationBarTitleTextColor(.red)
@@ -63,9 +62,16 @@ struct ShowBusinesses: View {
                         ZStack {
                             Color.black
                                 .ignoresSafeArea()
-                            Text("\(b.businessName)")
-                                .font(.system(size: 30))
-                                .foregroundStyle(.white)
+                            VStack (spacing: 30){
+                                Text("\(b.businessName)")
+                                    .font(.system(size: 30))
+                                    .foregroundStyle(.white)
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                    .foregroundStyle(.white)
+                                    .onTapGesture {
+                                        updateBusiness(b)
+                                    }
+                            }
                         }
                     }
                 }
@@ -84,7 +90,17 @@ struct ShowBusinesses: View {
                 CreateBusiness()
             })
         }
-        
+    }
+    
+    func deleteBusiness(_ business: BusinessDataModel) {
+        context.delete(business)
+    }
+    
+    func updateBusiness(_ business: BusinessDataModel) {
+        // Edit the item
+        business.businessName = "Updated Business Name"
+        // Save the changes
+        try? context.save()
     }
 }
 

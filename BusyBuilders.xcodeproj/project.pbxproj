@@ -18,7 +18,6 @@
 		10D10EEF2C062991009406A4 /* CreateUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EEE2C062991009406A4 /* CreateUserData.swift */; };
 		10D10EF42C063A93009406A4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EF32C063A93009406A4 /* Settings.swift */; };
 		10D10EF62C063D67009406A4 /* ShowBusinesses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EF52C063D67009406A4 /* ShowBusinesses.swift */; };
-		10D10EF82C06411F009406A4 /* MockBusinesses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EF72C06411E009406A4 /* MockBusinesses.swift */; };
 		10DB6CF42BFBB89200288EB2 /* BusyBuildersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DB6CF32BFBB89200288EB2 /* BusyBuildersApp.swift */; };
 		10DB6CF62BFBB89200288EB2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DB6CF52BFBB89200288EB2 /* ContentView.swift */; };
 		10DB6CF82BFBB89400288EB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10DB6CF72BFBB89400288EB2 /* Assets.xcassets */; };
@@ -37,7 +36,6 @@
 		10D10EEE2C062991009406A4 /* CreateUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserData.swift; sourceTree = "<group>"; };
 		10D10EF32C063A93009406A4 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		10D10EF52C063D67009406A4 /* ShowBusinesses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowBusinesses.swift; sourceTree = "<group>"; };
-		10D10EF72C06411E009406A4 /* MockBusinesses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBusinesses.swift; sourceTree = "<group>"; };
 		10DB6CF02BFBB89200288EB2 /* BusyBuilders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusyBuilders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10DB6CF32BFBB89200288EB2 /* BusyBuildersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusyBuildersApp.swift; sourceTree = "<group>"; };
 		10DB6CF52BFBB89200288EB2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,7 +78,6 @@
 				102A6CA52BFCCD270005FB8F /* NavigationBar.swift */,
 				102A6CA32BFCCC0C0005FB8F /* HomeView.swift */,
 				10D10EF52C063D67009406A4 /* ShowBusinesses.swift */,
-				10D10EF72C06411E009406A4 /* MockBusinesses.swift */,
 				10D10EF32C063A93009406A4 /* Settings.swift */,
 				102A6CA72BFCD7870005FB8F /* CalendarView.swift */,
 				102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */,
@@ -186,7 +183,6 @@
 				102A6CA62BFCCD270005FB8F /* NavigationBar.swift in Sources */,
 				10D10EED2C062441009406A4 /* UserDataModel.swift in Sources */,
 				102A6CA22BFCC66D0005FB8F /* LargeMainWidget.swift in Sources */,
-				10D10EF82C06411F009406A4 /* MockBusinesses.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
