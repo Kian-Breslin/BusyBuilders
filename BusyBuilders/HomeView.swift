@@ -6,11 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
+    
+    @State var showingSettings = false
+    
+    @State var username : String
+    @State var totalRevenue : CDouble
+    
+    @Query var user : [UserDataModel]
+    @State var bestPerfoming : String
+    
+    
+    
     var body: some View {
         ZStack {
-            Color.black
+            LinearGradient(colors: [Color(red: 1, green: 74/255, blue: 74/255), .black],
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing
+            )
                 .ignoresSafeArea()
             
             VStack {
@@ -19,42 +34,63 @@ struct HomeView: View {
                     Spacer()
                     
                     Image(systemName: "gear")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(.white)
                         .font(.title)
+                        .onTapGesture {
+                            print("Settings")
+                            showingSettings.toggle()
+                        }
                 }
                 .padding(.horizontal)
                 
                 // User Name and Total Revenue
                 HStack {
-                    Image(systemName: "circle.fill")
-                        .font(.largeTitle)
-                    Text("Kian Breslin")
-                        .font(.system(size: 24))
+                    Group {
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 40))
+                        Text("\(username)")
+                            .font(.system(size: 28))
+                        }
+                    .onTapGesture {
+                        print("Show Profile")
+                    }
                     Spacer()
-                    Text("$1.43M")
-                        .font(.system(size: 16))
+                    Text("$\(totalRevenue, specifier: "%.2f")M")
+                        .font(.system(size: 20))
                 }
                 .padding()
                 .padding(.vertical)
                 
+                HStack (spacing: 20){
+                    SmallMainWidget(title: "Best Performing", amount: 60, dailyGoal: 100)
+                    SmallMainWidget(title: "Total Revenue Today", amount: 30, dailyGoal: 50)
+                }
+                .padding(.horizontal,10)
+                
                 ScrollView {
-                    HStack {
-                        SmallMainWidget()
-                        Spacer()
-                        SmallMainWidget()
-                    }
-                    .padding(.horizontal)
                     LargeMainWidget()
-                        .padding(10)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
                     LargeMainWidget()
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                    LargeMainWidget()
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
                 }
             }
             .padding(.vertical)
         }
         .foregroundStyle(.white)
+        .sheet(isPresented: $showingSettings, content: {
+            Settings()
+                .presentationDetents([.medium])
+        })
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(username: "Kian", totalRevenue: 1.45, bestPerfoming: "")
+        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
 }
+ 
