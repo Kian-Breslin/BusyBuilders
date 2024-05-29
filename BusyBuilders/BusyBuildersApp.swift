@@ -14,6 +14,6 @@ struct BusyBuildersApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: BusinessDataModel.self)
+        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self])
     }
 }

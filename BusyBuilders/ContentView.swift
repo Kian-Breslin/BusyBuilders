@@ -12,64 +12,61 @@ struct ContentView: View {
     
     @State private var isShowingBusinessAddSheet = false
     @State private var isShowingBusinessShowSheet = false
+    @State private var showAlert = false
     @State var theSelectedView = 0
     @State var theMakeNewBusiness = false
     @Query var businesses : [BusinessDataModel]
+    @Query var user : [UserDataModel]
+    // Test UserName
+    var usernameTester = "Kian Breslin"
     
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-            
-            VStack {
-                if(theSelectedView == 0) {
-                    HomeView()
-                }
-                if(theSelectedView == 2) {
-                    CalendarView()
-                }
-            }
-            .sheet(isPresented: $theMakeNewBusiness, content: {
-                CreateBusiness()
-            })
-            
-            VStack {
-                Spacer()
+        
+        
+        if(user.isEmpty == false) {
+            CreateUserData()
+        } else {
+            ZStack {
+                Color.black
+                    .ignoresSafeArea()
                 
-                NavigationBar(selectedView: $theSelectedView, makeNewBusiness: $theMakeNewBusiness)
+                VStack {
+                    if(theSelectedView == 0) {
+//                        HomeView(username: "\(user[0].username)")
+                        HomeView(username: "\(usernameTester)", totalRevenue: 1.5, bestPerfoming: "")
+                    }
+                    if(theSelectedView == 2) {
+                        ShowBusinesses()
+                    }
+                }
+                .sheet(isPresented: $theMakeNewBusiness, content: {
+                    CreateBusiness()
+                })
+                
+                VStack {
+                    Spacer()
+                    
+                    NavigationBar(selectedView: $theSelectedView, makeNewBusiness: $theMakeNewBusiness)
+                }
             }
         }
+        
+        
     }
 }
-        
-//        VStack {
-//            Text("Big Title")
-//                .font(.largeTitle)
-//                .bold()
-//            
-//            NavigationStack {
-//                List(businesses) { business in
-//                    NavigationLink(destination: ShowBusiness(businessName: business.businessName, businessCategory: business.businessCategory, businessDescription: business.businessDescription, businessIcon: business.businessIcon, businessInvestment: business.businessInvestment, businessLevel: business.businessLevel, businessRevenueAmount: business.businessRevenueAmount, businessBadge: business.businessBadges, taskName: business.taskName, taskDescription: business.taskDescription, taskCategory: business.taskCategory, taskGoal: business.taskGoal, taskDeadline: business.taskDeadline, taskStartDate: business.taskStartDate)) {
-//                        Text(business.businessName)
-//                    }
-//                }
-//                Spacer()
-//                ZStack {
-//                    RoundedRectangle(cornerSize: CGSize(width: 20, height: 20))
-//                        .frame(width: 100, height: 50)
-//                    Button("Add") {
-//                        isShowingBusinessAddSheet = true
-//                    }
-//                }
-//            }
-//            .sheet(isPresented: $isShowingBusinessAddSheet, content: {
-//                CreateBusiness()
-//            })
-//        }
-
 
 
 #Preview {
     ContentView()
-        .modelContainer(for: BusinessDataModel.self, inMemory: true)
+        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
+}
+
+extension View {
+    @available(iOS 14, *)
+    func navigationBarTitleTextColor(_ color: Color) -> some View {
+        let uiColor = UIColor(color)
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: uiColor ]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: uiColor ]
+        return self
+    }
 }

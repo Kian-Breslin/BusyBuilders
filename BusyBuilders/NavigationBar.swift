@@ -14,11 +14,12 @@ struct NavigationBar: View {
     
     var body: some View {
         RoundedRectangle(cornerSize: CGSize(width: 30, height: 30))
-            .frame(width: 280, height: 55)
-            .foregroundStyle(.red)
+            .frame(width: 320, height: 60)
+            .foregroundStyle(Color(red: 1, green: 74/255, blue: 74/255))
             .overlay {
-                HStack (spacing: 30){
+                HStack (spacing: 40){
                     Image(systemName: "house")
+                        .font(.system(size: 30))
                         .onTapGesture {
                             selectedView = 0
                             print(selectedView)
@@ -26,12 +27,12 @@ struct NavigationBar: View {
                         
                     ZStack {
                         Circle()
-                            .offset(y:-30)
+                            .offset(y:-25)
                             .frame(width: 60, height: 60)
                         Image(systemName: "plus")
                             .foregroundStyle(.red)
-                            .offset(y:-30)
-                            .font(.largeTitle)
+                            .offset(y:-25)
+                            .font(.system(size: 40))
                     }
                     .onTapGesture {
                         makeNewBusiness = true
@@ -39,6 +40,7 @@ struct NavigationBar: View {
                     }
                     
                     Image(systemName: "rectangle.3.group")
+                        .font(.system(size: 30))
                         .onTapGesture {
                             selectedView = 2
                             print(selectedView)
