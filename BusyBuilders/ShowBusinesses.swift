@@ -71,6 +71,8 @@ struct ShowBusinesses: View {
                                     .onTapGesture {
                                         updateBusiness(b)
                                     }
+                                Text("\(businessEarningLogic(b))")
+                                    .foregroundStyle(.white)
                             }
                         }
                     }

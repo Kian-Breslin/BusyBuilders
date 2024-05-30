@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class BusinessDataModel : Identifiable{
+public class BusinessDataModel : Identifiable{
     
     var businessName : String
     var businessCategory : String
@@ -45,3 +45,5 @@ class BusinessDataModel : Identifiable{
         self.taskStartDate = taskStartDate
     }
 }
+
+
