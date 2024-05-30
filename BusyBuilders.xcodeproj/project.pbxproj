@@ -64,6 +64,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		106591C12C093F3500AF8195 /* SubView */ = {
+			isa = PBXGroup;
+			children = (
+				102A6CA52BFCCD270005FB8F /* NavigationBar.swift */,
+				10B087AF2C076EDC001B56FC /* TimerView.swift */,
+				102A6CA12BFCC66D0005FB8F /* LargeMainWidget.swift */,
+				102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */,
+				102A6CA72BFCD7870005FB8F /* CalendarView.swift */,
+			);
+			path = SubView;
+			sourceTree = "<group>";
+		};
+		106591C22C093F7900AF8195 /* CreateData */ = {
+			isa = PBXGroup;
+			children = (
+				102A6C992BFBF37D0005FB8F /* CreateBusiness.swift */,
+				10D10EEE2C062991009406A4 /* CreateUserData.swift */,
+			);
+			path = CreateData;
+			sourceTree = "<group>";
+		};
+		106591C32C093F9100AF8195 /* MainViews */ = {
+			isa = PBXGroup;
+			children = (
+				102A6CA32BFCCC0C0005FB8F /* HomeView.swift */,
+				10B087B52C079300001B56FC /* ActiveTaskView.swift */,
+				10D10EF52C063D67009406A4 /* ShowBusinesses.swift */,
+				1014C9E52C07626200DC2834 /* Profile.swift */,
+				10D10EF32C063A93009406A4 /* Settings.swift */,
+			);
+			path = MainViews;
+			sourceTree = "<group>";
+		};
+		106591C42C093FF100AF8195 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				102A6C9B2BFBF4340005FB8F /* BusinessDataModel.swift */,
+				10D10EEC2C062440009406A4 /* UserDataModel.swift */,
+				10B087B32C0789F0001B56FC /* MockBusinessData.swift */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
 		10DB6CE72BFBB89200288EB2 = {
 			isa = PBXGroup;
 			children = (
@@ -85,22 +128,11 @@
 			children = (
 				10DB6CF32BFBB89200288EB2 /* BusyBuildersApp.swift */,
 				10DB6CF52BFBB89200288EB2 /* ContentView.swift */,
-				102A6CA52BFCCD270005FB8F /* NavigationBar.swift */,
-				102A6CA32BFCCC0C0005FB8F /* HomeView.swift */,
-				10B087AF2C076EDC001B56FC /* TimerView.swift */,
-				10B087B52C079300001B56FC /* ActiveTaskView.swift */,
-				10D10EF52C063D67009406A4 /* ShowBusinesses.swift */,
-				10D10EF32C063A93009406A4 /* Settings.swift */,
-				1014C9E52C07626200DC2834 /* Profile.swift */,
-				102A6CA72BFCD7870005FB8F /* CalendarView.swift */,
-				102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */,
-				102A6CA12BFCC66D0005FB8F /* LargeMainWidget.swift */,
-				102A6C992BFBF37D0005FB8F /* CreateBusiness.swift */,
-				10D10EEE2C062991009406A4 /* CreateUserData.swift */,
-				102A6C9B2BFBF4340005FB8F /* BusinessDataModel.swift */,
-				10D10EEC2C062440009406A4 /* UserDataModel.swift */,
+				106591C32C093F9100AF8195 /* MainViews */,
+				106591C12C093F3500AF8195 /* SubView */,
+				106591C22C093F7900AF8195 /* CreateData */,
+				106591C42C093FF100AF8195 /* DataModels */,
 				10B087B12C077CC2001B56FC /* PublicFunctions.swift */,
-				10B087B32C0789F0001B56FC /* MockBusinessData.swift */,
 				10DB6CF72BFBB89400288EB2 /* Assets.xcassets */,
 				10DB6CF92BFBB89400288EB2 /* Preview Content */,
 			);
