@@ -84,7 +84,6 @@ struct HomeView: View {
                         LargeMainWidget()
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                        Text("\(AddNumbers(2, 4))")
                     }
                 }
                 .padding(.vertical)

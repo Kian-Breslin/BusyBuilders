@@ -70,9 +70,7 @@ struct ShowBusinesses: View {
                                     .foregroundStyle(.white)
                                     .onTapGesture {
                                         updateBusiness(b)
-                                    }
-                                Text("\(businessEarningLogic(b))")
-                                    .foregroundStyle(.white)
+                                }
                             }
                         }
                     }

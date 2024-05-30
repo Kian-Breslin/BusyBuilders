@@ -5,6 +5,17 @@
 //  Created by Kian Breslin on 20/05/2024.
 //
 
+/*
+
+ [Feature] : Adding a feature to the app
+ 
+ [Bug] : Fixing Bugs
+ 
+ [Clean] : Cleaning up code / Refactoring
+ 
+*/
+
+
 import SwiftUI
 import SwiftData
 
@@ -47,7 +58,9 @@ struct ContentView: View {
                     Spacer()
                     
                     NavigationBar(selectedView: $theSelectedView, makeNewBusiness: $theMakeNewBusiness)
+                        .frame(width: .infinity)
                 }
+                .ignoresSafeArea()
             }
         }
         
