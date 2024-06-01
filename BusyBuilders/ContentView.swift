@@ -35,7 +35,7 @@ struct ContentView: View {
         
         
         if(user.isEmpty == false) {
-            CreateUserData()
+//            CreateUserData()
         } else {
             ZStack {
                 Color.black
@@ -46,7 +46,16 @@ struct ContentView: View {
 //                        HomeView(username: "\(user[0].username)")
                         HomeView(username: "\(usernameTester)", totalRevenue: 1.5, bestPerfoming: "")
                     }
+                    if(theSelectedView == 1) {
+                        HomeView(username: "\(usernameTester)", totalRevenue: 1.5, bestPerfoming: "")
+                    }
                     if(theSelectedView == 2) {
+                        ShowBusinesses()
+                    }
+                    if(theSelectedView == 3) {
+                        ShowBusinesses()
+                    }
+                    if(theSelectedView == 4) {
                         ShowBusinesses()
                     }
                 }

@@ -15,7 +15,6 @@ struct CreateBusiness: View {
     
     @State private var businessName : String = ""
     @State private var businessCategory: String = ""
-    @State private var businessDescription: String = ""
     @State private var businessIcon: String = ""
     
     @State private var businessInvestment: String = ""
@@ -35,7 +34,6 @@ struct CreateBusiness: View {
             Section(header: Text("Business Details")) {
                 TextField("Business Name", text: $businessName)
                 TextField("Business Category", text: $businessCategory)
-                TextField("Business Description", text: $businessDescription)
                 TextField("Business Icon", text: $businessIcon)
                 TextField("Investment", text: $businessInvestment)
                     .keyboardType(.decimalPad)
@@ -51,7 +49,7 @@ struct CreateBusiness: View {
         }
         
         Button("Create"){
-            let newBusiness = BusinessDataModel(businessName: businessName, businessCategory: businessCategory, businessDescription: businessDescription, businessIcon: businessIcon, businessInvestment: businessInvestment,businessLevel: businessLevel,businessRevenueAmount: businessRevenueAmount,businessBadges: businessBadge, taskName: taskName, taskDescription: taskDescription, taskCategory: taskCategory, taskGoal: taskGoal, taskDeadline: taskDeadline, taskStartDate: taskStartDate)
+            let newBusiness = BusinessDataModel(businessName: businessName, businessCategory: businessCategory, businessIcon: businessIcon, businessInvestment: businessInvestment,businessLevel: businessLevel,businessRevenueAmount: businessRevenueAmount,businessBadges: businessBadge, taskName: taskName, taskDescription: taskDescription, taskCategory: taskCategory, taskGoal: taskGoal, taskDeadline: taskDeadline, taskStartDate: taskStartDate)
             context.insert(newBusiness)
             dismiss()
         }

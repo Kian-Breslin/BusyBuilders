@@ -12,8 +12,8 @@ struct Settings: View {
     
     @Environment(\.dismiss) var dismiss
     @Query var businesses : [BusinessDataModel]
-    var bus = businessMockFill
-    @State var selectedBusiness = "Chosen Business"
+//    @State var selectedBusiness = "Chosen Business"
+    @State var selectedBusiness : BusinessDataModel
     @State var chosenTime = ""
     @Binding var isActiveState : Bool
     @Binding var selectedTime : String
@@ -28,11 +28,11 @@ struct Settings: View {
             VStack (spacing: 50){
                 ScrollView (.horizontal) {
                     HStack {
-                        ForEach(bus) { b in
+                        ForEach(businesses) { b in
                             ZStack {
                                 RoundedRectangle(cornerSize: CGSize(width: 20, height: 20))
                                     .frame(width: 150, height: 150)
-                                    .foregroundStyle(b.businessTheme)
+                                    .foregroundStyle(.red)
                                 VStack {
                                     Text(b.businessName)
                                         .font(.system(size: 25))
@@ -44,7 +44,7 @@ struct Settings: View {
                             .containerRelativeFrame(.horizontal, count: 2, spacing: 85)
                             .onTapGesture {
                                 print(b.businessName)
-                                selectedBusiness = b.businessName
+                                selectedBusiness = b
                             }
                         }
                     }
@@ -78,6 +78,12 @@ struct Settings: View {
 }
 
 #Preview {
-    Settings(isActiveState: .constant(false), selectedTime: .constant("30 mins"))
+    do {
+        let previewer = try Previewer()
+        
+        return Settings(selectedBusiness: previewer.businesses, isActiveState: .constant(false), selectedTime: .constant("30 mins") )
+    } catch {
+        return Text("Failed to create preview : \(error.localizedDescription)")
+    }
 }
 

@@ -34,6 +34,14 @@ struct NavigationBar: View {
                     .foregroundStyle(Color(red: 197/255, green: 202/255, blue: 205/255))
                     .font(.system(size: 25))
                     .fontWeight(.light)
+                    .onTapGesture {
+                        selectedView = i
+                        print(selectedView)
+                        if selectedView == 1 {
+                            makeNewBusiness = true
+                        }
+                        print(makeNewBusiness)
+                    }
                 }
             }
             .padding(5)

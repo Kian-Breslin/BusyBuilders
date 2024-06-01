@@ -94,11 +94,12 @@ struct HomeView: View {
                     .presentationDetents([.medium])
             })
             .sheet(isPresented: $showingSettings, content: {
-                Settings(isActiveState: $taskActive, selectedTime: $chosenTime)
+//                Settings(selectedBusiness: $chosenBusiness, isActiveState: $taskActive, selectedTime: $chosenTime)
+                Profile(usernameTest: username)
                     .presentationDetents([.fraction(0.8)])
             })
         } else {
-            ActiveTaskView(timeRemaining: timeRemainingFunc(chosenTime))
+//            ActiveTaskView(busTestObject: chosenBusiness, timeRemaining: timeRemainingFunc(chosenTime))
         }
     }
     
@@ -119,7 +120,13 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(username: "Kian Breslin", totalRevenue: 1.45, bestPerfoming: "")
-        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
+    
+    do {
+        let previewer = try Previewer()
+        
+        return HomeView(username: "Kian Breslin", totalRevenue: 1.45, bestPerfoming: "")
+    } catch {
+        return Text("Failed to create preview : \(error.localizedDescription)")
+    }
 }
  
