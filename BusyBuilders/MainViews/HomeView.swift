@@ -35,38 +35,28 @@ struct HomeView: View {
                 .ignoresSafeArea()
                 
                 VStack {
-                    // Settings
-                    HStack {
-                        Spacer()
-                        
-                        Image(systemName: "gear")
-                            .foregroundStyle(.white)
-                            .font(.title)
-                            .onTapGesture {
-                                print("Settings")
-                                showingSettings.toggle()
-                            }
-                    }
-                    .padding(.horizontal)
                     
-                    // User Name and Total Revenue
                     HStack {
-                        Group {
-                            Image(systemName: "circle.fill")
-                                .font(.system(size: 40))
-                            Text("\(username)")
-                                .font(.system(size: 28))
+                        HStack {
+                            VStack (alignment: .leading){
+                                Text("Hello!")
+                                    .font(.system(size: 25))
+                                    .fontWeight(.light)
+                                Text("Kian Breslin")
+                                    .font(.system(size: 40))
                             }
-                        .onTapGesture {
-                            print("Show Profile")
-                            showingProfile.toggle()
+                            Image(systemName: "hand.raised")
+                                .font(.system(size: 40))
+                                .rotationEffect(Angle(degrees: -35))
+                                .offset(y: 9)
                         }
                         Spacer()
-                        Text("$\(totalRevenue, specifier: "%.2f")M")
-                            .font(.system(size: 20))
+                        
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 70))
+                            .fontWeight(.thin)
                     }
                     .padding()
-                    .padding(.vertical)
                     
                     HStack (spacing: 20){
                         SmallMainWidget(title: "Best Performing", amount: 60, dailyGoal: 100)
@@ -75,6 +65,12 @@ struct HomeView: View {
                     .padding(.horizontal,10)
                     
                     ScrollView {
+                        LargeMainWidget()
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                        LargeMainWidget()
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
                         LargeMainWidget()
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
@@ -120,13 +116,14 @@ struct HomeView: View {
 }
 
 #Preview {
+    HomeView(username: "Kian Breslin", totalRevenue: 1.45, bestPerfoming: "")
     
-    do {
-        let previewer = try Previewer()
-        
-        return HomeView(username: "Kian Breslin", totalRevenue: 1.45, bestPerfoming: "")
-    } catch {
-        return Text("Failed to create preview : \(error.localizedDescription)")
-    }
+//    do {
+//        let previewer = try Previewer()
+//        
+//        return HomeView(username: "Kian Breslin", totalRevenue: 1.45, bestPerfoming: "")
+//    } catch {
+//        return Text("Failed to create preview : \(error.localizedDescription)")
+//    }
 }
  

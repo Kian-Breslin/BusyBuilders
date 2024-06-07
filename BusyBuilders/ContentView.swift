@@ -22,6 +22,7 @@ import SwiftData
 struct ContentView: View {
     
     @State private var isShowingBusinessAddSheet = false
+    @State private var isShowingStartTaskSheet = false
     @State private var isShowingBusinessShowSheet = false
     @State private var showAlert = false
     @State var theSelectedView = 0
@@ -42,18 +43,12 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    if(theSelectedView == 0) {
+                    if(theSelectedView == 0 || theSelectedView == 1 || theSelectedView == 2 ) {
 //                        HomeView(username: "\(user[0].username)")
                         HomeView(username: "\(usernameTester)", totalRevenue: 1.5, bestPerfoming: "")
                     }
-                    if(theSelectedView == 1) {
-                        HomeView(username: "\(usernameTester)", totalRevenue: 1.5, bestPerfoming: "")
-                    }
-                    if(theSelectedView == 2) {
-                        ShowBusinesses()
-                    }
                     if(theSelectedView == 3) {
-                        ShowBusinesses()
+                        LeaderboardView()
                     }
                     if(theSelectedView == 4) {
                         ShowBusinesses()
@@ -62,12 +57,16 @@ struct ContentView: View {
                 .sheet(isPresented: $theMakeNewBusiness, content: {
                     CreateBusiness()
                 })
+                .sheet(isPresented: $isShowingStartTaskSheet, content: {
+                    Color.red
+                        .ignoresSafeArea()
+                })
                 
                 VStack {
                     Spacer()
                     
-                    NavigationBar(selectedView: $theSelectedView, makeNewBusiness: $theMakeNewBusiness)
-                        .frame(width: .infinity)
+                    NavigationBar(selectedView: $theSelectedView, makeNewBusiness: $theMakeNewBusiness, startTask: $isShowingStartTaskSheet)
+                        .frame(width: 300)
                 }
                 .ignoresSafeArea()
             }
@@ -79,8 +78,14 @@ struct ContentView: View {
 
 
 #Preview {
+//    do {
+//        let previewer = try Previewer()
+//        
+//        return ContentView()
+//    } catch {
+//        return Text("Failed to create preview : \(error.localizedDescription)")
+//    }
     ContentView()
-        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
 }
 
 extension View {

@@ -15,16 +15,14 @@
 		102A6CA42BFCCC0C0005FB8F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102A6CA32BFCCC0C0005FB8F /* HomeView.swift */; };
 		102A6CA62BFCCD270005FB8F /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102A6CA52BFCCD270005FB8F /* NavigationBar.swift */; };
 		102A6CA82BFCD7870005FB8F /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102A6CA72BFCD7870005FB8F /* CalendarView.swift */; };
-		106591C62C0A859A00AF8195 /* SessionStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106591C52C0A859A00AF8195 /* SessionStats.swift */; };
 		106591C82C0A96A300AF8195 /* PreviewerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106591C72C0A96A300AF8195 /* PreviewerData.swift */; };
-		106591CA2C0AA73300AF8195 /* StartTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106591C92C0AA73300AF8195 /* StartTask.swift */; };
 		106591CC2C0B879500AF8195 /* StartTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106591CB2C0B879500AF8195 /* StartTaskView.swift */; };
+		106591CE2C0B88F600AF8195 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106591CD2C0B88F600AF8195 /* LeaderboardView.swift */; };
+		106591D02C0BD66800AF8195 /* StartTaskViewSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106591CF2C0BD66800AF8195 /* StartTaskViewSettings.swift */; };
 		10B087B02C076EDC001B56FC /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B087AF2C076EDC001B56FC /* TimerView.swift */; };
 		10B087B22C077CC2001B56FC /* PublicFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B087B12C077CC2001B56FC /* PublicFunctions.swift */; };
-		10B087B62C079300001B56FC /* ActiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B087B52C079300001B56FC /* ActiveTaskView.swift */; };
 		10D10EED2C062441009406A4 /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EEC2C062440009406A4 /* UserDataModel.swift */; };
 		10D10EEF2C062991009406A4 /* CreateUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EEE2C062991009406A4 /* CreateUserData.swift */; };
-		10D10EF42C063A93009406A4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EF32C063A93009406A4 /* Settings.swift */; };
 		10D10EF62C063D67009406A4 /* ShowBusinesses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D10EF52C063D67009406A4 /* ShowBusinesses.swift */; };
 		10DB6CF42BFBB89200288EB2 /* BusyBuildersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DB6CF32BFBB89200288EB2 /* BusyBuildersApp.swift */; };
 		10DB6CF62BFBB89200288EB2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DB6CF52BFBB89200288EB2 /* ContentView.swift */; };
@@ -41,16 +39,14 @@
 		102A6CA32BFCCC0C0005FB8F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		102A6CA52BFCCD270005FB8F /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		102A6CA72BFCD7870005FB8F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		106591C52C0A859A00AF8195 /* SessionStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStats.swift; sourceTree = "<group>"; };
 		106591C72C0A96A300AF8195 /* PreviewerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewerData.swift; sourceTree = "<group>"; };
-		106591C92C0AA73300AF8195 /* StartTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTask.swift; sourceTree = "<group>"; };
 		106591CB2C0B879500AF8195 /* StartTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTaskView.swift; sourceTree = "<group>"; };
+		106591CD2C0B88F600AF8195 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
+		106591CF2C0BD66800AF8195 /* StartTaskViewSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTaskViewSettings.swift; sourceTree = "<group>"; };
 		10B087AF2C076EDC001B56FC /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		10B087B12C077CC2001B56FC /* PublicFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicFunctions.swift; sourceTree = "<group>"; };
-		10B087B52C079300001B56FC /* ActiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTaskView.swift; sourceTree = "<group>"; };
 		10D10EEC2C062440009406A4 /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		10D10EEE2C062991009406A4 /* CreateUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserData.swift; sourceTree = "<group>"; };
-		10D10EF32C063A93009406A4 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		10D10EF52C063D67009406A4 /* ShowBusinesses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowBusinesses.swift; sourceTree = "<group>"; };
 		10DB6CF02BFBB89200288EB2 /* BusyBuilders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusyBuilders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10DB6CF32BFBB89200288EB2 /* BusyBuildersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusyBuildersApp.swift; sourceTree = "<group>"; };
@@ -74,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				102A6CA52BFCCD270005FB8F /* NavigationBar.swift */,
+				106591CF2C0BD66800AF8195 /* StartTaskViewSettings.swift */,
 				10B087AF2C076EDC001B56FC /* TimerView.swift */,
 				102A6CA12BFCC66D0005FB8F /* LargeMainWidget.swift */,
 				102A6C9F2BFCC3D70005FB8F /* SmallMainWidget.swift */,
@@ -95,13 +92,10 @@
 			isa = PBXGroup;
 			children = (
 				102A6CA32BFCCC0C0005FB8F /* HomeView.swift */,
-				10B087B52C079300001B56FC /* ActiveTaskView.swift */,
 				106591CB2C0B879500AF8195 /* StartTaskView.swift */,
-				106591C52C0A859A00AF8195 /* SessionStats.swift */,
+				106591CD2C0B88F600AF8195 /* LeaderboardView.swift */,
 				10D10EF52C063D67009406A4 /* ShowBusinesses.swift */,
 				1014C9E52C07626200DC2834 /* Profile.swift */,
-				10D10EF32C063A93009406A4 /* Settings.swift */,
-				106591C92C0AA73300AF8195 /* StartTask.swift */,
 			);
 			path = MainViews;
 			sourceTree = "<group>";
@@ -229,24 +223,22 @@
 				10B087B02C076EDC001B56FC /* TimerView.swift in Sources */,
 				10D10EEF2C062991009406A4 /* CreateUserData.swift in Sources */,
 				102A6CA82BFCD7870005FB8F /* CalendarView.swift in Sources */,
-				106591C62C0A859A00AF8195 /* SessionStats.swift in Sources */,
-				10D10EF42C063A93009406A4 /* Settings.swift in Sources */,
+				106591D02C0BD66800AF8195 /* StartTaskViewSettings.swift in Sources */,
 				1014C9E62C07626200DC2834 /* Profile.swift in Sources */,
 				10DB6CF62BFBB89200288EB2 /* ContentView.swift in Sources */,
 				102A6C9C2BFBF4340005FB8F /* BusinessDataModel.swift in Sources */,
 				102A6CA02BFCC3D70005FB8F /* SmallMainWidget.swift in Sources */,
 				10B087B22C077CC2001B56FC /* PublicFunctions.swift in Sources */,
 				10DB6CF42BFBB89200288EB2 /* BusyBuildersApp.swift in Sources */,
-				10B087B62C079300001B56FC /* ActiveTaskView.swift in Sources */,
 				102A6CA42BFCCC0C0005FB8F /* HomeView.swift in Sources */,
 				102A6C9A2BFBF37D0005FB8F /* CreateBusiness.swift in Sources */,
 				10D10EF62C063D67009406A4 /* ShowBusinesses.swift in Sources */,
 				102A6CA62BFCCD270005FB8F /* NavigationBar.swift in Sources */,
 				106591C82C0A96A300AF8195 /* PreviewerData.swift in Sources */,
 				106591CC2C0B879500AF8195 /* StartTaskView.swift in Sources */,
+				106591CE2C0B88F600AF8195 /* LeaderboardView.swift in Sources */,
 				10D10EED2C062441009406A4 /* UserDataModel.swift in Sources */,
 				102A6CA22BFCC66D0005FB8F /* LargeMainWidget.swift in Sources */,
-				106591CA2C0AA73300AF8195 /* StartTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

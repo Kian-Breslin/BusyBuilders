@@ -11,6 +11,7 @@ struct NavigationBar: View {
     
     @Binding var selectedView : Int
     @Binding var makeNewBusiness : Bool
+    @Binding var startTask : Bool
     
     var imagesList = ["square.grid.2x2", "plus", "play", "chart.bar", "person"]
     var detailsList = ["Dashboard", "Add Business", "Start Task", "Leaderboard", "Portfolio"]
@@ -21,7 +22,7 @@ struct NavigationBar: View {
     var body: some View {
         ZStack (alignment: .top){
             Rectangle()
-                .frame(width: .infinity, height: 90)
+                .frame(width: 600, height: 90)
                 .foregroundStyle(.black)
             
             HStack (alignment: .bottom ,spacing: 25){
@@ -40,6 +41,9 @@ struct NavigationBar: View {
                         if selectedView == 1 {
                             makeNewBusiness = true
                         }
+                        if selectedView == 2 {
+                            startTask = true
+                        }
                         print(makeNewBusiness)
                     }
                 }
@@ -50,5 +54,5 @@ struct NavigationBar: View {
 }
 
 #Preview {
-    NavigationBar(selectedView: .constant(0), makeNewBusiness: .constant(false))
+    NavigationBar(selectedView: .constant(0), makeNewBusiness: .constant(false), startTask: .constant(false))
 }

@@ -25,10 +25,10 @@ struct SmallMainWidget: View {
     
     var body: some View {
         RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
-            .frame(width: 180, height: 100)
+            .frame(width: 180, height: 90)
             .foregroundStyle(Color(red:0.3, green: 0.3, blue: 0.3))
             .overlay {
-                VStack (alignment: .leading, spacing: 3){
+                VStack (alignment: .leading, spacing: 5){
                     Text("\(title)")
                         .foregroundStyle(.white.opacity(0.6))
                         .font(.system(size: 14))
