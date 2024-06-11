@@ -14,6 +14,8 @@ struct ShowBusinesses: View {
     @Environment(\.modelContext) var context
     @Query var businesses : [BusinessDataModel]
     
+    @State var mockBusNum = 1
+    
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.red]
 
@@ -77,6 +79,15 @@ struct ShowBusinesses: View {
                 }
             }
         } else {
+            //Add MockDate
+            Button("Add Mock Data"){
+                addFakeData()
+                addFakeData()
+                addFakeData()
+                addFakeData()
+                addFakeData()
+                addFakeData()
+            }
             ContentUnavailableView(label: {
                 Label("No Businesses", systemImage: "list.bullet.rectangle.portrait")
             }, description: {
@@ -92,6 +103,15 @@ struct ShowBusinesses: View {
         }
     }
     
+    func addFakeData() {
+            let newFakeBusiness =
+                BusinessDataModel(businessName: "Business \(mockBusNum)", businessCategory: "Category \(mockBusNum)", businessIcon: "circle", businessInvestment: "100,000", businessLevel: "20", businessRevenueAmount: "250,000", businessBadges: "7 day Streak", taskName: "Task Name \(mockBusNum)", taskDescription: "Task description should be longer than normal text", taskCategory: "Task Category \(mockBusNum)", taskGoal: "Finish App Developement", taskDeadline: Date(), taskStartDate: Date())
+
+            context.insert(newFakeBusiness)
+            mockBusNum += 1
+        }
+
+    
     func deleteBusiness(_ business: BusinessDataModel) {
         context.delete(business)
     }
@@ -106,4 +126,5 @@ struct ShowBusinesses: View {
 
 #Preview {
     ShowBusinesses()
+        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
 }

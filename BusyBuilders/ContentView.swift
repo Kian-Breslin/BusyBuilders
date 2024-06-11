@@ -21,9 +21,12 @@ import SwiftData
 
 struct ContentView: View {
     
+    @Environment(\.modelContext) var context
+    
     @State private var isShowingBusinessAddSheet = false
     @State private var isShowingStartTaskSheet = false
     @State private var isShowingBusinessShowSheet = false
+    @State private var isTaskActive = false
     @State private var showAlert = false
     @State var theSelectedView = 0
     @State var theMakeNewBusiness = false
@@ -31,6 +34,7 @@ struct ContentView: View {
     @Query var user : [UserDataModel]
     // Test UserName
     var usernameTester = "Kian Breslin"
+    
     
     var body: some View {
         
@@ -58,8 +62,7 @@ struct ContentView: View {
                     CreateBusiness()
                 })
                 .sheet(isPresented: $isShowingStartTaskSheet, content: {
-                    Color.red
-                        .ignoresSafeArea()
+                    StartTaskView()
                 })
                 
                 VStack {
@@ -69,10 +72,19 @@ struct ContentView: View {
                         .frame(width: 300)
                 }
                 .ignoresSafeArea()
+                
+                
+                if(isTaskActive == true) {
+                    Color.orange
+                        .ignoresSafeArea()
+                    Button("End Task") {
+                        isTaskActive.toggle()
+                        isShowingStartTaskSheet = false
+                    }
+                    
+                }
             }
         }
-        
-        
     }
 }
 
@@ -86,6 +98,7 @@ struct ContentView: View {
 //        return Text("Failed to create preview : \(error.localizedDescription)")
 //    }
     ContentView()
+        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
 }
 
 extension View {

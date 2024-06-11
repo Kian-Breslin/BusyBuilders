@@ -10,15 +10,23 @@ import SwiftData
 
 struct StartTaskView: View {
     
-    // Variables
-    @State var timeRemaining = 3600
+    // New Test
+    @State var isShowingSheet = true
+    
+    @State var selectedBusiness : BusinessDataModel?
+    @State var selectedTime : Int?
     @State var isActiveTimer = false
     
-    @State var isShowingSheet = false
+    // Variables
+    @State var timeRemaining = 3600
+    
+    @State var timeElapsed = 0
+    @State var amountEarned = 0
+    @State var cashMin = 1000
     
     // Take in a business
-    @State var chosenBusiness : BusinessDataModel
-    @State var chosenBusinessIndex : Int
+//    @State var chosenBusiness : BusinessDataModel
+//    @State var chosenBusinessIndex : Int
     @Query var businesses : [BusinessDataModel]
     
     
@@ -37,13 +45,16 @@ struct StartTaskView: View {
                         Image("store")
                             .resizable()
                     })
+                    .onTapGesture {
+                        isActiveTimer = true
+                    }
                 
                 // Chosen Business Name
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: 350, height: 50)
                     .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
                     .overlay {
-                        Text("Business Name")
+                        Text("\(selectedBusiness?.businessName ?? "Business Name")")
                             .font(.system(size: 30))
                             .foregroundStyle(.white)
                     }
@@ -55,7 +66,7 @@ struct StartTaskView: View {
                         .frame(width: 170, height: 50)
                         .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
                         .overlay {
-                            Text("Value : $250,000")
+                            Text("Value : $\(selectedBusiness?.businessRevenueAmount ?? "0")")
                         }
                     
                     // Cash/min
@@ -63,20 +74,21 @@ struct StartTaskView: View {
                         .frame(width: 170, height: 50)
                         .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
                         .overlay {
-                            Text("$/min : 4000")
+                            Text("$/min : \(cashMin)")
                         }
                 }
                 .foregroundStyle(.white)
                 .font(.title3)
                 .padding(.horizontal, 10)
                 
-                TimerView(timeRemaining: $timeRemaining, isActive: $isActiveTimer)
+                TimerView(timeRemaining: $timeRemaining, isActive: $isActiveTimer, timeElapsed: $timeElapsed)
                 
                 VStack {
                     Text("Next Level")
                         .foregroundStyle(.white)
                         .opacity(0.4)
                     
+
                     HStack {
                         Text("18")
                             .frame(width: 35, height: 40)
@@ -103,18 +115,21 @@ struct StartTaskView: View {
                         .frame(width: 300, height: 50)
                         .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
                         .overlay {
-                            Text("$1000")
+                            Text("$\(amountEarned)")
                                 .font(.title)
                                 .foregroundStyle(.white)
                         }
                 }
                 
                 Button("Finish") {
-//                    if isActive == true {
-//                        print("Timer is running")
-//                        isActive = false
-//                        finishTask = true
-//                    }
+                    print("$\(timeElapsed * (cashMin/60))")
+                    amountEarned = timeElapsed * (cashMin/60)
+                    if isActiveTimer == true {
+                        print("Timer is running")
+                        isActiveTimer = false
+                        print("\(selectedBusiness?.businessName ?? "Default")")
+                        
+                    }
                 }
                 .frame(width: 100, height: 40)
                 .background(.white)
@@ -124,15 +139,12 @@ struct StartTaskView: View {
                 
                 // End of Vstack
             }
+            .sheet(isPresented: $isShowingSheet, content: {
+                StartTaskConfig(isSheetShowing: $isShowingSheet, businessName: $selectedBusiness, isTimerActive: $isActiveTimer)
+            })
             
             
         }
-        .sheet(isPresented: $isShowingSheet, content: {
-            
-            StartTaskViewSettings(chosenBusiness: $chosenBusiness)
-            .presentationDetents([.fraction(0.8)])
-            .interactiveDismissDisabled()
-        })
     }
 }
 
@@ -140,7 +152,7 @@ struct StartTaskView: View {
     do {
         let previewer = try Previewer()
         
-        return StartTaskView(chosenBusiness: previewer.businesses[0], chosenBusinessIndex: 0)
+        return StartTaskView()
     } catch {
         return Text("Failed to create preview : \(error.localizedDescription)")
     }

@@ -59,4 +59,5 @@ struct CreateBusiness: View {
 
 #Preview {
     CreateBusiness()
+        .modelContainer(for: [BusinessDataModel.self, UserDataModel.self], inMemory: true)
 }

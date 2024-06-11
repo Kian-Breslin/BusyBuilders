@@ -25,13 +25,15 @@ struct NavigationBar: View {
                 .frame(width: 600, height: 90)
                 .foregroundStyle(.black)
             
-            HStack (alignment: .bottom ,spacing: 25){
+            HStack (alignment: .bottom ,spacing: 15){
                 ForEach(0..<5) { i in
                     VStack (spacing: 5) {
                         Image(systemName: "\(imagesList[i])")
                         Text("\(detailsList[i])")
                             .font(.system(size: 10))
                     }
+//                    .background(.blue)
+                    .frame(width: 65, height: 60)
                     .foregroundStyle(Color(red: 197/255, green: 202/255, blue: 205/255))
                     .font(.system(size: 25))
                     .fontWeight(.light)
@@ -48,7 +50,7 @@ struct NavigationBar: View {
                     }
                 }
             }
-            .padding(5)
+            .padding(.horizontal, 5)
         }
     }
 }
