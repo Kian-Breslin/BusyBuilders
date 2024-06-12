@@ -16,17 +16,15 @@ struct StartTaskView: View {
     @State var selectedBusiness : BusinessDataModel?
     @State var selectedTime : Int?
     @State var isActiveTimer = false
+    @State var timeRemaining = 0
     
     // Variables
-    @State var timeRemaining = 3600
+
     
     @State var timeElapsed = 0
     @State var amountEarned = 0
     @State var cashMin = 1000
     
-    // Take in a business
-//    @State var chosenBusiness : BusinessDataModel
-//    @State var chosenBusinessIndex : Int
     @Query var businesses : [BusinessDataModel]
     
     
@@ -124,6 +122,7 @@ struct StartTaskView: View {
                 Button("Finish") {
                     print("$\(timeElapsed * (cashMin/60))")
                     amountEarned = timeElapsed * (cashMin/60)
+                    ShowBusinesses().updateBusiness(selectedBusiness!, "\(amountEarned)")
                     if isActiveTimer == true {
                         print("Timer is running")
                         isActiveTimer = false
@@ -140,7 +139,7 @@ struct StartTaskView: View {
                 // End of Vstack
             }
             .sheet(isPresented: $isShowingSheet, content: {
-                StartTaskConfig(isSheetShowing: $isShowingSheet, businessName: $selectedBusiness, isTimerActive: $isActiveTimer)
+                StartTaskConfig(selectedBusiness: $selectedBusiness, isSheetShowing: $isShowingSheet, isTimerActive: $isActiveTimer, timeSelect: $timeRemaining)
             })
             
             

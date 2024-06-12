@@ -66,14 +66,14 @@ struct ShowBusinesses: View {
                                 .ignoresSafeArea()
                             VStack (spacing: 30){
                                 Text("\(b.businessName)")
-                                    .font(.system(size: 30))
-                                    .foregroundStyle(.white)
+                                Text("$\(b.businessRevenueAmount)")
                                 Image(systemName: "arrow.triangle.2.circlepath")
-                                    .foregroundStyle(.white)
                                     .onTapGesture {
-                                        updateBusiness(b)
+                                        updateBusiness(b, "100,000")
                                 }
                             }
+                            .foregroundStyle(.white)
+                            .font(.system(size: 30))
                         }
                     }
                 }
@@ -105,7 +105,7 @@ struct ShowBusinesses: View {
     
     func addFakeData() {
             let newFakeBusiness =
-                BusinessDataModel(businessName: "Business \(mockBusNum)", businessCategory: "Category \(mockBusNum)", businessIcon: "circle", businessInvestment: "100,000", businessLevel: "20", businessRevenueAmount: "250,000", businessBadges: "7 day Streak", taskName: "Task Name \(mockBusNum)", taskDescription: "Task description should be longer than normal text", taskCategory: "Task Category \(mockBusNum)", taskGoal: "Finish App Developement", taskDeadline: Date(), taskStartDate: Date())
+                BusinessDataModel(businessName: "Business \(mockBusNum)", businessCategory: "Category \(mockBusNum)", businessIcon: "circle", businessInvestment: "145,000", businessLevel: "20", businessRevenueAmount: "\((50000)+10000*mockBusNum)", businessBadges: "7 day Streak", taskName: "Task Name \(mockBusNum)", taskDescription: "Task description should be longer than normal text", taskCategory: "Task Category \(mockBusNum)", taskGoal: "Finish App Developement", taskDeadline: Date(), taskStartDate: Date())
 
             context.insert(newFakeBusiness)
             mockBusNum += 1
@@ -116,9 +116,10 @@ struct ShowBusinesses: View {
         context.delete(business)
     }
     
-    func updateBusiness(_ business: BusinessDataModel) {
+    public func updateBusiness(_ business: BusinessDataModel, _ amountChange: String) {
         // Edit the item
-        business.businessName = "Updated Business Name"
+        business.businessName = "New Business Name"
+        business.businessRevenueAmount = amountChange
         // Save the changes
         try? context.save()
     }

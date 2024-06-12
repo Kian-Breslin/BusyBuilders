@@ -12,10 +12,11 @@ struct StartTaskConfig: View {
     
     @Query var businesses : [BusinessDataModel]
     
-    @State var selectedBusiness : BusinessDataModel?
+    @Binding var selectedBusiness : BusinessDataModel?
     @Binding var isSheetShowing : Bool
-    @Binding var businessName : BusinessDataModel?
+//    @Binding var businessName : BusinessDataModel?
     @Binding var isTimerActive : Bool
+    @Binding var timeSelect : Int
     
     var body: some View {
         
@@ -36,9 +37,9 @@ struct StartTaskConfig: View {
                                                 .font(.system(size: 30))
                                         }
                                         .onTapGesture {
-                                            businessName = business
-                                            print(business.businessName)
-                                            print(business)
+                                            selectedBusiness = business
+//                                            print(business.businessName)
+//                                            print(business)
                                         }
                             }
                             .frame(width: 200, height: 150)
@@ -56,6 +57,32 @@ struct StartTaskConfig: View {
                             .foregroundStyle(.white)
                     }
                 
+                HStack {
+                    Image(systemName: "minus.circle")
+                        .onTapGesture {
+                            if(timeSelect > 900){
+                                timeSelect -= 900
+                            }else {
+                                timeSelect = 0
+                            }
+                        }
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .frame(width: 200, height: 40)
+                        .overlay {
+                            Text("\(timeFormattedMins(timeSelect))")
+                                .foregroundStyle(.white)
+                                .font(.title)
+                        }
+                    Image(systemName: "plus.circle")
+                        .onTapGesture {
+                            if(timeSelect <= 3599){
+                                timeSelect += 900
+                            }else {
+                                timeSelect = 3600
+                            }
+                        }
+                }
+                
                 Button("Start Timer"){
                     isSheetShowing = false
                     isTimerActive = true
@@ -71,7 +98,7 @@ struct StartTaskConfig: View {
     do {
         let previewer = try Previewer()
         
-        return StartTaskConfig(isSheetShowing: .constant(true), businessName: .constant(previewer.businesses[0]), isTimerActive: .constant(true))
+        return StartTaskConfig(selectedBusiness: .constant(previewer.businesses[0]), isSheetShowing: .constant(true), isTimerActive: .constant(true), timeSelect: .constant(3600))
     } catch {
         return Text("Failed to create preview : \(error.localizedDescription)")
     }
