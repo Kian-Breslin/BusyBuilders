@@ -18,6 +18,8 @@ struct StartTaskView: View {
     @State var isActiveTimer = false
     @State var timeRemaining = 0
     
+    @Environment(\.modelContext) var context
+    
     // Variables
 
     
@@ -64,7 +66,7 @@ struct StartTaskView: View {
                         .frame(width: 170, height: 50)
                         .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
                         .overlay {
-                            Text("Value : $\(selectedBusiness?.businessRevenueAmount ?? "0")")
+                            Text("Value : $\(selectedBusiness?.businessRevenueAmount ?? 0)")
                         }
                     
                     // Cash/min
@@ -122,7 +124,7 @@ struct StartTaskView: View {
                 Button("Finish") {
                     print("$\(timeElapsed * (cashMin/60))")
                     amountEarned = timeElapsed * (cashMin/60)
-                    ShowBusinesses().updateBusiness(selectedBusiness!, "\(amountEarned)")
+                    updateBusinessDetails(selectedBusiness!, amountEarned)
                     if isActiveTimer == true {
                         print("Timer is running")
                         isActiveTimer = false
@@ -144,6 +146,14 @@ struct StartTaskView: View {
             
             
         }
+    }
+    
+    func updateBusinessDetails(_ business: BusinessDataModel, _ amountChange: Int) {
+        // Edit the item
+        business.businessName = "New Business Name"
+        business.businessRevenueAmount = amountChange
+        // Save the changes
+        try? context.save()
     }
 }
 

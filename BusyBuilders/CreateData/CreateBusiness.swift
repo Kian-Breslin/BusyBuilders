@@ -19,7 +19,7 @@ struct CreateBusiness: View {
     
     @State private var businessInvestment: String = ""
     @State private var businessLevel: String = ""
-    @State private var businessRevenueAmount: String = ""
+    @State private var businessRevenueAmount: Int = 0
     @State private var businessBadge: String = ""
     
     @State private var taskName: String = ""

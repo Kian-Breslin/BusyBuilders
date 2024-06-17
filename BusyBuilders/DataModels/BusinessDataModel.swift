@@ -17,7 +17,7 @@ public class BusinessDataModel : Identifiable{
     
     var businessInvestment : String
     var businessLevel : String
-    var businessRevenueAmount : String
+    var businessRevenueAmount : Int
     var businessBadges : String
     
     var taskName : String
@@ -27,7 +27,7 @@ public class BusinessDataModel : Identifiable{
     var taskDeadline : Date
     var taskStartDate : Date
     
-    init(businessName: String, businessCategory: String, businessIcon: String, businessInvestment: String, businessLevel: String, businessRevenueAmount: String, businessBadges: String, taskName: String, taskDescription: String, taskCategory: String, taskGoal: String, taskDeadline: Date, taskStartDate: Date) {
+    init(businessName: String, businessCategory: String, businessIcon: String, businessInvestment: String, businessLevel: String, businessRevenueAmount: Int, businessBadges: String, taskName: String, taskDescription: String, taskCategory: String, taskGoal: String, taskDeadline: Date, taskStartDate: Date) {
         self.businessName = businessName
         self.businessCategory = businessCategory
         self.businessIcon = businessIcon

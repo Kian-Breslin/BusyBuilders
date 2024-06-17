@@ -69,7 +69,7 @@ struct ShowBusinesses: View {
                                 Text("$\(b.businessRevenueAmount)")
                                 Image(systemName: "arrow.triangle.2.circlepath")
                                     .onTapGesture {
-                                        updateBusiness(b, "100,000")
+                                        updateBusiness(b, 100000)
                                 }
                             }
                             .foregroundStyle(.white)
@@ -105,7 +105,7 @@ struct ShowBusinesses: View {
     
     func addFakeData() {
             let newFakeBusiness =
-                BusinessDataModel(businessName: "Business \(mockBusNum)", businessCategory: "Category \(mockBusNum)", businessIcon: "circle", businessInvestment: "145,000", businessLevel: "20", businessRevenueAmount: "\((50000)+10000*mockBusNum)", businessBadges: "7 day Streak", taskName: "Task Name \(mockBusNum)", taskDescription: "Task description should be longer than normal text", taskCategory: "Task Category \(mockBusNum)", taskGoal: "Finish App Developement", taskDeadline: Date(), taskStartDate: Date())
+                BusinessDataModel(businessName: "Business \(mockBusNum)", businessCategory: "Category \(mockBusNum)", businessIcon: "circle", businessInvestment: "145,000", businessLevel: "20", businessRevenueAmount: (50000)+10000*mockBusNum, businessBadges: "7 day Streak", taskName: "Task Name \(mockBusNum)", taskDescription: "Task description should be longer than normal text", taskCategory: "Task Category \(mockBusNum)", taskGoal: "Finish App Developement", taskDeadline: Date(), taskStartDate: Date())
 
             context.insert(newFakeBusiness)
             mockBusNum += 1
@@ -116,7 +116,7 @@ struct ShowBusinesses: View {
         context.delete(business)
     }
     
-    public func updateBusiness(_ business: BusinessDataModel, _ amountChange: String) {
+    public func updateBusiness(_ business: BusinessDataModel, _ amountChange: Int) {
         // Edit the item
         business.businessName = "New Business Name"
         business.businessRevenueAmount = amountChange

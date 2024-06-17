@@ -21,6 +21,8 @@ struct StartTaskConfig: View {
     var body: some View {
         
         ZStack {
+            LinearGradient(colors: [.red, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
             VStack {
                 ScrollView (.horizontal){
                     HStack {
@@ -59,6 +61,7 @@ struct StartTaskConfig: View {
                 
                 HStack {
                     Image(systemName: "minus.circle")
+                        .font(.system(size: 30))
                         .onTapGesture {
                             if(timeSelect > 900){
                                 timeSelect -= 900
@@ -67,6 +70,7 @@ struct StartTaskConfig: View {
                             }
                         }
                     RoundedRectangle(cornerRadius: 10.0)
+                        .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
                         .frame(width: 200, height: 40)
                         .overlay {
                             Text("\(timeFormattedMins(timeSelect))")
@@ -74,6 +78,7 @@ struct StartTaskConfig: View {
                                 .font(.title)
                         }
                     Image(systemName: "plus.circle")
+                        .font(.system(size: 30))
                         .onTapGesture {
                             if(timeSelect <= 3599){
                                 timeSelect += 900
