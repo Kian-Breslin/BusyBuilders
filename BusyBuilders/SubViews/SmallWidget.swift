@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct SmallWidget: View {
+    
+    var colorName : Color
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: 60, height: 60)
+            .foregroundStyle(colorName)
     }
 }
 
 #Preview {
-    SmallWidget()
+    SmallWidget(colorName: Color(red: 244/255, green: 73/255, blue: 73/255))
 }

@@ -15,11 +15,14 @@ struct NavigationBar: View {
     
     @Binding var selectedView : Int
     
+    @State var darkMode = Color.black
+    @State var lightMode = Color.white
+    
     var body: some View {
         ZStack (alignment: .top){
             Rectangle()
                 .frame(width: screenWidth, height: 75)
-                .foregroundStyle(.black)
+                .foregroundStyle(lightMode)
             
             HStack (alignment: .top ,spacing: 15){
                 ForEach(0 ..< 5) { i in
@@ -40,7 +43,7 @@ struct NavigationBar: View {
                     }
                 }
             }
-            .foregroundStyle(Color(red: 197/255, green: 202/255, blue: 205/255))
+            .foregroundStyle(darkMode)
             .font(.system(size: 24))
             .fontWeight(.light)
         }

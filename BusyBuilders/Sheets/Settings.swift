@@ -2,52 +2,30 @@
 //  Settings.swift
 //  BusyBuilders
 //
-//  Created by Kian Breslin on 28/09/2024.
+//  Created by Kian Breslin on 05/10/2024.
 //
 
 import SwiftUI
 
 struct Settings: View {
-    
-    @State var UserDarkMode = true
-    
-    @State private var selectedColor = "Blue"
-    let colors = ["Blue", "Red", "Green", "Purple", "White", "Black"]
+    @Binding var userColorPreference: String
     
     var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
-            
-            VStack (alignment: .leading){
-                HStack {
-                    Text("Color Scheme")
-                    Spacer()
-                    Circle()
-                        .frame(width: 30)
-                        .foregroundStyle(colorForName(selectedColor))
-                        
-                    Spacer()
-                    Picker("Select a Color", selection: $selectedColor) {
-                        ForEach(colors, id: \.self) { color in
-                            Text(color)
-                        }
-                    }
-                }
-                Divider()
-                
-                HStack {
-                    Toggle("Mode", isOn: $UserDarkMode)
-                }
-                    
+        VStack {
+            Text("Choose a color preference:")
+            Button("Set to Red") {
+                userColorPreference = "red"
             }
-            .padding(.horizontal)
-            .font(.system(size: 20))
+            Button("Set to Blue") {
+                userColorPreference = "blue"
+            }
+            Button("Set to Green") {
+                userColorPreference = "green"
+            }
         }
-        .foregroundStyle(.black)
     }
 }
 
 #Preview {
-    Settings()
+    Settings(userColorPreference: .constant("red"))
 }

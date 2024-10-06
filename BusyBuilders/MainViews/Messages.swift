@@ -10,7 +10,7 @@ import SwiftUI
 struct Messages: View {
     
     var body: some View {
-        VStack {
+        ZStack {
             
         }
     }

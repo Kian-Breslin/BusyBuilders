@@ -6,38 +6,43 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
+    @Query var users: [UserDataModel]
+    
     @State var selectedView = 0
     
-    var imagesList = ["square.grid.2x2", "person.2", "play", "message", "person"]
-    var detailsList = ["Dashboard", "Communities", "Start Task", "Messages", "Portfolio"]
-    
     var body: some View {
-        ZStack {
-            if (selectedView == 0) {
-                Dashboard()
-            } else if selectedView == 1 {
-                Communities()
-            } else if selectedView == 2 {
-                StartTask()
-            } else if selectedView == 3 {
-                Messages()
-            } else if selectedView == 4 {
-                Portfolio()
-            }
-            
-            VStack {
-                Spacer()
+        if users.isEmpty {
+            UserSignUp()
+        }
+        else {
+            ZStack {
+                if (selectedView == 0) {
+                    Dashboard()
+                } else if selectedView == 1 {
+                    Communities()
+                } else if selectedView == 2 {
+                    StartTask()
+                } else if selectedView == 3 {
+                    Messages()
+                } else if selectedView == 4 {
+                    Portfolio()
+                }
                 
-                NavigationBar(selectedView: $selectedView)
+                VStack {
+                    Spacer()
+                    NavigationBar(selectedView: $selectedView)
+                }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
         }
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: [UserDataModel.self], inMemory: true)
 }

@@ -1,86 +1,165 @@
-//
-//  Dashboard.swift
-//  BusyBuilders
-//
-//  Created by Kian Breslin on 23/09/2024.
-//
-
 import SwiftUI
+import SwiftData
 
 struct Dashboard: View {
+    
+    @Environment(\.modelContext) var context
+    @Query var users: [UserDataModel]
+    
+    @AppStorage("userColorPreference") var userColorPreference: String = "red"
+    @State var isSettingsShowing = false
+    @State var placeholderSheet = false
+    
+    var totalBalance: Double {
+        // Sum the cash from all businesses
+        Double(users.first?.businesses.reduce(0) { $0 + $1.netWorth } ?? 0)
+    }
+    
     var body: some View {
+        
         ZStack {
-            Color(red: 197/255, green: 202/255, blue: 205/255)
+            colorForName(userColorPreference)
                 .ignoresSafeArea()
             
             VStack {
-                // Top of Screen
-                HStack {
+                // Header
+                VStack {
+                    // Top Header
                     HStack {
                         VStack (alignment: .leading){
-                            Text("Hello!")
-                                .font(.system(size: 25))
-                                .fontWeight(.light)
-                            Text("Kian Breslin")
+                            Text("$\(totalBalance, specifier: "%.f")")
                                 .font(.system(size: 35))
+                                .fontWeight(.bold)
+                                .shadow(radius: 5)
+                                .onTapGesture {
+                                    isSettingsShowing.toggle()
+                                }
+                            Text("Total Balance")
                         }
-                        Image(systemName: "hand.raised")
-                            .font(.system(size: 40))
-                            .rotationEffect(Angle(degrees: -35))
-                            .offset(y: 9)
+                        Spacer()
+                        HStack (spacing: 15){
+                            ZStack {
+                                Image(systemName: "bell.fill")
+                                Image(systemName: "2.circle.fill")
+                                    .font(.system(size: 15))
+                                    .offset(x: 10, y: -10)
+                            }
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 40, height: 40)
+                                .onTapGesture {
+                                    isSettingsShowing.toggle()
+                                }
+                        }
+                        .font(.system(size: 25))
                     }
-                    Spacer()
+                    .padding(15)
                     
-                    Image(systemName: "circle.fill")
-                        .font(.system(size: 60))
-                        .fontWeight(.thin)
-                }
-                .padding(.horizontal,10)
-                
-                // Middle of Screen
-                VStack {
                     HStack {
-                        ScrollView (.horizontal){
-                            HStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: (screenWidth/2)-15, height: 100)
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: (screenWidth/2)-15, height: 100)
-                            }
-                            .scrollTargetLayout()
+                        VStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 60, height: 60)
+                                .overlay {
+                                    Image(systemName: "dollarsign")
+                                        .font(.system(size: 30))
+                                        .foregroundStyle(colorForName(userColorPreference))
+                                }
+                                .onTapGesture {
+                                    placeholderSheet.toggle()
+                                }
+                            Text("Send Money")
                         }
-                        .scrollTargetBehavior(.viewAligned)
-                       
-                        ScrollView (.horizontal){
-                            HStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: (screenWidth/2)-15, height: 100)
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: (screenWidth/2)-15, height: 100)
-                            }
-                            .scrollTargetLayout()
+                        Spacer()
+                        VStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 60, height: 60)
+                                .overlay {
+                                    Image(systemName: "dollarsign.arrow.circlepath")
+                                        .font(.system(size: 30))
+                                        .foregroundStyle(colorForName(userColorPreference))
+                                }
+                                .onTapGesture {
+                                    placeholderSheet.toggle()
+                                }
+                            Text("Request Money")
                         }
-                        .scrollTargetBehavior(.viewAligned)
+                        Spacer()
+                        VStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 60, height: 60)
+                                .overlay {
+                                    Image(systemName: "creditcard")
+                                        .font(.system(size: 30))
+                                        .foregroundStyle(colorForName(userColorPreference))
+                                }
+                                .onTapGesture {
+                                    placeholderSheet.toggle()
+                                }
+                            Text("Loans")
+                        }
+                        Spacer()
+                        VStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 60, height: 60)
+                                .overlay {
+                                    Image(systemName: "building")
+                                        .font(.system(size: 30))
+                                        .foregroundStyle(colorForName(userColorPreference))
+                                }
+                                .onTapGesture {
+                                    placeholderSheet.toggle()
+                                }
+                            Text("Bank")
+                        }
                     }
-                    .frame(width: screenWidth-20, height: 100)
-                    
-                    ScrollView {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: screenWidth-20, height: 150)
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: screenWidth-20, height: 150)
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: screenWidth-20, height: 150)
-                    }
-                    .frame(width: screenWidth, height: 410)
+                    .padding(.horizontal, 15)
+                    .font(.system(size: 12))
                 }
+                
                 Spacer()
+                
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: screenWidth, height: screenHeight/1.5)
+                    .overlay {
+                        VStack {
+                            LargeWidget()
+                            HStack {
+                                MediumWidget(colorName: colorForName(userColorPreference))
+                                Spacer()
+                                VStack {
+                                    HStack {
+                                        SmallWidget(colorName: colorForName(userColorPreference))
+                                        SmallWidget(colorName: colorForName(userColorPreference))
+                                        SmallWidget(colorName: colorForName(userColorPreference))
+                                    }
+                                    HStack {
+                                        SmallWidget(colorName: colorForName(userColorPreference))
+                                        SmallWidget(colorName: colorForName(userColorPreference))
+                                        SmallWidget(colorName: colorForName(userColorPreference))
+                                    }
+                                }
+                            }
+                            .frame(width: screenWidth-30)
+                            
+                            Spacer()
+                        }
+                    }
             }
-            .padding(.vertical, 35)
+        }
+        .foregroundStyle(.white)
+        .sheet(isPresented: $isSettingsShowing) {
+            Settings(userColorPreference: $userColorPreference)
+                    .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $placeholderSheet) {
+            VStack {
+                Text("This is a placeholder for the section")
+            }
+            .presentationDetents([.medium])
         }
     }
 }
 
 #Preview {
     Dashboard()
+        .modelContainer(for: [UserDataModel.self])
 }
