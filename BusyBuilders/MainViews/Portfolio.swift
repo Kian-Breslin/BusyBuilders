@@ -15,13 +15,16 @@ struct Portfolio: View {
     @Query var businesses: [BusinessDataModel] // Query for businesses
     
     @State var isNewBusinessSheetShowing = false
+    
+    // For Developement
+    let devNames = ["Math Masters","Eco Innovators","Science Solutions","Code Creators","Design Depot","Robotics Realm","Tech Repair Hub","Game Forge","AI Insights","Physics Powerhouse"]
 
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
                     Button("Create Mock Business for testing") {
-                        let newBusiness = BusinessDataModel(businessName: "Kians Eco Lab", businessTheme: "Red", businessType: "Eco Friendly", businessIcon: "Circle")
+                        let newBusiness = BusinessDataModel(businessName: "\(devNames[Int.random(in: 0..<10)])", businessTheme: "Red", businessType: "Eco Friendly", businessIcon: "Circle", cashPerMin: 1000)
                         
                         context.insert(newBusiness)
                         

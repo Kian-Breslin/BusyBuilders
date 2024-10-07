@@ -16,7 +16,7 @@ class BusinessDataModel {
     var businessType: String // New property for business type
     var businessIcon: String
     var owners: [String] // Assuming it's an array of owner IDs or names
-    var cashPerMin: Double
+    var cashPerMin: Int
     var netWorth: Double
     var investment: Int
     var investors: [String] // Array of user IDs or names for investors
@@ -28,7 +28,7 @@ class BusinessDataModel {
     var businessLevel: Int // Current level of the business
 
     // Initializer
-    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [String] = [], cashPerMin: Double = 0, netWorth: Double = 0, investment: Int = 0, investors: [String] = [], badges: [String] = [], sessionHistory: [String] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0) {
+    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [String] = [], cashPerMin: Int = 0, netWorth: Double = 0, investment: Int = 0, investors: [String] = [], badges: [String] = [], sessionHistory: [String] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0) {
         self.id = UUID() // Automatically generate a new UUID
         self.businessName = businessName
         self.businessTheme = businessTheme

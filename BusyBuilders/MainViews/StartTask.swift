@@ -15,20 +15,24 @@ struct StartTask: View {
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
-    @State var taskActive = false
+    @State var currentView = 0
     
     @State var selectedBusiness: BusinessDataModel?
     @State var businessName: String = ""
     
     // Timer
     @State var timeSeconds = 0
-    @State var timeRemaining = 1800
-    @State var timeElapsed = 0
-    @State var isActive = true
+    @State var timeRemaining = 0
+    @State var isTimerActive = true
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    // Final Calculations
+    @State var timeElapsed = 0
+    @State var totalCashEarned: Double = 0.0
 
     var body: some View {
-        if (taskActive) {
+        if (currentView == 1) {
+            // Active Task View
             ZStack {
                 Color(red: 0.7, green: 0.7, blue: 0.7)
                     .ignoresSafeArea()
@@ -53,7 +57,7 @@ struct StartTask: View {
                             }
                     }
                     .onReceive(timer) { time in
-                        guard isActive else {return}
+                        guard isTimerActive else {return}
                         
                         if timeRemaining > 0 {
                             timeRemaining -= 1
@@ -62,15 +66,19 @@ struct StartTask: View {
                     }
                     .onChange(of: scenePhase){
                         if scenePhase == .active {
-                            isActive = true
+                            isTimerActive = true
                         } else {
-                            isActive = false
+                            isTimerActive = false
                         }
                     }
                     
                     Button("Clock Out") {
-                        isActive.toggle()
-                        taskActive.toggle()
+                        isTimerActive.toggle()
+                        currentView = 2
+                        
+                        // Final Calculations
+                        totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                        print(totalCashEarned)
                     }
                     .frame(width: 300, height: 50)
                     .background(Color(red: 244/255, green: 73/255, blue: 73/255))
@@ -80,7 +88,11 @@ struct StartTask: View {
                 }
             }
         }
+        else if (currentView == 2) {
+            PostTask(currentView: $currentView, totalCashEarned: totalCashEarned)
+        }
         else {
+            // Start Task View
             ZStack {
                 Color.gray
                     .ignoresSafeArea()
@@ -117,25 +129,25 @@ struct StartTask: View {
                         Image(systemName: "minus.circle")
                             .font(.system(size: 40))
                             .onTapGesture {
-                                timeSeconds -= 300
+                                timeRemaining -= 300
                             }
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 150,height: 50)
                             .foregroundStyle(colorForName(userColorPreference))
                             .overlay {
-                                Text("\(timeFormattedMins(timeSeconds))")
+                                Text("\(timeFormattedMins(timeRemaining))")
                                     .foregroundStyle(.white)
                                     .font(.system(size: 40))
                             }
                         Image(systemName: "plus.circle")
                             .font(.system(size: 40))
                             .onTapGesture {
-                                timeSeconds += 300
+                                timeRemaining += 300
                             }
                     }
                     
                     Button("Clock In!"){
-                        taskActive = true
+                        currentView = 1
                     }
                     .frame(width: 300, height: 50)
                     .background(Color(red: 244/255, green: 73/255, blue: 73/255))

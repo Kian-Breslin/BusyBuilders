@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct PostTask: View {
+    
+    @Binding var currentView : Int
+    @State var totalCashEarned : Double
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Text("Congrats! You've earned $\(totalCashEarned, specifier: "%.f")")
+        }
     }
 }
 
 #Preview {
-    PostTask()
+    PostTask(currentView: .constant(0), totalCashEarned: 35000)
 }
