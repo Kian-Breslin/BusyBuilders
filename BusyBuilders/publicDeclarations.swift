@@ -50,3 +50,13 @@ public func timeFormatted(_ totalSeconds: Int) -> String {
     let seconds = totalSeconds % 60
     return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
 }
+
+public func formatFullDateTime(date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEEE MMMM d, h:mma"
+    formatter.amSymbol = "am"
+    formatter.pmSymbol = "pm"
+    formatter.timeZone = TimeZone.current  // Ensure local time zone
+    return formatter.string(from: date)
+}
+

@@ -13,6 +13,7 @@ struct ContentView: View {
     @Query var users: [UserDataModel]
     
     @State var selectedView = 0
+    @State var isTaskActive = false
     
     var body: some View {
         if users.isEmpty {
@@ -25,7 +26,7 @@ struct ContentView: View {
                 } else if selectedView == 1 {
                     Communities()
                 } else if selectedView == 2 {
-                    StartTask()
+                    StartTask(isTimerActive: $isTaskActive)
                 } else if selectedView == 3 {
                     Messages()
                 } else if selectedView == 4 {
@@ -35,6 +36,7 @@ struct ContentView: View {
                 VStack {
                     Spacer()
                     NavigationBar(selectedView: $selectedView)
+                        .opacity(isTaskActive ? 0 : 1)
                 }
                 .ignoresSafeArea()
             }

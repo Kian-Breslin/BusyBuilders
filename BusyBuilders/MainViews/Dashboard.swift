@@ -9,6 +9,7 @@ struct Dashboard: View {
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @State var isSettingsShowing = false
     @State var placeholderSheet = false
+    @State var selectedTopButtons = ""
     
     var totalBalance: Double {
         // Sum the cash from all businesses
@@ -48,6 +49,7 @@ struct Dashboard: View {
                                 .frame(width: 40, height: 40)
                                 .onTapGesture {
                                     isSettingsShowing.toggle()
+                                    
                                 }
                         }
                         .font(.system(size: 25))
@@ -64,6 +66,7 @@ struct Dashboard: View {
                                         .foregroundStyle(colorForName(userColorPreference))
                                 }
                                 .onTapGesture {
+                                    selectedTopButtons = "Send Money"
                                     placeholderSheet.toggle()
                                 }
                             Text("Send Money")
@@ -78,6 +81,7 @@ struct Dashboard: View {
                                         .foregroundStyle(colorForName(userColorPreference))
                                 }
                                 .onTapGesture {
+                                    selectedTopButtons = "Request Money"
                                     placeholderSheet.toggle()
                                 }
                             Text("Request Money")
@@ -92,6 +96,7 @@ struct Dashboard: View {
                                         .foregroundStyle(colorForName(userColorPreference))
                                 }
                                 .onTapGesture {
+                                    selectedTopButtons = "Loan"
                                     placeholderSheet.toggle()
                                 }
                             Text("Loans")
@@ -106,6 +111,7 @@ struct Dashboard: View {
                                         .foregroundStyle(colorForName(userColorPreference))
                                 }
                                 .onTapGesture {
+                                    selectedTopButtons = "Bank"
                                     placeholderSheet.toggle()
                                 }
                             Text("Bank")
@@ -121,7 +127,7 @@ struct Dashboard: View {
                     .frame(width: screenWidth, height: screenHeight/1.5)
                     .overlay {
                         VStack {
-                            LargeWidget()
+                            LargeWidget(selectedView: 0, colorName: colorForName(userColorPreference))
                             HStack {
                                 MediumWidget(colorName: colorForName(userColorPreference))
                                 Spacer()
@@ -140,6 +146,8 @@ struct Dashboard: View {
                             }
                             .frame(width: screenWidth-30)
                             
+                            LargeWidget(selectedView: 1, colorName: colorForName(userColorPreference))
+                            
                             Spacer()
                         }
                     }
@@ -148,13 +156,11 @@ struct Dashboard: View {
         .foregroundStyle(.white)
         .sheet(isPresented: $isSettingsShowing) {
             Settings(userColorPreference: $userColorPreference)
-                    .presentationDetents([.medium])
+                    .presentationDetents([.fraction(0.5)])
         }
         .sheet(isPresented: $placeholderSheet) {
-            VStack {
-                Text("This is a placeholder for the section")
-            }
-            .presentationDetents([.medium])
+            DashboardTopButtons(title: selectedTopButtons, userColor: .black)
+            .presentationDetents([.fraction(0.76)])
         }
     }
 }

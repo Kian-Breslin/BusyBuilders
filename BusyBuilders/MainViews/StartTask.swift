@@ -23,12 +23,15 @@ struct StartTask: View {
     // Timer
     @State var timeSeconds = 0
     @State var timeRemaining = 0
-    @State var isTimerActive = true
+    @Binding var isTimerActive : Bool
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     // Final Calculations
     @State var timeElapsed = 0
     @State var totalCashEarned: Double = 0.0
+    @State var experienceEarned = 0
+    @State var timeStarted = ""
+    @State var timeEnded = ""
 
     var body: some View {
         if (currentView == 1) {
@@ -60,8 +63,31 @@ struct StartTask: View {
                         guard isTimerActive else {return}
                         
                         if timeRemaining > 0 {
+                            
+                            //Cash
                             timeRemaining -= 1
                             timeElapsed += 1
+                            
+                            // Experience
+                            experienceEarned += 10
+                        }
+                        else {
+                            isTimerActive.toggle()
+                            currentView = 2
+                            
+                            // Final Calculations
+                            totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                            print(totalCashEarned)
+                            
+                            // Add Cash earned to business
+                            selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
+                            // Add Experience
+                            selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
+                            // Create new session entry
+                            let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
+                            
+                            // Add session to session history
+                            selectedBusiness?.sessionHistory.append(session)
                         }
                     }
                     .onChange(of: scenePhase){
@@ -79,6 +105,16 @@ struct StartTask: View {
                         // Final Calculations
                         totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
                         print(totalCashEarned)
+                        
+                        // Add Cash earned to business
+                        selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
+                        // Add Experience
+                        selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
+                        // Create new session entry
+                        let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
+                        
+                        // Add session to session history
+                        selectedBusiness?.sessionHistory.append(session)
                     }
                     .frame(width: 300, height: 50)
                     .background(Color(red: 244/255, green: 73/255, blue: 73/255))
@@ -148,6 +184,10 @@ struct StartTask: View {
                     
                     Button("Clock In!"){
                         currentView = 1
+                        isTimerActive.toggle()
+                        
+                        timeStarted = formatFullDateTime(date: Date())
+                        print(timeStarted)
                     }
                     .frame(width: 300, height: 50)
                     .background(Color(red: 244/255, green: 73/255, blue: 73/255))
@@ -163,6 +203,6 @@ struct StartTask: View {
 
 
 #Preview {
-    StartTask()
+    StartTask(isTimerActive: .constant(false))
         .modelContainer(for: UserDataModel.self)
 }

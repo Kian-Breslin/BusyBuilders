@@ -52,12 +52,10 @@ struct Portfolio: View {
                     // List existing businesses
                     List {
                         ForEach(businesses) { business in
-                            NavigationLink(destination: BusinessDetailView(business: business)) {
+                            NavigationLink(destination: BusinessDetails(business: business)) {
                                 HStack {
                                     Text(business.businessName)
                                         .font(.headline)
-                                    Spacer()
-                                    Text("$\(business.cashPerMin, specifier: "%.2f")/min")
                                 }
                                 .padding()
                             }
