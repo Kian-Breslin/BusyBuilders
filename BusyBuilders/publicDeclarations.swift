@@ -5,6 +5,7 @@
 //  Created by Kian Breslin on 25/09/2024.
 //
 import SwiftUI
+import SwiftData
 
 class AppSettings: ObservableObject {
     // Example of settings variables
@@ -27,9 +28,47 @@ func colorForName(_ name: String) -> Color {
         return Color.yellow
     case "purple":
         return Color.purple
+    case "pink":
+        return Color.pink
     // Add other colors as needed
     default:
-        return Color.white // Fallback if no color matches
+        return Color.gray // Fallback if no color matches
+    }
+}
+
+extension Color {
+    func inverted() -> Color {
+        let uiColor = UIColor(self) // Convert SwiftUI Color to UIColor
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        // Invert the RGB values
+        return Color(red: 1 - red, green: 1 - green, blue: 1 - blue)
+    }
+}
+
+extension Color {
+    // Function to calculate the luminance of a color
+    func luminance() -> CGFloat {
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        // Calculate luminance using standard formula
+        return 0.299 * red + 0.587 * green + 0.114 * blue
+    }
+    
+    // Function to decide between white or black text based on luminance
+    func suitableTextColor() -> Color {
+        return self.luminance() < 0.5 ? .white : .black
     }
 }
 
@@ -59,4 +98,5 @@ public func formatFullDateTime(date: Date) -> String {
     formatter.timeZone = TimeZone.current  // Ensure local time zone
     return formatter.string(from: date)
 }
+
 

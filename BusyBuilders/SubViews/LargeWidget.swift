@@ -21,8 +21,8 @@ struct LargeWidget: View {
         if selectedView == 0 {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(colorName)
-                .frame(width: screenWidth-15, height: 150)
-                .padding(15)
+                .frame(width: screenWidth-15, height: 130)
+                .padding(.top, 15)
                 .overlay {
                     HStack {
                         Image("Revenue - 30 days")
@@ -35,11 +35,13 @@ struct LargeWidget: View {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(colorName)
                 .frame(width: screenWidth-15, height: 150)
-                .padding(15)
                 .overlay {
-                        
-                    }
+                    Image(systemName: "calendar")
+                        .font(.system(size: 100))
+                        .padding()
+                        .foregroundStyle(.white)
                 }
+            }
         }
     }
 

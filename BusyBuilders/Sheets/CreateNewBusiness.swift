@@ -10,6 +10,7 @@ import SwiftData
 
 struct CreateNewBusiness: View {
     
+    @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
@@ -21,6 +22,9 @@ struct CreateNewBusiness: View {
     @State var businessType = ""
     @State var owners = ""
     @State var investment = 0
+    @State var choseColor : [Color] = [Color.red, Color.blue, Color.green, Color.yellow, Color.pink, Color.purple]
+    let colorNames: [String] = ["red", "blue", "green", "yellow", "pink", "purple"]
+    @State var selectedColor : String = "red"
     
     var body: some View {
         ZStack {
@@ -33,31 +37,66 @@ struct CreateNewBusiness: View {
                 }
                 
                 // Business Name
-                TextField("Enter Business Name", text: $businessName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                // Business Theme
-                TextField("Enter Business Theme", text: $businessTheme)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                VStack (alignment: .leading){
+                    Text("Enter your Business Name")
+                        .font(.system(size: 10))
+                    TextField("e.g The Coffee Shop", text: $businessName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
                 
                 // Business Icon
-                TextField("Enter Business Icon", text: $businessIcon)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                VStack (alignment: .leading){
+                    Text("Chose your Building")
+                        .font(.system(size: 10))
+                    TextField("e.g Triangle", text: $businessIcon)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
                 
                 // Business Type
-                TextField("Enter Business Type", text: $businessType)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                // Owners
-                TextField("Invite Owners (comma separated)", text: $owners)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                VStack (alignment: .leading){
+                    Text("Enter your Business Type")
+                        .font(.system(size: 10))
+                    TextField("e.g Eco Friendly", text: $businessType)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
                 
                 // Investment
-                TextField("Amount", value: $investment, formatter: NumberFormatter())
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                VStack (alignment: .leading){
+                    Text("Investment")
+                        .font(.system(size: 10))
+                    TextField("$0", value: $investment, formatter: NumberFormatter())
+                        .keyboardType(.decimalPad)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                }
                 
-                Button("Create!"){
+                // Business Theme
+                VStack (alignment: .leading){
+                    Text("Business Theme")
+                        .font(.system(size: 10))
+                    Picker("Select a Color", selection: $businessTheme) {
+                        ForEach(0..<5){ c in
+                            Text("\(colorNames[c])").tag(colorNames[c])
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 300, height: 5)
+                    .foregroundStyle(colorForName(businessTheme))
+                
+                HStack {
+                    Text("Add Business Partners")
+                    Spacer()
+                    Image(systemName: "qrcode")
+                        .font(.system(size: 25))
+                }
+                .padding(.trailing)
+                .padding(.leading, 5)
+                .padding(.bottom, 15)
+
+                Button("Create"){
                     let newBusiness = BusinessDataModel(businessName: businessName, businessTheme: businessTheme, businessType: businessType, businessIcon: businessIcon, investment: investment)
                     
                     context.insert(newBusiness)
@@ -69,8 +108,8 @@ struct CreateNewBusiness: View {
                     }
                     dismiss()
                 }
-                .frame(width: 300, height: 50)
-                .background(Color(red: 244/255, green: 73/255, blue: 73/255))
+                .frame(width: 150, height: 50)
+                .background(colorForName(userColorPreference))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .foregroundStyle(.white)
                 .fontWeight(.bold)

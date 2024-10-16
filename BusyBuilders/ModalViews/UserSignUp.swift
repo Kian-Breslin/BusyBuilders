@@ -13,6 +13,7 @@ struct UserSignUp: View {
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     
+    
     @State var name = ""
     @State var email = ""
     @State var password = ""

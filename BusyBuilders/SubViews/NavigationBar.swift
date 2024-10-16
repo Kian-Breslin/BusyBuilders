@@ -9,9 +9,9 @@ import SwiftUI
 
 struct NavigationBar: View {
     
-    var iconListSelected = ["square.grid.2x2.fill", "person.2.fill", "play.fill", "message.fill", "person.fill"]
-    var iconListNotSelected = ["square.grid.2x2", "person.2", "play", "message", "person"]
-    var iconListName = ["Dashboard", "Communities", "Start", "Messages", "Portfolio"]
+    var iconListSelected = ["square.grid.2x2.fill", "person.2.fill", "play.fill", "cart.fill", "person.fill"]
+    var iconListNotSelected = ["square.grid.2x2", "person.2", "play", "cart", "person"]
+    var iconListName = ["Dashboard", "Communities", "Start", "Store", "Portfolio"]
     
     @Binding var selectedView : Int
     

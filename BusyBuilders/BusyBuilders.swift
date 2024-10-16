@@ -9,12 +9,12 @@ import SwiftUI
 import SwiftData
 
 @main
-struct BusyBuildersApp: App {
+struct BusyBuilders: App {
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: [UserTestModel.self, UserDataModel.self, BusinessDataModel.self, SessionDataModel.self])
+                .modelContainer(for: [UserDataModel.self, BusinessDataModel.self, SessionDataModel.self])
         }
     }
 }

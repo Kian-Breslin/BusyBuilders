@@ -66,14 +66,25 @@ struct BusinessDetails: View {
                     Text("View Session History")
                         .font(.system(size: 20))
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
+                        .background(colorForName(business.businessTheme).suitableTextColor())
+                        .foregroundColor(colorForName(business.businessTheme))
+                        .cornerRadius(10)
+                }
+                .padding(.top, 20)
+                
+                NavigationLink(destination: EditBusinessView(business: business)) {
+                    Text("Edit Business")
+                        .font(.system(size: 20))
+                        .padding()
+                        .background(colorForName(business.businessTheme).suitableTextColor())
+                        .foregroundColor(colorForName(business.businessTheme))
                         .cornerRadius(10)
                 }
                 .padding(.top, 20)
 
                 Spacer()
             }
+            .foregroundStyle(colorForName(business.businessTheme).suitableTextColor())
             .navigationTitle("Business Details") // Title for the detail view
             .navigationBarTitleDisplayMode(.inline) // Optional: display title inline
         }
@@ -93,6 +104,36 @@ struct SessionHistoryView: View {
             }
         }
         .navigationTitle("Session History") // Title for the session history view
+    }
+}
+
+struct EditBusinessView: View {
+    @Environment(\.modelContext) var context
+    @Query var users: [UserDataModel]
+    @Query var businesses: [BusinessDataModel] // Query for businesses
+    @Query var sessionHistory: [SessionDataModel]
+    
+    @Bindable var business : BusinessDataModel
+    
+    @State var newName = ""
+    
+    var body: some View {
+        VStack {
+            Text("\(business.businessName)")
+            
+            TextField("\(business.businessName)", text: $newName)
+            
+            Button("Save") {
+                // Save data
+                editBusiness(business, newName)
+            }
+        }
+    }
+    
+    func editBusiness(_ business : BusinessDataModel, _ name : String) {
+        business.businessName = name
+        
+        try? context.save()
     }
 }
 

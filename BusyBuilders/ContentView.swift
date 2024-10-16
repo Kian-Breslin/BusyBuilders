@@ -16,7 +16,7 @@ struct ContentView: View {
     @State var isTaskActive = false
     
     var body: some View {
-        if users.isEmpty {
+        if users.isEmpty{
             UserSignUp()
         }
         else {
@@ -28,7 +28,7 @@ struct ContentView: View {
                 } else if selectedView == 2 {
                     StartTask(isTimerActive: $isTaskActive)
                 } else if selectedView == 3 {
-                    Messages()
+                    Store()
                 } else if selectedView == 4 {
                     Portfolio()
                 }

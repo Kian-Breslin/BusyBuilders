@@ -15,6 +15,12 @@ struct MediumWidget: View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: (screenWidth-30)/2, height: 130)
             .foregroundStyle(colorName)
+            .overlay {
+                Image(systemName: "creditcard")
+                    .font(.system(size: 100))
+                    .padding()
+                    .foregroundStyle(.white)
+            }
     }
 }
 

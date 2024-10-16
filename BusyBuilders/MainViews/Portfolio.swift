@@ -69,7 +69,7 @@ struct Portfolio: View {
         }
         .sheet(isPresented: $isNewBusinessSheetShowing) {
             CreateNewBusiness()
-            .presentationDetents([.medium])
+                .presentationDetents([.fraction(0.8)])
         }
     }
     func deleteBusiness(at offsets: IndexSet) {

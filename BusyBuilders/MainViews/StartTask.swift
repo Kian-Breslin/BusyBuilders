@@ -37,7 +37,7 @@ struct StartTask: View {
         if (currentView == 1) {
             // Active Task View
             ZStack {
-                Color(red: 0.7, green: 0.7, blue: 0.7)
+                colorForName(userColorPreference)
                     .ignoresSafeArea()
                 
                 VStack {
@@ -125,78 +125,198 @@ struct StartTask: View {
             }
         }
         else if (currentView == 2) {
+            // Post Task View
             PostTask(currentView: $currentView, totalCashEarned: totalCashEarned)
         }
         else {
             // Start Task View
             ZStack {
-                Color.gray
+                colorForName(userColorPreference)
                     .ignoresSafeArea()
                 VStack {
-                    ScrollView (.horizontal){
+                    VStack {
+                        // Top Header
                         HStack {
-                            ForEach(businesses) { business in
-                                RoundedRectangle(cornerRadius: 20)
-                                    .frame(width: 150, height: 150)
+                            VStack (alignment: .leading){
+                                Text("$\(selectedBusiness?.netWorth ?? 0, specifier: "%.f")")
+                                    .font(.system(size: 35))
+                                    .fontWeight(.bold)
+                                    .onTapGesture {
+                                        
+                                    }
+                                HStack (spacing: 35){
+                                    Text("Net Worth")
+                                }
+                            }
+                            Spacer()
+                            HStack (spacing: 15){
+                                ZStack {
+                                    Image(systemName: "bell.fill")
+                                    Image(systemName: "2.circle.fill")
+                                        .font(.system(size: 15))
+                                        .offset(x: 10, y: -10)
+                                }
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 40, height: 40)
+                                    .onTapGesture {
+                                        
+                                        
+                                    }
+                            }
+                            .font(.system(size: 25))
+                        }
+                        .padding(15)
+                        
+                        HStack {
+                            VStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 60, height: 60)
                                     .overlay {
-                                        VStack {
-                                            Text("\(business.businessName)")
-                                                .foregroundStyle(.white)
-                                            
+                                        Image(systemName: "dollarsign")
+                                            .font(.system(size: 30))
+                                            .foregroundStyle(colorForName(userColorPreference))
+                                    }
+                                    .onTapGesture {
+                                        
+                                    }
+                                Text("Send Money")
+                            }
+                            Spacer()
+                            VStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 60, height: 60)
+                                    .overlay {
+                                        Image(systemName: "plus")
+                                            .font(.system(size: 30))
+                                            .foregroundStyle(colorForName(userColorPreference))
+                                    }
+                                    .onTapGesture {
+                                        
+                                    }
+                                Text("Modifiers")
+                            }
+                            Spacer()
+                            VStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 60, height: 60)
+                                    .overlay {
+                                        Image(systemName: "menucard")
+                                            .font(.system(size: 30))
+                                            .foregroundStyle(colorForName(userColorPreference))
+                                    }
+                                    .onTapGesture {
+                                        
+                                    }
+                                Text("Flash Cards")
+                            }
+                            Spacer()
+                            VStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 60, height: 60)
+                                    .overlay {
+                                        Image(systemName: "info")
+                                            .font(.system(size: 30))
+                                            .foregroundStyle(colorForName(userColorPreference))
+                                    }
+                                    .onTapGesture {
+                                        
+                                    }
+                                Text("More Info")
+                            }
+                        }
+                        .padding(.horizontal, 15)
+                        .font(.system(size: 12))
+                    }
+                    .foregroundStyle(.white)
+
+                    ZStack {
+                        // White Background
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: screenWidth, height: screenHeight/1.5)
+                            .foregroundStyle(.white)
+                        VStack {
+                            // Everything inside the white background
+                            Text("Start New Task")
+                                .frame(width: screenWidth-30, alignment: .leading)
+                                .font(.system(size: 35))
+                                .bold()
+                                .foregroundStyle(colorForName(userColorPreference))
+                                .padding(.top, 20)
+                            VStack (alignment: .leading, spacing: 5){
+                                Text("Chose a business")
+                                    .font(.system(size: 15))
+                                ScrollView (.horizontal){
+                                    HStack {
+                                        ForEach(businesses) { business in
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .frame(width: 120, height: 100)
+                                                .overlay {
+                                                    VStack {
+                                                        Text("\(business.businessName)")
+                                                            .foregroundStyle(.white)
+                                                        
+                                                    }
+                                                }
+                                                .foregroundStyle(colorForName(userColorPreference))
+                                                .onTapGesture {
+                                                    selectedBusiness = business
+                                                }
                                         }
                                     }
-                                    .foregroundStyle(.red)
-                                    .onTapGesture {
-                                        selectedBusiness = business
-                                    }
+                                }
                             }
+                            .frame(width: screenWidth-30, alignment: .leading)
+                            
+                            ZStack {
+                                Color.black
+                                    .opacity(0.4)
+                                HStack {
+                                    Image(systemName: "minus.circle")
+                                        .font(.system(size: 40))
+                                        .onTapGesture {
+                                            if timeRemaining == 0 {
+                                                timeRemaining -= 0
+                                            } else {
+                                                timeRemaining -= 300
+                                            }
+                                        }
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 150,height: 50)
+                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .overlay {
+                                            Text("\(timeFormattedMins(timeRemaining))")
+                                                .foregroundStyle(.white)
+                                                .font(.system(size: 40))
+                                        }
+                                    Image(systemName: "plus.circle")
+                                        .font(.system(size: 40))
+                                        .onTapGesture {
+                                            timeRemaining += 300
+                                        }
+                                }
+                            }
+                            .frame(width: screenWidth-30, height: 280)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                            Button("Clock In!"){
+                                currentView = 1
+                                isTimerActive.toggle()
+                                
+                                timeStarted = formatFullDateTime(date: Date())
+                                print(timeStarted)
+                            }
+                            .frame(width: 300, height: 50)
+                            .background(Color(red: 244/255, green: 73/255, blue: 73/255))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .foregroundStyle(.white)
+                            .fontWeight(.bold)
+                            
+                            Spacer()
                         }
-                        .padding()
                     }
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 250,height: 50)
-                        .foregroundStyle(colorForName(userColorPreference))
-                        .overlay {
-                            Text("\(selectedBusiness?.businessName ?? "Selected Business")")
-                                .foregroundStyle(.white)
-                        }
-                    
-                    HStack {
-                        Image(systemName: "minus.circle")
-                            .font(.system(size: 40))
-                            .onTapGesture {
-                                timeRemaining -= 300
-                            }
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 150,height: 50)
-                            .foregroundStyle(colorForName(userColorPreference))
-                            .overlay {
-                                Text("\(timeFormattedMins(timeRemaining))")
-                                    .foregroundStyle(.white)
-                                    .font(.system(size: 40))
-                            }
-                        Image(systemName: "plus.circle")
-                            .font(.system(size: 40))
-                            .onTapGesture {
-                                timeRemaining += 300
-                            }
-                    }
-                    
-                    Button("Clock In!"){
-                        currentView = 1
-                        isTimerActive.toggle()
-                        
-                        timeStarted = formatFullDateTime(date: Date())
-                        print(timeStarted)
-                    }
-                    .frame(width: 300, height: 50)
-                    .background(Color(red: 244/255, green: 73/255, blue: 73/255))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .foregroundStyle(.white)
-                    .fontWeight(.bold)
-
                 }
             }
+            .foregroundStyle(.black)
         }
     }
 }

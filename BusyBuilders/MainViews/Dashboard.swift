@@ -5,16 +5,15 @@ struct Dashboard: View {
     
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
+    @Query var businesses: [BusinessDataModel] // Query for businesses
     
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @State var isSettingsShowing = false
+    @State var showFlashCards = false
+    @State var showCalendar = false
     @State var placeholderSheet = false
     @State var selectedTopButtons = ""
-    
-    var totalBalance: Double {
-        // Sum the cash from all businesses
-        Double(users.first?.businesses.reduce(0) { $0 + $1.netWorth } ?? 0)
-    }
+    @State private var totalBalance: Double = 0.0 // State variable for total balance
     
     var body: some View {
         
@@ -31,11 +30,10 @@ struct Dashboard: View {
                             Text("$\(totalBalance, specifier: "%.f")")
                                 .font(.system(size: 35))
                                 .fontWeight(.bold)
-                                .shadow(radius: 5)
                                 .onTapGesture {
                                     isSettingsShowing.toggle()
                                 }
-                            Text("Total Balance")
+                            Text("Total Net Worth")
                         }
                         Spacer()
                         HStack (spacing: 15){
@@ -121,15 +119,17 @@ struct Dashboard: View {
                     .font(.system(size: 12))
                 }
                 
-                Spacer()
-                
-                RoundedRectangle(cornerRadius: 20)
+                RoundedRectangle(cornerRadius: 10)
                     .frame(width: screenWidth, height: screenHeight/1.5)
                     .overlay {
-                        VStack {
+                        VStack (spacing: 15){
                             LargeWidget(selectedView: 0, colorName: colorForName(userColorPreference))
+                                .padding(.top, 15)
                             HStack {
                                 MediumWidget(colorName: colorForName(userColorPreference))
+                                    .onTapGesture {
+                                        showFlashCards.toggle()
+                                    }
                                 Spacer()
                                 VStack {
                                     HStack {
@@ -144,9 +144,12 @@ struct Dashboard: View {
                                     }
                                 }
                             }
-                            .frame(width: screenWidth-30)
+                            .frame(width: screenWidth-15)
                             
                             LargeWidget(selectedView: 1, colorName: colorForName(userColorPreference))
+                                .onTapGesture {
+                                    showCalendar.toggle()
+                                }
                             
                             Spacer()
                         }
@@ -162,6 +165,25 @@ struct Dashboard: View {
             DashboardTopButtons(title: selectedTopButtons, userColor: .black)
             .presentationDetents([.fraction(0.76)])
         }
+        .fullScreenCover(isPresented: $showFlashCards){
+            FlashCards()
+        }
+        .fullScreenCover(isPresented: $showCalendar){
+            Calendar()
+        }
+        .onAppear {
+            totalBalance = calculateTotalBalance()
+        }
+    }
+    
+    private func calculateTotalBalance() -> Double {
+        // Sum the net worth from all businesses
+        var totalBalance: Double {
+            // Sum the net worth from all businesses using reduce
+            businesses.reduce(0) { $0 + $1.netWorth }
+        }
+        
+        return totalBalance
     }
 }
 

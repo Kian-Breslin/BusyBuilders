@@ -9,17 +9,17 @@ import Foundation
 import SwiftData
 
 @Model
-class BusinessDataModel {
+class BusinessDataModel : ObservableObject {
     var id: UUID
     var businessName: String
     var businessTheme: String
     var businessType: String // New property for business type
     var businessIcon: String
-    var owners: [String] // Assuming it's an array of owner IDs or names
+    var owners: [UserDataModel] // Assuming it's an array of owner IDs or names
     var cashPerMin: Int
     var netWorth: Double
     var investment: Int
-    var investors: [String] // Array of user IDs or names for investors
+    var investors: [UserDataModel] // Array of user IDs or names for investors
     var badges: [String] // Badges array
     var sessionHistory: [SessionDataModel] // History of sessions
     var leaderboardPosition: Int // Position in leaderboard
@@ -28,7 +28,7 @@ class BusinessDataModel {
     var businessLevel: Int // Current level of the business
 
     // Initializer
-    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [String] = [], cashPerMin: Int = 1000, netWorth: Double = 0, investment: Int = 0, investors: [String] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0) {
+    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], cashPerMin: Int = 1000, netWorth: Double = 0, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0) {
         self.id = UUID() // Automatically generate a new UUID
         self.businessName = businessName
         self.businessTheme = businessTheme
