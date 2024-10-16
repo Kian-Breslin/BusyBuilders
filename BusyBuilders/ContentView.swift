@@ -22,7 +22,7 @@ struct ContentView: View {
         else {
             ZStack {
                 if (selectedView == 0) {
-                    Dashboard()
+                    Dashboard(dashboardSelection: $selectedView)
                 } else if selectedView == 1 {
                     Communities()
                 } else if selectedView == 2 {
