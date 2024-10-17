@@ -130,8 +130,8 @@ struct Dashboard: View {
                     .overlay {
                         ScrollView (showsIndicators: false){
                             VStack (spacing: 10){
-                                LargeWidget(selectedView: 0, colorName: colorForName(userColorPreference))
-                                    .padding(.top, 15)
+                                LargeWidget(selectedView: 2, colorName: colorForName(userColorPreference))
+                                    .padding(.top, 10)
                                 HStack {
                                     MediumWidget(colorName: colorForName(userColorPreference))
                                         .onTapGesture {
@@ -167,12 +167,10 @@ struct Dashboard: View {
                                     MediumWidget(colorName: colorForName(userColorPreference))
                                 }
                                 .frame(width: screenWidth-15)
-                                HStack {
-                                    MediumWidget(colorName: colorForName(userColorPreference))
-                                    Spacer()
-                                    MediumWidget(colorName: colorForName(userColorPreference))
-                                }
+                                
+                                LargeWidget(selectedView: 2, colorName: colorForName(userColorPreference))
                                 .frame(width: screenWidth-15)
+                                
                                 HStack {
                                     MediumWidget(colorName: colorForName(userColorPreference))
                                     Spacer()
