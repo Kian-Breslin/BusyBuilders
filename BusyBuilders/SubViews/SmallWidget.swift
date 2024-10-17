@@ -13,15 +13,13 @@ struct SmallWidget: View {
     var imageName : String
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 50)
+        RoundedRectangle(cornerRadius: 10)
             .frame(width: 60, height: 60)
             .foregroundStyle(colorName)
             .overlay {
                 Image(imageName)
                     .resizable()
                     .frame(width: 60, height: 60)
-//                    .font(.system(size: 40))
-                    .foregroundStyle(.white)
             }
     }
 }

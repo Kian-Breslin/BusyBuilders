@@ -9,46 +9,63 @@ import SwiftUI
 
 struct MessageRow: View {
     
+    @AppStorage("userColorPreference") var userColorPreference: String = "red"
+    
+    let notificationImages = ["tray.and.arrow.up", "tray.and.arrow.down"]
+    @State var isMessage : Bool
+    @State var MessageImage : Int
     @State var MessageUser : String
     @State var MessageText : String
     @State var MessageTime : String
     @State var MessageRead : Bool
     
     var body: some View {
-        HStack {
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 50, height: 50)
-                .overlay {
-                    Image(systemName: "person")
-                }
-            
-            VStack (alignment: .leading){
-                Text("\(MessageUser)")
-                Text("\(MessageText)")
-                    .lineLimit(1) // Limit to one line
-                    .truncationMode(.tail)
-            }
-            Spacer()
-            VStack (alignment: .center){
-                Text("\(MessageTime)")
-                    .font(.system(size: 15))
-                Circle()
-                    .frame(width: 20)
-                    .overlay {
-                        if MessageRead == false {
-                            Text("1")
-                                .foregroundStyle(.red)
-                        } else {
-                            Text("")
-                                .foregroundStyle(.red)
-                        }
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: screenWidth-30, height: 75)
+            .foregroundStyle(colorForName(userColorPreference))
+            .overlay {
+                HStack {
+                    if isMessage == true {
+                        Image("userImage-\(MessageImage)")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    } else {
+                        Image(systemName: "\(notificationImages[0])")
                     }
+                    
+                    Divider()
+                        .padding(.vertical)
+                    Spacer()
+                    
+                    VStack (alignment: .leading, spacing: 0) {
+                        Text("\(MessageUser)")
+                            .frame(height: 25)
+                            .padding(.top, 15)
+                        Text("\(MessageText)")
+                            .font(.system(size: 12))
+                            .frame(height: 40, alignment: .top)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                    }
+                    .frame(height: 75)
+                    
+                    Spacer()
+                    
+                    VStack (alignment: .trailing){
+                        Text("\(MessageTime)")
+                            .font(.system(size: 12))
+                        Circle()
+                            .frame(width: 15)
+                            .foregroundStyle(MessageRead ? .gray : .green)
+                    }
+                }
+                .padding(.horizontal)
             }
-        }
+            .foregroundStyle(.white)
 
     }
 }
 
 #Preview {
-    MessageRow(MessageUser: "Jason McGoldberg", MessageText: "Hey, are you still available for coffee later today?", MessageTime: "13:48", MessageRead: false)
+    MessageRow(isMessage: true, MessageImage: 1, MessageUser: "Kimberly Leon", MessageText: "Hey! Are you still available for coffee later? I was thinking around 4pm. Let me know! I cant wait to see you", MessageTime: "13:32", MessageRead: false)
 }

@@ -10,6 +10,7 @@ import SwiftData
 
 struct Portfolio: View {
     
+    @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel] // Query for businesses
@@ -22,6 +23,8 @@ struct Portfolio: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color.white
+                    .ignoresSafeArea()
                 VStack {
                     Button("Create Mock Business for testing") {
                         let newBusiness = BusinessDataModel(businessName: "\(devNames[Int.random(in: 0..<10)])", businessTheme: "Red", businessType: "Eco Friendly", businessIcon: "Circle", cashPerMin: 1000)
@@ -35,7 +38,7 @@ struct Portfolio: View {
                         }
                     }
                     .frame(width: 300, height: 50)
-                    .background(Color(red: 244/255, green: 73/255, blue: 73/255))
+                    .background(colorForName(userColorPreference))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .foregroundStyle(.white)
                     .fontWeight(.bold)
@@ -44,7 +47,7 @@ struct Portfolio: View {
                         isNewBusinessSheetShowing = true
                     }
                     .frame(width: 300, height: 50)
-                    .background(Color(red: 244/255, green: 73/255, blue: 73/255))
+                    .background(colorForName(userColorPreference))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .foregroundStyle(.white)
                     .fontWeight(.bold)

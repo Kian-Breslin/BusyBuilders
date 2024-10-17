@@ -27,6 +27,12 @@ struct Settings: View {
             Button("Set to Green") {
                 userColorPreference = "green"
             }
+            Button("Set to Blue1") {
+                userColorPreference = "yellow"
+            }
+            Button("Set to Blue2") {
+                userColorPreference = "purple"
+            }
             
             // Button for Testing (Add Items to Inventory)
             Button("Buy Cash Booster") {

@@ -32,6 +32,9 @@ struct StartTask: View {
     @State var experienceEarned = 0
     @State var timeStarted = ""
     @State var timeEnded = ""
+    
+    // Dev Tests
+    let devNames = ["Math Masters","Eco Innovators","Science Solutions","Code Creators","Design Depot","Robotics Realm","Tech Repair Hub","Game Forge","AI Insights","Physics Powerhouse"]
 
     var body: some View {
         if (currentView == 1) {
@@ -243,25 +246,50 @@ struct StartTask: View {
                                 .foregroundStyle(colorForName(userColorPreference))
                                 .padding(.top, 20)
                             VStack (alignment: .leading, spacing: 5){
-                                Text("Chose a business")
+                                Text("Chose a business: \(selectedBusiness?.businessName ?? "")")
                                     .font(.system(size: 15))
                                 ScrollView (.horizontal){
-                                    HStack {
-                                        ForEach(businesses) { business in
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .frame(width: 120, height: 100)
-                                                .overlay {
-                                                    VStack {
-                                                        Text("\(business.businessName)")
-                                                            .foregroundStyle(.white)
-                                                        
+                                    if !businesses.isEmpty {
+                                        HStack {
+                                            ForEach(businesses) { business in
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .frame(width: 120, height: 100)
+                                                    .overlay {
+                                                        VStack {
+                                                            Text("\(business.businessName)")
+                                                                .foregroundStyle(.white)
+                                                            
+                                                        }
                                                     }
-                                                }
-                                                .foregroundStyle(colorForName(userColorPreference))
-                                                .onTapGesture {
-                                                    selectedBusiness = business
-                                                }
+                                                    .foregroundStyle(colorForName(userColorPreference))
+                                                    .onTapGesture {
+                                                        selectedBusiness = business
+                                                    }
+                                            }
                                         }
+                                    }
+                                    else {
+                                        
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .frame(width: screenWidth-30, height: 100)
+                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .overlay {
+                                                Text("Please add a business to begin!")
+                                                    .bold()
+                                                    .font(.system(size: 24))
+                                                    .foregroundStyle(.white)
+                                            }
+                                            .onTapGesture {
+                                                let newBusiness = BusinessDataModel(businessName: "\(devNames[Int.random(in: 0..<10)])", businessTheme: "Red", businessType: "Eco Friendly", businessIcon: "triangle", cashPerMin: 1000)
+                                                
+                                                context.insert(newBusiness)
+                                                
+                                                do {
+                                                    try context.save()
+                                                } catch {
+                                                    print("Failed to save new business: \(error)")
+                                                }
+                                            }
                                     }
                                 }
                             }
@@ -291,7 +319,11 @@ struct StartTask: View {
                                     Image(systemName: "plus.circle")
                                         .font(.system(size: 40))
                                         .onTapGesture {
-                                            timeRemaining += 300
+                                            if timeRemaining == 3600 {
+                                                timeRemaining = 3600
+                                            } else {
+                                                timeRemaining += 300
+                                            }
                                         }
                                 }
                             }
@@ -299,14 +331,18 @@ struct StartTask: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             
                             Button("Clock In!"){
-                                currentView = 1
-                                isTimerActive.toggle()
-                                
-                                timeStarted = formatFullDateTime(date: Date())
-                                print(timeStarted)
+                                if selectedBusiness != nil && timeRemaining > 0 {
+                                    currentView = 1
+                                    isTimerActive.toggle()
+                                    
+                                    timeStarted = formatFullDateTime(date: Date())
+                                    print(timeStarted)
+                                } else {
+                                    print("Please select a business before starting a timer!")
+                                }
                             }
                             .frame(width: 300, height: 50)
-                            .background(Color(red: 244/255, green: 73/255, blue: 73/255))
+                            .background(colorForName(userColorPreference))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .foregroundStyle(.white)
                             .fontWeight(.bold)

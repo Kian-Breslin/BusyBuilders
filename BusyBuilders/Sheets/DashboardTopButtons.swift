@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DashboardTopButtons: View {
     
-    @State var title : String
+    @Binding var title : String
     @State var userColor : Color
     
     var body: some View {
@@ -24,6 +24,7 @@ struct DashboardTopButtons: View {
                 Spacer()
                 
                 Text("This is a placeholder for the sheet view when you click : " + "\(title)")
+                    .foregroundStyle(.black)
                 
                 Spacer()
             }
@@ -34,5 +35,5 @@ struct DashboardTopButtons: View {
 }
 
 #Preview {
-    DashboardTopButtons(title: "Send Money", userColor: Color(red: 244/255, green: 73/255, blue: 73/255))
+    DashboardTopButtons(title: .constant("Send Money"), userColor: Color(red: 244/255, green: 73/255, blue: 73/255))
 }

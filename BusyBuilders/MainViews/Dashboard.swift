@@ -10,6 +10,7 @@ struct Dashboard: View {
     
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @State var isSettingsShowing = false
+    @State var isNotificationsShowing = false
     @State var showFlashCards = false
     @State var showCalendar = false
     @State var placeholderSheet = false
@@ -31,9 +32,6 @@ struct Dashboard: View {
                             Text("$\(totalBalance, specifier: "%.f")")
                                 .font(.system(size: 35))
                                 .fontWeight(.bold)
-                                .onTapGesture {
-                                    isSettingsShowing.toggle()
-                                }
                             Text("Total Net Worth")
                         }
                         Spacer()
@@ -43,6 +41,9 @@ struct Dashboard: View {
                                 Image(systemName: "2.circle.fill")
                                     .font(.system(size: 15))
                                     .offset(x: 10, y: -10)
+                                    .onTapGesture {
+                                        isNotificationsShowing.toggle()
+                                    }
                             }
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 40)
@@ -189,11 +190,15 @@ struct Dashboard: View {
         .foregroundStyle(.white)
         .sheet(isPresented: $isSettingsShowing) {
             Settings(userColorPreference: $userColorPreference)
-                    .presentationDetents([.fraction(0.5)])
+                    .presentationDetents([.fraction(0.763)])
         }
         .sheet(isPresented: $placeholderSheet) {
-            DashboardTopButtons(title: selectedTopButtons, userColor: .white)
+            DashboardTopButtons(title: $selectedTopButtons, userColor: .white)
             .presentationDetents([.fraction(0.763)])
+        }
+        .sheet(isPresented: $isNotificationsShowing) {
+            Notifications()
+            .presentationDetents([.fraction(0.883)])
         }
         .fullScreenCover(isPresented: $showFlashCards){
             FlashCards()
