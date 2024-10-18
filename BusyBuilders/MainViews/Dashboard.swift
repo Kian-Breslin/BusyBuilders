@@ -15,7 +15,10 @@ struct Dashboard: View {
     @State var showCalendar = false
     @State var placeholderSheet = false
     @State var selectedTopButtons = ""
-    @State private var totalBalance: Double = 0.0 // State variable for total balance
+    @State var changeTopLeftValue = true
+    
+    // Calculate Users NetWorth
+    @State private var userTotalNetWorth: Double = 0.0 // This is a variable to store the users total net worth
     
     var body: some View {
         
@@ -29,10 +32,13 @@ struct Dashboard: View {
                     // Top Header
                     HStack {
                         VStack (alignment: .leading){
-                            Text("$\(totalBalance, specifier: "%.f")")
+                            Text(changeTopLeftValue ? "$\(userTotalNetWorth, specifier: "%.f")" : "$\(users.first?.availableBalance ?? 0)")
                                 .font(.system(size: 35))
                                 .fontWeight(.bold)
-                            Text("Total Net Worth")
+                            Text(changeTopLeftValue ? "Total Net Worth" : "Total Available Balance")
+                        }
+                        .onTapGesture {
+                            changeTopLeftValue.toggle()
                         }
                         Spacer()
                         HStack (spacing: 15){
@@ -86,10 +92,10 @@ struct Dashboard: View {
                                         .foregroundStyle(colorForName(userColorPreference))
                                 }
                                 .onTapGesture {
-                                    selectedTopButtons = "Request Money"
+                                    selectedTopButtons = "Withdraw Money"
                                     placeholderSheet.toggle()
                                 }
-                            Text("Request Money")
+                            Text("Withdraw Money")
                         }
                         Spacer()
                         VStack {
@@ -170,7 +176,7 @@ struct Dashboard: View {
                                 .frame(width: screenWidth-15)
                                 
                                 LargeWidget(selectedView: 2, colorName: colorForName(userColorPreference))
-                                .frame(width: screenWidth-15)
+                                    .frame(width: screenWidth-15)
                                 
                                 HStack {
                                     MediumWidget(colorName: colorForName(userColorPreference))
@@ -190,15 +196,15 @@ struct Dashboard: View {
         .foregroundStyle(.white)
         .sheet(isPresented: $isSettingsShowing) {
             Settings(userColorPreference: $userColorPreference)
-                    .presentationDetents([.fraction(0.763)])
+                .presentationDetents([.fraction(0.763)])
         }
         .sheet(isPresented: $placeholderSheet) {
-            DashboardTopButtons(title: $selectedTopButtons, userColor: .white)
-            .presentationDetents([.fraction(0.763)])
+            DashboardTopButtons(title: $selectedTopButtons, totalNetWorth: $userTotalNetWorth, userColor: colorForName(userColorPreference))
+                .presentationDetents([.fraction(0.763)])
         }
         .sheet(isPresented: $isNotificationsShowing) {
             Notifications()
-            .presentationDetents([.fraction(0.883)])
+                .presentationDetents([.fraction(0.883)])
         }
         .fullScreenCover(isPresented: $showFlashCards){
             FlashCards()
@@ -206,8 +212,8 @@ struct Dashboard: View {
         .fullScreenCover(isPresented: $showCalendar){
             Calendar()
         }
-        .onAppear {
-            totalBalance = calculateTotalBalance()
+        .onAppear{
+            userTotalNetWorth = calculateTotalBalance() + Double(users.first?.availableBalance ?? 0)
         }
     }
     

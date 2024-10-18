@@ -15,7 +15,6 @@ struct Store: View {
     @Query var businesses: [BusinessDataModel] // Query for businesses
     
     // Animate buy
-    @State private var totalBalance: Double = 0.0 // State variable for total balance
     @State private var isScaled = false
     
     var body: some View {
@@ -24,10 +23,10 @@ struct Store: View {
                 .font(.system(size: 40))
             
             VStack (alignment: .leading){
-                Text("$\(totalBalance, specifier: "%.f")")
+                Text("$\(users.first?.availableBalance ?? 1)")
                     .font(.system(size: 35))
                     .fontWeight(.bold)
-                Text("Total Net Worth")
+                Text("Total Available Balance")
             }
             
             ScrollView (.horizontal) {
@@ -62,6 +61,7 @@ struct Store: View {
                                         }
                                         if let user = users.first {
                                             user.inventory["\(availableUpgrades[u].upgradeName)", default: 0] += 1
+                                            user.availableBalance -= availableUpgrades[u].cost
                                         }
                                         do {
                                             try context.save()
@@ -81,18 +81,6 @@ struct Store: View {
             }
             .scrollTargetBehavior(.viewAligned)
         }
-        .onAppear(){
-            totalBalance = calculateTotalBalance()
-        }
-    }
-    private func calculateTotalBalance() -> Double {
-        // Sum the net worth from all businesses
-        var totalBalance: Double {
-            // Sum the net worth from all businesses using reduce
-            businesses.reduce(0) { $0 + $1.netWorth }
-        }
-        
-        return totalBalance
     }
 }
 
