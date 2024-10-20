@@ -19,7 +19,11 @@ struct LargeWidget: View {
     let daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     let daysInMonth: [Int] = Array(1...31) // Adjust based on the month
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
-    @State var numberDate = 16
+    @State var numberDate = getDayOfMonth(from: Date())
+    
+    // Small Schedule
+    let scheduleTexts = ["Meeting with CEO", "Grab Coffee with Kim", "Call Jerry!", "Prepare presentation for client", "Attend team meeting", "Finish report on Q3 sales", "Lunch with project manager", "Review design documents", "Submit expense reports", "Update website content", "Schedule performance reviews", "Check emails", "Work on budget proposal", "Brainstorm ideas for new campaign", "Draft the project timeline", "Participate in code review", "Plan marketing strategy", "Catch up on industry news", "Organize team-building activity", "Conduct user research", "Follow up with vendors", "Create social media posts", "Design promotional materials", "Set up new software tools", "Host a webinar"]
+    @State var timeOfDay = currentHour()
     
     var body: some View {
         if selectedView == 0 {
@@ -60,11 +64,11 @@ struct LargeWidget: View {
                                 .overlay {
                                     VStack (alignment: .leading) {
                                         HStack {
-                                            Text("\(numberDate) Oct 24")
+                                            Text("\(numberDate ?? 1) Oct 24")
                                                 .font(.system(size: 30))
                                                 .onTapGesture {
-                                                    if numberDate <= 30 {
-                                                        numberDate += 1
+                                                    if numberDate ?? 0 <= 30 {
+                                                        numberDate! += 1
                                                     } else {
                                                         numberDate = 1
                                                     }
@@ -170,6 +174,78 @@ struct LargeWidget: View {
                     .foregroundStyle(.clear)
                 }
             }
+        else if selectedView == 3 {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(colorName)
+                .frame(width: screenWidth-15, height: 130)
+                .overlay {
+                    HStack (alignment: .center){
+                        VStack {
+                            Text("SAT")
+                                .font(.system(size: 20))
+                                .kerning(5)
+                            Text("19")
+                                .font(.system(size: 40))
+                                .kerning(5)
+                                .fontWeight(.heavy)
+                            Text("OCT")
+                                .font(.system(size: 20))
+                                .kerning(5)
+                        }
+                        
+                        RoundedRectangle(cornerRadius: 5)
+                            .frame(width: 3, height: 100)
+                            .opacity(0.6)
+                        
+                        ScrollView (.horizontal, showsIndicators: false){
+                            HStack (alignment: .center, spacing: 5) {
+                                
+                                ForEach(timeOfDay..<24, id: \.self){ hour in
+                                    VStack (spacing: 5) {
+                                        Text("\(hour):00")
+                                            .font(.system(size: 20))
+                                            .kerning(5)
+                                            .frame(width: 135)
+                                        ScrollView (showsIndicators: false){
+                                            VStack {
+                                                RoundedRectangle(cornerRadius: 5)
+                                                    .frame(width: 120, height: 40)
+                                                    .foregroundStyle(.black)
+                                                    .opacity(0.5)
+                                                    .overlay {
+                                                        Text("\(scheduleTexts[hour])")
+                                                            .foregroundStyle(.white)
+                                                            .font(.system(size: 8))
+                                                            .frame(width: 110, alignment: .topLeading)
+                                                            .padding(10)
+                                                    }
+                                                
+                                                RoundedRectangle(cornerRadius: 5)
+                                                    .frame(width: 120, height: 40)
+                                                    .foregroundStyle(.black)
+                                                    .opacity(0.5)
+                                                    .overlay {
+                                                        Text("\(scheduleTexts[hour-3])")
+                                                            .foregroundStyle(.white)
+                                                            .font(.system(size: 8))
+                                                            .frame(width: 110, alignment: .topLeading)
+                                                            .padding(10)
+                                                    }
+                                            }
+                                        }
+                                        .frame(width: 135, height: 80, alignment: .bottom)
+                                    }
+                                    
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .frame(width: 3, height: 100)
+                                        .opacity(0.6)
+                                }
+                            }
+                        }
+                        .frame(width: 280)
+                    }
+                }
+        }
     }
 }
 

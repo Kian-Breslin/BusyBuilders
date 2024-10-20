@@ -9,11 +9,27 @@ import SwiftUI
 
 struct PostTask: View {
     
+    @AppStorage("userColorPreference") var userColorPreference: String = "red"
+    
     @Binding var currentView : Int
     @State var totalCashEarned : Double
     var body: some View {
         ZStack {
-            Text("Congrats! You've earned $\(totalCashEarned, specifier: "%.f")")
+            
+            colorForName(userColorPreference)
+                .ignoresSafeArea()
+            
+            VStack {
+                Text("Congrats! You've earned $\(totalCashEarned, specifier: "%.f")")
+                Button("Close"){
+                    currentView = 0
+                }
+                .frame(width: 300, height: 50)
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .foregroundStyle(colorForName(userColorPreference))
+                .fontWeight(.bold)
+            }
         }
     }
 }

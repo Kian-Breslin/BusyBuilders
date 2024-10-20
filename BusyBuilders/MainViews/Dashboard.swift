@@ -163,7 +163,7 @@ struct Dashboard: View {
                                 }
                                 .frame(width: screenWidth-15)
                                 
-                                LargeWidget(selectedView: 1, colorName: colorForName(userColorPreference))
+                                LargeWidget(selectedView: 3, colorName: colorForName(userColorPreference))
                                     .onTapGesture {
                                         showCalendar.toggle()
                                     }

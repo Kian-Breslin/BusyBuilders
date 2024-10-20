@@ -43,88 +43,7 @@ struct StartTask: View {
                 colorForName(userColorPreference)
                     .ignoresSafeArea()
                 
-                VStack {
-                    Text("\(selectedBusiness?.businessName ?? "Selected Business")")
-                        .font(.system(size: 40))
-                        .fontWeight(.bold)
-                    
-                    VStack {
-                        Text("Time Remaining")
-                            .foregroundStyle(.black)
-                            .opacity(0.4)
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 370, height: 80)
-                            .foregroundStyle(Color(red: 36/255, green: 36/255, blue: 36/255))
-                            .overlay {
-                                Text("\(timeFormatted(timeRemaining))")
-                                    .font(.system(size: 40))
-                                    .foregroundStyle(.white)
-                            }
-                    }
-                    .onReceive(timer) { time in
-                        guard isTimerActive else {return}
-                        
-                        if timeRemaining > 0 {
-                            
-                            //Cash
-                            timeRemaining -= 1
-                            timeElapsed += 1
-                            
-                            // Experience
-                            experienceEarned += 10
-                        }
-                        else {
-                            isTimerActive.toggle()
-                            currentView = 2
-                            
-                            // Final Calculations
-                            totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
-                            print(totalCashEarned)
-                            
-                            // Add Cash earned to business
-                            selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-                            // Add Experience
-                            selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
-                            // Create new session entry
-                            let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
-                            
-                            // Add session to session history
-                            selectedBusiness?.sessionHistory.append(session)
-                        }
-                    }
-                    .onChange(of: scenePhase){
-                        if scenePhase == .active {
-                            isTimerActive = true
-                        } else {
-                            isTimerActive = false
-                        }
-                    }
-                    
-                    Button("Clock Out") {
-                        isTimerActive.toggle()
-                        currentView = 2
-                        
-                        // Final Calculations
-                        totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
-                        print(totalCashEarned)
-                        
-                        // Add Cash earned to business
-                        selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-                        // Add Experience
-                        selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
-                        // Create new session entry
-                        let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
-                        
-                        // Add session to session history
-                        selectedBusiness?.sessionHistory.append(session)
-                    }
-                    .frame(width: 300, height: 50)
-                    .background(Color(red: 244/255, green: 73/255, blue: 73/255))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .foregroundStyle(.white)
-                    .fontWeight(.bold)
-                }
+                Timer1(currentView: $currentView, selectedBusiness: $selectedBusiness, timeRemaining: $timeRemaining, timeElapsed: $timeElapsed, isTimerActive: $isTimerActive, timeStarted: $timeStarted, totalCashEarned: $totalCashEarned)
             }
         }
         else if (currentView == 2) {
@@ -305,7 +224,7 @@ struct StartTask: View {
                                             if timeRemaining == 0 {
                                                 timeRemaining -= 0
                                             } else {
-                                                timeRemaining -= 300
+                                                timeRemaining -= 60
                                             }
                                         }
                                     RoundedRectangle(cornerRadius: 10)
@@ -322,7 +241,7 @@ struct StartTask: View {
                                             if timeRemaining == 3600 {
                                                 timeRemaining = 3600
                                             } else {
-                                                timeRemaining += 300
+                                                timeRemaining += 60
                                             }
                                         }
                                 }
@@ -332,6 +251,9 @@ struct StartTask: View {
                             
                             Button("Clock In!"){
                                 if selectedBusiness != nil && timeRemaining > 0 {
+                                    
+                                    timeElapsed = 0
+                                    
                                     currentView = 1
                                     isTimerActive.toggle()
                                     

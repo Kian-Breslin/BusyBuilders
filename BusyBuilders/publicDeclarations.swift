@@ -4,6 +4,7 @@
 //
 //  Created by Kian Breslin on 25/09/2024.
 //
+import Foundation
 import SwiftUI
 import SwiftData
 
@@ -72,6 +73,22 @@ extension Color {
     }
 }
 
+public func timeFormattedSec(_ totalSeconds: Int) -> String {
+    let minutes = totalSeconds / 60
+    let seconds = totalSeconds % 60
+    
+    return String(format: "%02d:%02d", minutes, seconds)
+}
+
+func getDayOfMonth(from date: Date) -> Int? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "d" // 'd' corresponds to the day of the month
+    if let day = Int(formatter.string(from: date)) {
+        return day
+    }
+    return nil
+}
+
 public func timeFormattedMins(_ totalSeconds: Int) -> String {
     let hours = totalSeconds / 3600
     let minutes = (totalSeconds % 3600) / 60
@@ -99,4 +116,15 @@ public func formatFullDateTime(date: Date) -> String {
     return formatter.string(from: date)
 }
 
+public func currentHour() -> Int {
+    let date = Date()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH" // 24-hour format
+    let hourString = formatter.string(from: date)
+    return Int(hourString) ?? 0 // Return as Int
+}
+
+public func randomNumber(in range: ClosedRange<Int>) -> Int {
+    return Int.random(in: range)
+}
 
