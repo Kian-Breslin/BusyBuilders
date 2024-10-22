@@ -26,10 +26,8 @@ func colorForName(_ name: String) -> Color {
         return Color(red: 85/255, green: 107/255, blue: 47/255)
     case "blue":
         return Color(red: 70/255, green: 130/255, blue: 180/255) // Steel Blue
-    case "yellow":
-        return Color(red: 0/255, green: 191/255, blue: 255/255)   // Deep Sky Blue
     case "purple":
-        return Color(red: 30/255, green: 144/255, blue: 255/255)  // Dodger Blue
+        return Color.purple
     case "pink":
         return Color.pink
     // Add other colors as needed

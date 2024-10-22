@@ -31,5 +31,12 @@ let costReduction = UpgradesDataModel(
     levelRequired: 1
 )
 
+let breakBooster = UpgradesDataModel(
+    upgradeName: "Break Booster",
+    upgradeDescription: "Earn while youre on your break",
+    cost: 3000,
+    effect: EffectType(cashPerMinIncrease: 1.0),
+    levelRequired: 1)
+
 // Array of all available upgrades
-public let availableUpgrades: [UpgradesDataModel] = [cashBoosterUpgrade, xpBooster, costReduction]
+public let availableUpgrades: [UpgradesDataModel] = [cashBoosterUpgrade, xpBooster, costReduction, breakBooster]

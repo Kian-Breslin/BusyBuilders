@@ -96,6 +96,54 @@ struct DashboardTopButtons: View {
                     Spacer()
                 }
             }
+            else if title == "Inventory" {
+                ZStack {
+                    userColor
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        Button("Buy Cash Booster") {
+                            if let user = users.first {
+                                user.inventory["Cash Booster", default: 0] += 1
+                            }
+                            do {
+                                try context.save()
+                            }
+                            catch {
+                                print("Failed to save user: \(error.localizedDescription)")
+                            }
+                        }
+                        .padding()
+                        
+                        VStack {
+                            VStack {
+                                if let user = users.first {
+                                    ForEach(user.inventory.sorted(by: { $0.key < $1.key }), id: \.key) { upgrade, count in
+                                        HStack {
+                                            Text(upgrade) // Display the upgrade name
+                                            Spacer()
+                                            Text("\(count)") // Display the count of the upgrade
+                                                .foregroundColor(.gray)
+                                        }
+                                        
+                                    }
+                                } else {
+                                    ForEach(0..<4){_ in
+                                        HStack {
+                                            Text("Upgrade Name")
+                                            Spacer()
+                                            Text("0")
+                                        }
+                                    }
+                                }
+                                
+                                Spacer()
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            }
             else {
                 VStack {
                     Text("\(title)")
@@ -110,10 +158,10 @@ struct DashboardTopButtons: View {
                 }
             }
         }
-        .foregroundStyle(.white)
     }
 }
 
+
 #Preview {
-    DashboardTopButtons(title: .constant("Withdraw Money"), totalNetWorth: .constant(20000.0), userColor: Color.red)
+    DashboardTopButtons(title: .constant("Inventory"), totalNetWorth: .constant(20000.0), userColor: Color.red)
 }

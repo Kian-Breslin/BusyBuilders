@@ -117,15 +117,15 @@ struct Dashboard: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 60, height: 60)
                                 .overlay {
-                                    Image(systemName: "building")
+                                    Image(systemName: "archivebox")
                                         .font(.system(size: 30))
                                         .foregroundStyle(colorForName(userColorPreference))
                                 }
                                 .onTapGesture {
-                                    selectedTopButtons = "Bank"
+                                    selectedTopButtons = "Inventory"
                                     placeholderSheet.toggle()
                                 }
-                            Text("Bank")
+                            Text("Inventory")
                         }
                     }
                     .padding(.horizontal, 15)
@@ -152,6 +152,7 @@ struct Dashboard: View {
                                                     dashboardSelection = 3
                                                 }
                                             SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-2")
+                                            
                                             SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-6")
                                         }
                                         HStack {
@@ -194,9 +195,8 @@ struct Dashboard: View {
             }
         }
         .foregroundStyle(.white)
-        .sheet(isPresented: $isSettingsShowing) {
+        .fullScreenCover(isPresented: $isSettingsShowing){
             Settings(userColorPreference: $userColorPreference)
-                .presentationDetents([.fraction(0.763)])
         }
         .sheet(isPresented: $placeholderSheet) {
             DashboardTopButtons(title: $selectedTopButtons, totalNetWorth: $userTotalNetWorth, userColor: colorForName(userColorPreference))

@@ -36,7 +36,8 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.inventory = [
             "Cash Booster" : 0,
             "Experience Booster" : 0,
-            "Cost Reduction" : 0
+            "Cost Reduction" : 0,
+            "Break Booster" : 0
         ]
     }
 }
