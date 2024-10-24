@@ -38,7 +38,7 @@ struct Calendar: View {
                 .frame(width: 300, height: 50)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .foregroundStyle(colorForName(userColorPreference))
+                .foregroundStyle(getColor(userColorPreference))
                 .fontWeight(.bold)
             }
         }

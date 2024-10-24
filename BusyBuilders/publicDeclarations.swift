@@ -18,7 +18,18 @@ class AppSettings: ObservableObject {
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 
-func colorForName(_ name: String) -> Color {
+func textColor(_ name: String) -> Color {
+    switch name.lowercased() {
+    case "white" :
+        return Color(red: 237 / 255, green: 237 / 255, blue: 237 / 255)
+    case "black" :
+        return Color.black
+    default:
+        return Color.teal
+    }
+}
+
+func getColor(_ name: String) -> Color {
     switch name.lowercased() {
     case "red":
         return Color(red: 244/255, green: 73/255, blue: 73/255)
@@ -30,6 +41,10 @@ func colorForName(_ name: String) -> Color {
         return Color.purple
     case "pink":
         return Color.pink
+    case "black":
+        return Color.black
+    case "white":
+        return Color(red: 237 / 255, green: 237 / 255, blue: 237 / 255)
     // Add other colors as needed
     default:
         return Color.gray // Fallback if no color matches

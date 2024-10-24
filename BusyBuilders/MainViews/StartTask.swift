@@ -40,7 +40,7 @@ struct StartTask: View {
         if (currentView == 1) {
             // Active Task View
             ZStack {
-                colorForName(userColorPreference)
+                getColor(userColorPreference)
                     .ignoresSafeArea()
                 
                 Timer1(currentView: $currentView, selectedBusiness: $selectedBusiness, timeRemaining: $timeRemaining, timeElapsed: $timeElapsed, isTimerActive: $isTimerActive, timeStarted: $timeStarted, totalCashEarned: $totalCashEarned)
@@ -53,7 +53,7 @@ struct StartTask: View {
         else {
             // Start Task View
             ZStack {
-                colorForName(userColorPreference)
+                getColor(userColorPreference)
                     .ignoresSafeArea()
                 VStack {
                     VStack {
@@ -96,7 +96,7 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: "dollarsign")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
                                         
@@ -110,7 +110,7 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: "plus")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
                                         
@@ -124,7 +124,7 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: "menucard")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
                                         
@@ -138,7 +138,7 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: "info")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
                                         
@@ -162,7 +162,7 @@ struct StartTask: View {
                                 .frame(width: screenWidth-30, alignment: .leading)
                                 .font(.system(size: 35))
                                 .bold()
-                                .foregroundStyle(colorForName(userColorPreference))
+                                .foregroundStyle(getColor(userColorPreference))
                                 .padding(.top, 20)
                             VStack (alignment: .leading, spacing: 5){
                                 Text("Chose a business: \(selectedBusiness?.businessName ?? "")")
@@ -180,7 +180,7 @@ struct StartTask: View {
                                                             
                                                         }
                                                     }
-                                                    .foregroundStyle(colorForName(userColorPreference))
+                                                    .foregroundStyle(getColor(userColorPreference))
                                                     .onTapGesture {
                                                         selectedBusiness = business
                                                     }
@@ -191,7 +191,7 @@ struct StartTask: View {
                                         
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: screenWidth-30, height: 100)
-                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .foregroundStyle(getColor(userColorPreference))
                                             .overlay {
                                                 Text("Please add a business to begin!")
                                                     .bold()
@@ -214,40 +214,7 @@ struct StartTask: View {
                             }
                             .frame(width: screenWidth-30, alignment: .leading)
                             
-                            ZStack {
-                                Color.black
-                                    .opacity(0.4)
-                                HStack {
-                                    Image(systemName: "minus.circle")
-                                        .font(.system(size: 40))
-                                        .onTapGesture {
-                                            if timeRemaining == 0 {
-                                                timeRemaining -= 0
-                                            } else {
-                                                timeRemaining -= 60
-                                            }
-                                        }
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 150,height: 50)
-                                        .foregroundStyle(colorForName(userColorPreference))
-                                        .overlay {
-                                            Text("\(timeFormattedMins(timeRemaining))")
-                                                .foregroundStyle(.white)
-                                                .font(.system(size: 40))
-                                        }
-                                    Image(systemName: "plus.circle")
-                                        .font(.system(size: 40))
-                                        .onTapGesture {
-                                            if timeRemaining == 3600 {
-                                                timeRemaining = 3600
-                                            } else {
-                                                timeRemaining += 60
-                                            }
-                                        }
-                                }
-                            }
-                            .frame(width: screenWidth-30, height: 280)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            TimeSelect(moveFiveMins: $timeRemaining)
                             
                             Button("Clock In!"){
                                 if selectedBusiness != nil && timeRemaining > 0 {
@@ -263,8 +230,8 @@ struct StartTask: View {
                                     print("Please select a business before starting a timer!")
                                 }
                             }
-                            .frame(width: 300, height: 50)
-                            .background(colorForName(userColorPreference))
+                            .frame(width: screenWidth-30, height: 50)
+                            .background(getColor(userColorPreference))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .foregroundStyle(.white)
                             .fontWeight(.bold)

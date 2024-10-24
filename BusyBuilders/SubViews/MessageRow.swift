@@ -22,7 +22,7 @@ struct MessageRow: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: screenWidth-30, height: 75)
-            .foregroundStyle(colorForName(userColorPreference))
+            .foregroundStyle(getColor(userColorPreference))
             .overlay {
                 HStack {
                     if isMessage == true {

@@ -26,7 +26,7 @@ struct Store: View {
     var body: some View {
         ZStack {
             
-            colorForName(userColorPreference)
+            getColor(userColorPreference)
                 .ignoresSafeArea()
             
             // Top Section
@@ -71,7 +71,7 @@ struct Store: View {
                                 .overlay {
                                     Image(systemName: "dollarsign")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     
@@ -85,7 +85,7 @@ struct Store: View {
                                 .overlay {
                                     Image(systemName: "plus")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     
@@ -99,7 +99,7 @@ struct Store: View {
                                 .overlay {
                                     Image(systemName: "menucard")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     
@@ -113,7 +113,7 @@ struct Store: View {
                                 .overlay {
                                     Image(systemName: "info")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     
@@ -144,7 +144,7 @@ struct Store: View {
                             ForEach(0..<3){ store in
                                 RoundedRectangle(cornerRadius: 5)
                                     .frame(width: (screenWidth-30)/3, height: 40)
-                                    .foregroundStyle(colorForName(userColorPreference))
+                                    .foregroundStyle(getColor(userColorPreference))
                                     .opacity(storeSelection == storeSelectionArray[store] ?  1 : 0.5)
                                     .overlay {
                                         Text(storeSelectionArray[store])
@@ -156,7 +156,7 @@ struct Store: View {
                             }
                         }
                         .frame(width: screenWidth-30, height: 80)
-                        .foregroundStyle(colorForName(userColorPreference))
+                        .foregroundStyle(getColor(userColorPreference))
                         
                         Divider()
                             .padding()
@@ -209,7 +209,7 @@ struct Store: View {
                         
                         Spacer()
                     }
-                    .foregroundStyle(colorForName(userColorPreference))
+                    .foregroundStyle(getColor(userColorPreference))
                 }
                 .frame(width: screenWidth, height: screenHeight/1.5)
             }

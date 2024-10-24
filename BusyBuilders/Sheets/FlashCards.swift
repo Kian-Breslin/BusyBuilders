@@ -39,7 +39,7 @@ struct FlashCards: View {
     
     var body: some View {
         ZStack {
-            colorForName(userColorPreference)
+            getColor(userColorPreference)
                 .ignoresSafeArea()
             
             VStack {
@@ -52,7 +52,7 @@ struct FlashCards: View {
                 } label: {
                     HStack {
                         Text("Select Category : \(selectedCategory)")
-                            .foregroundColor(colorForName(userColorPreference)) // Change the text color as needed
+                            .foregroundColor(getColor(userColorPreference)) // Change the text color as needed
                             .padding()
                             .background(Color.white) // Customize background color if desired
                             .cornerRadius(8) // Optional: Add corner radius
@@ -94,7 +94,7 @@ struct FlashCards: View {
                 .frame(width: 300, height: 50)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .foregroundStyle(colorForName(userColorPreference))
+                .foregroundStyle(getColor(userColorPreference))
                 .fontWeight(.bold)
             }
             

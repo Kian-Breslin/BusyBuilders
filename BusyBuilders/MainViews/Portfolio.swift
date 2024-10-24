@@ -38,7 +38,7 @@ struct Portfolio: View {
                         }
                     }
                     .frame(width: 300, height: 50)
-                    .background(colorForName(userColorPreference))
+                    .background(getColor(userColorPreference))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .foregroundStyle(.white)
                     .fontWeight(.bold)
@@ -47,7 +47,7 @@ struct Portfolio: View {
                         isNewBusinessSheetShowing = true
                     }
                     .frame(width: 300, height: 50)
-                    .background(colorForName(userColorPreference))
+                    .background(getColor(userColorPreference))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .foregroundStyle(.white)
                     .fontWeight(.bold)

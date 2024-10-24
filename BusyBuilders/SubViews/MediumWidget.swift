@@ -10,6 +10,7 @@ import SwiftUI
 struct MediumWidget: View {
     
     var colorName : Color
+    @AppStorage("userTextPreference") var userTextPreference: String = "white"
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
@@ -67,7 +68,7 @@ struct MediumWidget: View {
                     .rotationEffect(Angle(degrees: 15))
                     .offset(x: 20)
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(textColor(userTextPreference))
     }
 }
 

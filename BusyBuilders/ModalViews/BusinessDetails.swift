@@ -21,7 +21,7 @@ struct BusinessDetails: View {
     var body: some View {
         ZStack {
             
-            colorForName(business.businessTheme)
+            getColor(business.businessTheme)
                 .ignoresSafeArea()
             
             VStack {
@@ -62,12 +62,12 @@ struct BusinessDetails: View {
                 .padding(30)
                 
                 // Navigation link to Session History
-                NavigationLink(destination: SessionHistoryView(sessions: sessionHistory)) {
+                NavigationLink(destination: SessionHistoryView(sessions: business.sessionHistory)) {
                     Text("View Session History")
                         .font(.system(size: 20))
                         .padding()
-                        .background(colorForName(business.businessTheme).suitableTextColor())
-                        .foregroundColor(colorForName(business.businessTheme))
+                        .background(getColor(business.businessTheme).suitableTextColor())
+                        .foregroundColor(getColor(business.businessTheme))
                         .cornerRadius(10)
                 }
                 .padding(.top, 20)
@@ -76,15 +76,15 @@ struct BusinessDetails: View {
                     Text("Edit Business")
                         .font(.system(size: 20))
                         .padding()
-                        .background(colorForName(business.businessTheme).suitableTextColor())
-                        .foregroundColor(colorForName(business.businessTheme))
+                        .background(getColor(business.businessTheme).suitableTextColor())
+                        .foregroundColor(getColor(business.businessTheme))
                         .cornerRadius(10)
                 }
                 .padding(.top, 20)
 
                 Spacer()
             }
-            .foregroundStyle(colorForName(business.businessTheme).suitableTextColor())
+            .foregroundStyle(getColor(business.businessTheme).suitableTextColor())
             .navigationTitle("Business Details") // Title for the detail view
             .navigationBarTitleDisplayMode(.inline) // Optional: display title inline
         }

@@ -17,7 +17,7 @@ struct Settings: View {
     @Binding var userColorPreference: String
 
     let emailAddress = "Kianbreslin517@gmail.com"
-    var colorsArray: [String] = ["Red", "Blue", "Green", "Pink", "Purple"]
+    var colorsArray: [String] = ["Red", "Blue", "Green", "Pink", "Purple", "Black", "White"]
     var currencyArray: [String] = ["$", "£", "€"]
     @State var isOn = false
     @State var isColorSelected = 0
@@ -26,7 +26,7 @@ struct Settings: View {
     var body: some View {
         NavigationStack { // Wrap everything in a NavigationStack
             ZStack {
-                colorForName(userColorPreference)
+                getColor(userColorPreference)
                     .ignoresSafeArea()
 
                 VStack {
@@ -47,7 +47,7 @@ struct Settings: View {
 
                         Image(systemName: "arrow.right")
                             .font(.system(size: 25))
-                            .foregroundStyle(colorForName(userColorPreference))
+                            .foregroundStyle(getColor(userColorPreference))
                     }
                     .padding()
 
@@ -83,10 +83,10 @@ struct Settings: View {
                         HStack {
                             Text("Color Mode: ")
                             Spacer()
-                            ForEach(0..<5) { i in
+                            ForEach(0..<7) { i in
                                 RoundedRectangle(cornerRadius: 5)
                                     .frame(width: 30, height: 30)
-                                    .foregroundStyle(colorForName(colorsArray[i]))
+                                    .foregroundStyle(getColor(colorsArray[i]))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 5)
                                             .stroke(i == isColorSelected ? Color.white : Color.clear, lineWidth: 3)
@@ -128,7 +128,7 @@ struct Settings: View {
                                     ForEach(0..<3) { i in
                                         RoundedRectangle(cornerRadius: 5)
                                             .frame(width: 30, height: 30)
-                                            .foregroundStyle(colorForName(userColorPreference))
+                                            .foregroundStyle(getColor(userColorPreference))
                                             .overlay {
                                                 RoundedRectangle(cornerRadius: 5)
                                                     .stroke(i == isCurrencySelected ? Color.white : Color.clear, lineWidth: 3)
@@ -190,7 +190,7 @@ struct Settings: View {
                             .padding()
                         }
                     }
-                    .background(colorForName(userColorPreference))
+                    .background(getColor(userColorPreference))
 
                     Spacer()
                 }
@@ -208,6 +208,10 @@ struct Settings: View {
                 isColorSelected = 3
             } else if userColorPreference == "Purple" {
                 isColorSelected = 4
+            } else if userColorPreference == "Black" {
+                isColorSelected = 5
+            } else if userColorPreference == "White" {
+                isColorSelected = 6
             }
         }
     }

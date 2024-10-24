@@ -54,14 +54,14 @@ struct Timer1: View {
                         
                         Rectangle()
                             .frame(width: screenWidth, height: CGFloat(screenHeight - CGFloat(clockCountDown*10)))
-                            .foregroundStyle(colorForName(userColorPreference))
+                            .foregroundStyle(getColor(userColorPreference))
                             .ignoresSafeArea()
                     }
                     
                     VStack {
                         ZStack {
                             Circle()
-                                .fill(colorForName(userColorPreference))
+                                .fill(getColor(userColorPreference))
                                 .frame(width: 200, height: 200)
                             
                             Circle()
@@ -86,7 +86,7 @@ struct Timer1: View {
                                 }
                             Circle()
                                 .frame(width: 105)
-                                .foregroundStyle(colorForName(userColorPreference))
+                                .foregroundStyle(getColor(userColorPreference))
                                 .overlay {
                                     Text("\(timeFormattedSec(clockCountDown))")
                                         .font(.system(size: 30))
@@ -110,7 +110,7 @@ struct Timer1: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: CGFloat(timerLengthAnimation), height: 40)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .foregroundStyle(colorForName(userColorPreference))
+                                    .foregroundStyle(getColor(userColorPreference))
                                 
                             }
                             .frame(width: 290, height: 40)
@@ -150,9 +150,9 @@ struct Timer1: View {
                             
                         }
                         .frame(width: 200, height: 50)
-                        .background(.clear)
+                        .background(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .foregroundStyle(colorForName(userColorPreference))
+                        .foregroundStyle(getColor(userColorPreference))
                         .fontWeight(.bold)
                     }
                     .padding(50)
@@ -160,44 +160,43 @@ struct Timer1: View {
             }
             else {
                 ZStack {
-                    colorForName(userColorPreference)
+                    getColor(userColorPreference)
                         .ignoresSafeArea()
                     
                     HStack {
                         VStack {
                             ZStack {
+                                // Background black circle
                                 Circle()
-                                    .fill(colorForName(userColorPreference))
+                                    .stroke(Color.white, lineWidth: 1)
+                                    .foregroundColor(getColor(userColorPreference))
                                     .frame(width: 200, height: 200)
                                 
-                                Circle()
-                                    .stroke(Color.gray, style: StrokeStyle(lineWidth: 1))
-                                    .frame(width: 200, height: 200)
-
-                                Circle()
-                                    .trim(from: clockNumber, to: 1)
-                                    .stroke(Color.white, style: StrokeStyle(lineWidth: 5))
-                                    .frame(width: 200, height: 200)
-                                    .rotationEffect(Angle(degrees: -90))
-                                    .overlay {
-                                        ForEach(0..<12) { turn in
-                                            let countdownValue = (60 - turn * 5) % 60
-                                            RoundedRectangle(cornerRadius: 5)
-                                                .frame(width: 3, height: (clockCountDown == (countdownValue) ? 50 : 30))
-                                                .offset(x: 0, y: 50)
-                                                .rotationEffect(Angle(degrees: Double(turn) * 30 - 180))
-                                                .opacity(clockCountDown == (countdownValue) ? 1 : 0.3)
-                                        }
-                                    }
-                                Circle()
-                                    .frame(width: 105)
-                                    .foregroundStyle(colorForName(userColorPreference))
-                                    .overlay {
-                                        Text("\(timeFormattedSec(clockCountDown))")
-                                            .font(.system(size: 30))
-                                    }
+                                // Markings at 12, 3, 6, 9 positions
+                                ForEach([0, 90, 180, 270], id: \.self) { angle in
+                                    Rectangle()
+                                        .fill(Color.white)
+                                        .frame(width: 2, height: 10)
+                                        .offset(y: -95) // Adjust according to circle radius
+                                        .rotationEffect(.degrees(Double(angle)))
+                                }
+                                
+                                // Clock hands and shaded area
+                                ZStack {
+                                    // Hour hand
+                                    Rectangle()
+                                        .fill(Color.white)
+                                        .frame(width: 2, height: 100)
+                                        .offset(y: -50) // Adjust length and placement
+                                        .rotationEffect(.degrees(Double((timeRemaining/60)*6)))
+                                    
+                                    SectorShapeClock(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: Double((timeRemaining/60)*6)))
+                                        .fill(Color.white.opacity(0.2))
+                                        .frame(width: 200)
+                                        .rotationEffect(.degrees(-90)) // For 1 o'clock position
+                                }
                             }
-                            .animation(.linear(duration: 0.2), value: clockNumber)
+                            .animation(.linear, value: timeRemaining)
                             
                             Spacer()
                             
@@ -214,7 +213,7 @@ struct Timer1: View {
                                         .opacity(0.8)
                                         .overlay {
                                             Text("+$\(selectedBusiness?.cashPerMin ?? 1000)")
-                                                .foregroundStyle(colorForName(userColorPreference))
+                                                .foregroundStyle(getColor(userColorPreference))
                                                 .font(.system(size: 8))
                                         }
                                 }
@@ -254,7 +253,7 @@ struct Timer1: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: CGFloat(timerLengthAnimation), height: 40)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                     
                                 }
                                 .frame(width: 450, height: 40)
@@ -290,7 +289,7 @@ struct Timer1: View {
                             .frame(width: 200, height: 50)
                             .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundStyle(colorForName(userColorPreference))
+                            .foregroundStyle(getColor(userColorPreference))
                             .fontWeight(.bold)
                         }
                     }

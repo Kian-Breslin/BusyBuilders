@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LargeWidget: View {
     
+    @AppStorage("userTextPreference") var userTextPreference: String = "white"
     @State var selectedView : Int
     var colorName : Color
     // List of Widget :
@@ -47,7 +48,7 @@ struct LargeWidget: View {
                     Image(systemName: "calendar")
                         .font(.system(size: 100))
                         .padding()
-                        .foregroundStyle(.white)
+                        .foregroundStyle(textColor(userTextPreference))
                 }
         }
         else if selectedView == 2 {
@@ -102,7 +103,7 @@ struct LargeWidget: View {
                                                             .font(.system(size: 12))
                                                             .frame(minWidth: 0, minHeight: 0, alignment: .center) // Center text
                                                             .foregroundStyle(colorName)
-                                                            .background(.white)
+                                                            .background(textColor(userTextPreference))
                                                             .clipShape(RoundedRectangle(cornerRadius: 2))
                                                             
                                                     } else {
@@ -113,7 +114,7 @@ struct LargeWidget: View {
                                             }
                                         }
                                     }
-                                    .foregroundStyle(.white)
+                                    .foregroundStyle(textColor(userTextPreference))
                                     
                                     
                                 }
@@ -131,42 +132,42 @@ struct LargeWidget: View {
                                         
                                         HStack (alignment: .top){
                                             RoundedRectangle(cornerRadius: 2)
-                                                .frame(width: 5, height: 70)
-                                                .foregroundStyle(.white)
+                                                .frame(width: 3, height: 70)
+                                                .foregroundStyle(textColor(userTextPreference))
                                             VStack (alignment: .leading){
                                                 Text("Start 04/10 End 06/10")
                                                     .font(.system(size: 12))
                                                     .opacity(0.8)
                                                 Spacer()
-                                                Text("Clock In random words to see how")
+                                                Text("Submit Finals Paper")
                                                     .font(.system(size: 15))
                                                 Spacer()
-                                                Text("13 HR")
+                                                Text("10 hr")
                                                     .font(.system(size: 10))
                                             }
                                             .frame(width: 150,height: 30, alignment: .topLeading)
                                         }
                                         
                                         
-                                        HStack {
+                                        HStack (alignment: .top){
                                             RoundedRectangle(cornerRadius: 2)
-                                                .frame(width: 5, height: 70)
-                                                .foregroundStyle(.white)
+                                                .frame(width: 3, height: 70)
+                                                .foregroundStyle(textColor(userTextPreference))
                                             VStack (alignment: .leading){
-                                                Text("Start 04/10 End 06/10")
+                                                Text("Start 04/10 End 06/15")
                                                     .font(.system(size: 12))
                                                     .opacity(0.8)
                                                 Spacer()
-                                                Text("Clock In")
-                                                    .fontWeight(.bold)
-                                                    .font(.system(size: 20))
+                                                Text("Attend Important Meeting")
+                                                    .font(.system(size: 15))
                                                 Spacer()
-                                                Text("19 HR")
+                                                Text("02d 09 hr")
                                                     .font(.system(size: 10))
                                             }
+                                            .frame(width: 150,height: 30, alignment: .topLeading)
                                         }
                                     }
-                                    .foregroundStyle(.white)
+                                    .foregroundStyle(textColor(userTextPreference))
                                     .frame(maxWidth: screenWidth, alignment: .leading)
                                 }
                         }
@@ -202,7 +203,7 @@ struct LargeWidget: View {
                                 
                                 ForEach(timeOfDay..<24, id: \.self){ hour in
                                     VStack (spacing: 5) {
-                                        Text("\(hour):00")
+                                        Text("\(hour, specifier: "%02d"):00")
                                             .font(.system(size: 20))
                                             .kerning(5)
                                             .frame(width: 135)
@@ -214,7 +215,7 @@ struct LargeWidget: View {
                                                     .opacity(0.5)
                                                     .overlay {
                                                         Text("\(scheduleTexts[hour])")
-                                                            .foregroundStyle(.white)
+                                                            .foregroundStyle(textColor(userTextPreference))
                                                             .font(.system(size: 8))
                                                             .frame(width: 110, alignment: .topLeading)
                                                             .padding(10)
@@ -225,8 +226,8 @@ struct LargeWidget: View {
                                                     .foregroundStyle(.black)
                                                     .opacity(0.5)
                                                     .overlay {
-                                                        Text("\(scheduleTexts[hour-3])")
-                                                            .foregroundStyle(.white)
+                                                        Text("\(scheduleTexts[hour])")
+                                                            .foregroundStyle(textColor(userTextPreference))
                                                             .font(.system(size: 8))
                                                             .frame(width: 110, alignment: .topLeading)
                                                             .padding(10)
@@ -252,5 +253,5 @@ struct LargeWidget: View {
 
 
 #Preview {
-    LargeWidget(selectedView: 2, colorName: Color(red: 244/255, green: 73/255, blue: 73/255))
+    LargeWidget(selectedView: 3, colorName: Color(red: 244/255, green: 73/255, blue: 73/255))
 }

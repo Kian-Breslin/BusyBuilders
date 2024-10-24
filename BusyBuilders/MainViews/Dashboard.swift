@@ -9,6 +9,8 @@ struct Dashboard: View {
     @Binding var dashboardSelection : Int
     
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
+    @AppStorage("userTextPreference") var userTextPreference: String = "white"
+    
     @State var isSettingsShowing = false
     @State var isNotificationsShowing = false
     @State var showFlashCards = false
@@ -23,7 +25,8 @@ struct Dashboard: View {
     var body: some View {
         
         ZStack {
-            colorForName(userColorPreference)
+            
+            getColor(userColorPreference)
                 .ignoresSafeArea()
             
             VStack {
@@ -74,7 +77,7 @@ struct Dashboard: View {
                                 .overlay {
                                     Image(systemName: "dollarsign")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     selectedTopButtons = "Send Money"
@@ -89,7 +92,7 @@ struct Dashboard: View {
                                 .overlay {
                                     Image(systemName: "dollarsign.arrow.circlepath")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     selectedTopButtons = "Withdraw Money"
@@ -104,7 +107,7 @@ struct Dashboard: View {
                                 .overlay {
                                     Image(systemName: "creditcard")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     selectedTopButtons = "Loan"
@@ -119,7 +122,7 @@ struct Dashboard: View {
                                 .overlay {
                                     Image(systemName: "archivebox")
                                         .font(.system(size: 30))
-                                        .foregroundStyle(colorForName(userColorPreference))
+                                        .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
                                     selectedTopButtons = "Inventory"
@@ -137,52 +140,41 @@ struct Dashboard: View {
                     .overlay {
                         ScrollView (showsIndicators: false){
                             VStack (spacing: 10){
-                                LargeWidget(selectedView: 2, colorName: colorForName(userColorPreference))
+                                LargeWidget(selectedView: 2, colorName: getColor(userColorPreference))
                                     .padding(.top, 10)
                                 HStack {
-                                    MediumWidget(colorName: colorForName(userColorPreference))
+                                    MediumWidget(colorName: getColor(userColorPreference))
                                         .onTapGesture {
                                             showFlashCards.toggle()
                                         }
                                     Spacer()
-                                    VStack {
-                                        HStack {
-                                            SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-1")
-                                                .onTapGesture {
-                                                    dashboardSelection = 3
-                                                }
-                                            SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-2")
-                                            
-                                            SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-6")
+                                    
+                                    MediumWidget(colorName: getColor(userColorPreference))
+                                        .onTapGesture {
+                                            showFlashCards.toggle()
                                         }
-                                        HStack {
-                                            SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-6")
-                                            SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-5")
-                                            SmallWidget(colorName: colorForName(userColorPreference), imageName: "userImage-4")
-                                        }
-                                    }
                                 }
                                 .frame(width: screenWidth-15)
                                 
-                                LargeWidget(selectedView: 3, colorName: colorForName(userColorPreference))
+                                LargeWidget(selectedView: 1, colorName: getColor(userColorPreference))
                                     .onTapGesture {
                                         showCalendar.toggle()
                                     }
                                 
                                 HStack {
-                                    MediumWidget(colorName: colorForName(userColorPreference))
+                                    MediumWidget(colorName: getColor(userColorPreference))
                                     Spacer()
-                                    MediumWidget(colorName: colorForName(userColorPreference))
+                                    MediumWidget(colorName: getColor(userColorPreference))
                                 }
                                 .frame(width: screenWidth-15)
                                 
-                                LargeWidget(selectedView: 2, colorName: colorForName(userColorPreference))
+                                LargeWidget(selectedView: 2, colorName: getColor(userColorPreference))
                                     .frame(width: screenWidth-15)
                                 
                                 HStack {
-                                    MediumWidget(colorName: colorForName(userColorPreference))
+                                    MediumWidget(colorName: getColor(userColorPreference))
                                     Spacer()
-                                    MediumWidget(colorName: colorForName(userColorPreference))
+                                    MediumWidget(colorName: getColor(userColorPreference))
                                 }
                                 .frame(width: screenWidth-15)
                                 
@@ -194,12 +186,12 @@ struct Dashboard: View {
                     }
             }
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(textColor(userTextPreference))
         .fullScreenCover(isPresented: $isSettingsShowing){
             Settings(userColorPreference: $userColorPreference)
         }
         .sheet(isPresented: $placeholderSheet) {
-            DashboardTopButtons(title: $selectedTopButtons, totalNetWorth: $userTotalNetWorth, userColor: colorForName(userColorPreference))
+            DashboardTopButtons(title: $selectedTopButtons, totalNetWorth: $userTotalNetWorth, userColor: getColor(userColorPreference))
                 .presentationDetents([.fraction(0.763)])
         }
         .sheet(isPresented: $isNotificationsShowing) {
