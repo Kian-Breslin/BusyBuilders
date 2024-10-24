@@ -16,6 +16,16 @@ struct StartTask: View {
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
     @State var currentView = 0
+    let Upgrades = availableUpgrades
+    
+    // Show Inventory
+    @State var placeholderSheet = false
+    @State var showInventory = "Inventory"
+    @State var showInventoryMoney = 0.0
+    
+    // Show Warning - No "Modifiers" Available
+    @State var isWarningShowing = false
+    @State var warningErrorMessage = ""
     
     @State var selectedBusiness: BusinessDataModel?
     @State var businessName: String = ""
@@ -33,6 +43,11 @@ struct StartTask: View {
     @State var timeStarted = ""
     @State var timeEnded = ""
     
+    // Modifiers
+    @State var isCashBoosterActive = false
+    @State var isCostReductionActive = false
+    @State var isXPBoosterActive = false
+    
     // Dev Tests
     let devNames = ["Math Masters","Eco Innovators","Science Solutions","Code Creators","Design Depot","Robotics Realm","Tech Repair Hub","Game Forge","AI Insights","Physics Powerhouse"]
 
@@ -43,7 +58,7 @@ struct StartTask: View {
                 getColor(userColorPreference)
                     .ignoresSafeArea()
                 
-                Timer1(currentView: $currentView, selectedBusiness: $selectedBusiness, timeRemaining: $timeRemaining, timeElapsed: $timeElapsed, isTimerActive: $isTimerActive, timeStarted: $timeStarted, totalCashEarned: $totalCashEarned)
+                Timer1(currentView: $currentView, selectedBusiness: $selectedBusiness, timeRemaining: $timeRemaining, timeElapsed: $timeElapsed, isTimerActive: $isTimerActive, timeStarted: $timeStarted, totalCashEarned: $totalCashEarned, cashBoosterActive: isCashBoosterActive, costReductionActive: isCostReductionActive, XPBoosterActive: isXPBoosterActive)
             }
         }
         else if (currentView == 2) {
@@ -94,42 +109,43 @@ struct StartTask: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "dollarsign")
+                                        Image(systemName: "\(isXPBoosterActive ? "star.fill" : "star")")
                                             .font(.system(size: 30))
                                             .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
-                                        
+                                        isXPBoosterActive.toggle()
                                     }
-                                Text("Send Money")
+                                Text("XP Booster")
                             }
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "plus")
+                                        Image(systemName: "\(isCashBoosterActive ? "banknote.fill" : "banknote")")
                                             .font(.system(size: 30))
                                             .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
-                                        
+                                        isCashBoosterActive.toggle()
+                                        print(" \(users.first?.inventory["\(Upgrades[0].upgradeName)"] ?? 0)")
                                     }
-                                Text("Modifiers")
+                                Text("Cash Booster")
                             }
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "menucard")
+                                        Image(systemName: "\(isCostReductionActive ? "bag.fill.badge.minus" : "bag.badge.minus")")
                                             .font(.system(size: 30))
                                             .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
-                                        
+                                        isCostReductionActive.toggle()
                                     }
-                                Text("Flash Cards")
+                                Text("Cost Reduction")
                             }
                             Spacer()
                             VStack {
@@ -141,7 +157,7 @@ struct StartTask: View {
                                             .foregroundStyle(getColor(userColorPreference))
                                     }
                                     .onTapGesture {
-                                        
+                                        placeholderSheet.toggle()
                                     }
                                 Text("More Info")
                             }
@@ -218,16 +234,63 @@ struct StartTask: View {
                             
                             Button("Clock In!"){
                                 if selectedBusiness != nil && timeRemaining > 0 {
-                                    
-                                    timeElapsed = 0
-                                    
-                                    currentView = 1
-                                    isTimerActive.toggle()
-                                    
-                                    timeStarted = formatFullDateTime(date: Date())
-                                    print(timeStarted)
+                                    isWarningShowing = false // Reset the warning showing flag
+
+                                    // Check for Cash Booster
+                                    if isCashBoosterActive {
+                                        if let currentAmount = users.first?.inventory["\(Upgrades[0].upgradeName)"], currentAmount > 0 {
+                                            users.first!.inventory["\(Upgrades[0].upgradeName)"] = currentAmount - 1
+                                        } else {
+                                            isWarningShowing = true
+                                            warningErrorMessage = "Not Enough Cash Boosters"
+                                        }
+                                    }
+
+                                    // Check for Cost Reduction
+                                    if isCostReductionActive {
+                                        if let currentAmountOfCostReductions = users.first?.inventory["\(Upgrades[2].upgradeName)"] {
+                                            if currentAmountOfCostReductions > 0 {
+                                                users.first!.inventory["\(Upgrades[2].upgradeName)"] = currentAmountOfCostReductions - 1
+                                            } else {
+                                                isWarningShowing = true
+                                                warningErrorMessage = "Not Enough Cost Reductions"
+                                            }
+                                        }
+                                    }
+
+                                    // Check for XP Booster
+                                    if isXPBoosterActive {
+                                        if let currentAmount = users.first?.inventory["\(Upgrades[1].upgradeName)"], currentAmount > 0 {
+                                            users.first!.inventory["\(Upgrades[1].upgradeName)"] = currentAmount - 1
+                                        } else {
+                                            isWarningShowing = true
+                                            warningErrorMessage = "Not Enough XP Boosters"
+                                        }
+                                    }
+
+                                    // If any warning is shown, handle the warning
+                                    if isWarningShowing {
+                                        print(warningErrorMessage) // Log the warning message
+                                    } else {
+                                        // Proceed with saving the context and starting the timer
+                                        do {
+                                            try context.save()
+                                        } catch {
+                                            print("Failed to save user: \(error.localizedDescription)")
+                                        }
+
+                                        timeElapsed = 0
+                                        currentView = 1
+                                        isTimerActive.toggle()
+
+                                        timeStarted = formatFullDateTime(date: Date())
+                                        print(timeStarted)
+                                    }
                                 } else {
+                                    // Show a warning if no business is selected or time is not remaining
                                     print("Please select a business before starting a timer!")
+                                    warningErrorMessage = "Please select a business before starting a timer!"
+                                    isWarningShowing.toggle()
                                 }
                             }
                             .frame(width: screenWidth-30, height: 50)
@@ -240,8 +303,35 @@ struct StartTask: View {
                         }
                     }
                 }
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 200, height: 110)
+                    .foregroundStyle(.gray)
+                    .overlay {
+                        VStack {
+                            Text("Cant Start Timer :")
+                                .bold()
+                            Text("\(warningErrorMessage)")
+                                .font(.system(size: 15))
+                            Divider()
+                                .padding(5)
+                            Button("Close"){
+                                isWarningShowing.toggle()
+                            }
+                        }
+                        .foregroundStyle(.white)
+                    }
+                    .opacity(isWarningShowing ? 1 : 0)
             }
             .foregroundStyle(.black)
+            .onAppear {
+                isCashBoosterActive = false
+                isCostReductionActive = false
+                isXPBoosterActive = false
+            }
+            .sheet(isPresented: $placeholderSheet) {
+                DashboardTopButtons(title: $showInventory, totalNetWorth: $showInventoryMoney, userColor: getColor(userColorPreference))
+                    .presentationDetents([.fraction(0.763)])
+            }
         }
     }
 }

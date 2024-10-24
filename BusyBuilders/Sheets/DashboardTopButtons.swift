@@ -105,6 +105,7 @@ struct DashboardTopButtons: View {
                         Button("Buy Cash Booster") {
                             if let user = users.first {
                                 user.inventory["Cash Booster", default: 0] += 1
+                                user.inventory["Cost Reduction", default: 0] += 1
                             }
                             do {
                                 try context.save()

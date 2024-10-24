@@ -18,6 +18,7 @@ class BusinessDataModel : ObservableObject {
     var owners: [UserDataModel] // Assuming it's an array of owner IDs or names
     var cashPerMin: Int
     var netWorth: Double
+    var costPerMin: Double
     var investment: Int
     var investors: [UserDataModel] // Array of user IDs or names for investors
     var badges: [String] // Badges array
@@ -28,7 +29,7 @@ class BusinessDataModel : ObservableObject {
     var businessLevel: Int // Current level of the business
 
     // Initializer
-    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], cashPerMin: Int = 1000, netWorth: Double = 0, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0) {
+    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], cashPerMin: Int = 1000, netWorth: Double = 0, costPerMin: Double = 0.10, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0) {
         self.id = UUID() // Automatically generate a new UUID
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -36,6 +37,7 @@ class BusinessDataModel : ObservableObject {
         self.businessIcon = businessIcon
         self.owners = owners
         self.cashPerMin = cashPerMin
+        self.costPerMin = costPerMin
         self.netWorth = netWorth
         self.investment = investment
         self.investors = investors

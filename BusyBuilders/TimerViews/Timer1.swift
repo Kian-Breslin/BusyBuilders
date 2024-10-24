@@ -34,6 +34,9 @@ struct Timer1: View {
     // Final Calculation Variables
     @State var experienceEarned = 0
     @State var timeEnded = ""
+    @State var cashBoosterActive : Bool
+    @State var costReductionActive : Bool
+    @State var XPBoosterActive : Bool
     
     // Circle Timer
     @State var clockNumber = 0.0
@@ -124,15 +127,25 @@ struct Timer1: View {
                         Spacer()
                         
                         Button("Clock Out") {
-                            isTimerActive.toggle()
-                            currentView = 2
-                            
                             // Do Calculations
                             isTimerActive.toggle()
                             currentView = 2
                             
-                            // Final Calculations
+                            let reductionsCost = selectedBusiness?.costPerMin ?? 0
+                            
+                            // Calculate Total Earnings
                             totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                            // Calculate Total Earnings - Reductions
+                            if costReductionActive {
+                                totalCashEarned -= (totalCashEarned*(reductionsCost-0.05)).rounded()
+                            } else {
+                                totalCashEarned -= (totalCashEarned*(reductionsCost)).rounded()
+                            }
+                            // Final Calculations
+                            // If Cash Booster
+                            if cashBoosterActive {
+                                totalCashEarned += 100
+                            }
                             print(totalCashEarned)
                             
                             // Add Cash earned to business
@@ -269,7 +282,12 @@ struct Timer1: View {
                                 currentView = 2
                                 
                                 // Final Calculations
-                                totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                                // If Cash Booster
+                                if cashBoosterActive {
+                                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded() + 100
+                                } else {
+                                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                                }
                                 print(totalCashEarned)
                                 
                                 // Add Cash earned to business
@@ -330,8 +348,14 @@ struct Timer1: View {
                 currentView = 2
                 
                 // Final Calculations
-                totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                // If Cash Booster
+                if cashBoosterActive {
+                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded() + 100
+                } else {
+                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+                }
                 print(totalCashEarned)
+                
                 
                 // Add Cash earned to business
                 selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
@@ -358,5 +382,5 @@ struct Timer1: View {
 }
 
 #Preview {
-    Timer1(currentView: .constant(0), selectedBusiness: .constant(BusinessDataModel(businessName: "Kians Coffee Shop", businessTheme: "blue", businessType: "Eco", businessIcon: "circle", cashPerMin: 1000)), timeRemaining: .constant(1800), timeElapsed: .constant(0), isTimerActive: .constant(false), timeStarted: .constant(formatFullDateTime(date: Date())), totalCashEarned: .constant(0.0))
+    Timer1(currentView: .constant(0), selectedBusiness: .constant(BusinessDataModel(businessName: "Kians Coffee Shop", businessTheme: "blue", businessType: "Eco", businessIcon: "circle", cashPerMin: 1000)), timeRemaining: .constant(1800), timeElapsed: .constant(0), isTimerActive: .constant(false), timeStarted: .constant(formatFullDateTime(date: Date())), totalCashEarned: .constant(0.0), cashBoosterActive: false, costReductionActive: false, XPBoosterActive: false)
 }
