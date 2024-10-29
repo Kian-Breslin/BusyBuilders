@@ -12,6 +12,7 @@ struct UserSignUp: View {
     
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
+    @EnvironmentObject var userManager: UserManager
     
     
     @State var name = ""
@@ -59,6 +60,7 @@ struct UserSignUp: View {
                     do {
                         try context.save()
                         print("Successfully Made User")
+                        userManager.isUserCreated = true
                     } catch {
                         print("Failed to save user: \(error.localizedDescription)")
                     }

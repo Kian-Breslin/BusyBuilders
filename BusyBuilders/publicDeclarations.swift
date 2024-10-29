@@ -14,6 +14,10 @@ class AppSettings: ObservableObject {
     @Published var username: String = "Kian Breslin"
 }
 
+class UserManager: ObservableObject {
+    @AppStorage("isUserCreated") var isUserCreated: Bool = false
+}
+
 
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
@@ -140,5 +144,36 @@ public func currentHour() -> Int {
 
 public func randomNumber(in range: ClosedRange<Int>) -> Int {
     return Int.random(in: range)
+}
+
+public func getPrestige(_ level: Double) -> String {
+    switch level {
+    case 0..<21: // 0 - 10 hours (0 - 4 days)
+        return "Start-Up" // ~0 - 4 days
+    case 21..<51: // 11 - 50 hours (4 - 20 days)
+        return "Low Level Business" // ~4 - 20 days
+    case 51..<101: // 51 - 100 hours (20 - 40 days)
+        return "Growing Business" // ~20 - 40 days
+    case 101..<161: // 101 - 160 hours (40 - 64 days)
+        return "Established Business" // ~40 - 64 days
+    case 161..<221: // 161 - 220 hours (64 - 88 days)
+        return "Corporate Entity" // ~64 - 88 days
+    case 221..<301: // 221 - 300 hours (88 - 120 days)
+        return "Industry Leader" // ~88 - 120 days
+    case 301..<401: // 301 - 400 hours (120 - 168 days)
+        return "Market Dominator" // ~120 - 168 days
+    case 401..<501: // 401 - 500 hours (168 - 210 days)
+        return "Global Corporation" // ~168 - 210 days
+    case 501..<1000: // 501 - 600 hours (210 - 250 days)
+        return "Multi-National Corporation" // ~210 - 250 days
+    default:
+        return "N/A"
+    }}
+public func getLevelFromSec(_ sec: Int) -> Int {
+    
+    let min = sec / 60
+    let level = min / 60
+    
+    return level
 }
 

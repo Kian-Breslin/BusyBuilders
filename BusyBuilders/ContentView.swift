@@ -14,9 +14,10 @@ struct ContentView: View {
     
     @State var selectedView = 0
     @State var isTaskActive = false
+    @EnvironmentObject var userManager: UserManager
     
     var body: some View {
-        if users.isEmpty{
+        if userManager.isUserCreated == false {
             UserSignUp()
         }
         else {
@@ -47,4 +48,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: [UserDataModel.self], inMemory: true)
+        .environmentObject(UserManager())
 }
