@@ -61,9 +61,9 @@ struct DashboardTopButtons: View {
                     
                     Button("Withdraw $500") {
                         if let selectedBusiness = selectedBusiness {
-                            if selectedBusiness.netWorth >= 500 {
-                                selectedBusiness.netWorth -= 500
-                                users.first?.availableBalance += 500
+                            if selectedBusiness.netWorth >= 5000 {
+                                selectedBusiness.netWorth -= 5000
+                                users.first?.availableBalance += 5000
                                 
                                 // Manually update the total net worth
                                 totalNetWorth = businesses.reduce(0) { $0 + $1.netWorth } + Double(users.first?.availableBalance ?? 0)
@@ -88,8 +88,8 @@ struct DashboardTopButtons: View {
                     .foregroundStyle(.red)
                     .offset(x: shakeAnimation ? -10 : 0)
                     
-                    Button("Add Quick $500") {
-                        selectedBusiness?.netWorth += 500
+                    Button("Add Quick $5,000") {
+                        selectedBusiness?.netWorth += 5000
                     }
                     .foregroundStyle(.red)
                     

@@ -11,10 +11,13 @@ import SwiftData
 @main
 struct BusyBuilders: App {
     
+    var userManager = UserManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .modelContainer(for: [UserDataModel.self, BusinessDataModel.self, SessionDataModel.self])
+                .environmentObject(UserManager())
         }
     }
 }

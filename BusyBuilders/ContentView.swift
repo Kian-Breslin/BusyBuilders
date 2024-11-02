@@ -50,3 +50,37 @@ struct ContentView: View {
         .modelContainer(for: [UserDataModel.self], inMemory: true)
         .environmentObject(UserManager())
 }
+
+/*
+ 
+ Update : Update Name
+ 
+ Dashboard:
+
+ - N/A
+
+ Communities:
+
+ - N/A
+
+ Play:
+
+ - N/A
+
+ Store:
+
+ - N/A
+
+ Portfolio:
+
+ - N/A
+
+ Back-End:
+
+ - N/A
+
+ Other:
+
+ - N/A
+ 
+ */

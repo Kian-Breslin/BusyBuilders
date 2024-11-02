@@ -8,8 +8,10 @@ struct Dashboard: View {
     @Query var businesses: [BusinessDataModel] // Query for businesses
     @Binding var dashboardSelection : Int
     
-    @AppStorage("userColorPreference") var userColorPreference: String = "red"
+    @AppStorage("userColorPreference") var userColorPreference: String = "black"
     @AppStorage("userTextPreference") var userTextPreference: String = "white"
+    
+    @State var colorWhite = Color(red: 0.95, green: 0.95, blue: 0.95)
     
     @State var isSettingsShowing = false
     @State var isNotificationsShowing = false
@@ -186,7 +188,7 @@ struct Dashboard: View {
                     }
             }
         }
-        .foregroundStyle(textColor(userTextPreference))
+        .foregroundStyle(colorWhite)
         .fullScreenCover(isPresented: $isSettingsShowing){
             Settings(userColorPreference: $userColorPreference)
         }

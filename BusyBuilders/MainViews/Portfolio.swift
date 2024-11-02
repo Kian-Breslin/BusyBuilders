@@ -62,6 +62,7 @@ struct Portfolio: View {
                                 }
                                 .padding()
                             }
+                            
                         }
                         .onDelete(perform: deleteBusiness) // Add onDelete to the ForEach
                     }

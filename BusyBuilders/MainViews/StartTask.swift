@@ -221,6 +221,7 @@ struct StartTask: View {
                                                 
                                                 do {
                                                     try context.save()
+                                                    print("Made Placeholder Business")
                                                 } catch {
                                                     print("Failed to save new business: \(error)")
                                                 }

@@ -12,211 +12,186 @@ struct Store: View {
     
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
-    @Query var businesses: [BusinessDataModel] // Query for businesses
+    @Query var businesses: [BusinessDataModel]
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
     
-    // Buy
-    let Upgrades = availableUpgrades
-    @State private var isScaled = false
+    let upgrades = availableUpgrades
+    @State private var selectedUpgrade = ""
+    @State private var growOnAppear = false
+    @State private var storeSelection = "Upgrades"
     
-    // Store Selection
-    @State var storeSelection = "Upgrades"
-    @State var storeSelectionArray : [String] = ["Upgrades", "Cosmetics", "Packs"]
+    let storeImageSelectionArray: [String] = ["wrench.and.screwdriver", "wand.and.stars", "gift", "tag"]
+    let storeSelectionArray: [String] = ["Upgrades", "Cosmetics", "Packs", "Specials"]
+    let iconSelectionArray: [String] = ["banknote", "star", "bag.badge.minus", "mug"]
     
     var body: some View {
         ZStack {
-            
             getColor(userColorPreference)
                 .ignoresSafeArea()
             
-            // Top Section
             VStack {
-                VStack {
-                    // Top Header
-                    HStack {
-                        VStack (alignment: .leading){
-                            Text("$\(users.first?.availableBalance ?? 1)")
-                                .font(.system(size: 35))
-                                .fontWeight(.bold)
-                                .onTapGesture {
-                                    
-                                }
-                            HStack (spacing: 35){
-                                Text("Available Balance")
-                            }
-                        }
-                        Spacer()
-                        HStack (spacing: 15){
-                            ZStack {
-                                Image(systemName: "bell.fill")
-                                Image(systemName: "2.circle.fill")
-                                    .font(.system(size: 15))
-                                    .offset(x: 10, y: -10)
-                            }
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 40, height: 40)
-                                .onTapGesture {
-                                    
-                                    
-                                }
-                        }
-                        .font(.system(size: 25))
-                    }
-                    .padding(15)
-                    
-                    HStack {
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "dollarsign")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    
-                                }
-                            Text("Send Money")
-                        }
-                        Spacer()
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "plus")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    
-                                }
-                            Text("Modifiers")
-                        }
-                        Spacer()
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "menucard")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    
-                                }
-                            Text("Flash Cards")
-                        }
-                        Spacer()
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "info")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    
-                                }
-                            Text("More Info")
-                        }
-                    }
-                    .padding(.horizontal, 15)
-                    .font(.system(size: 12))
-                }
+                // Top Section
+                headerView
                 
                 Spacer()
                 
-                // White Background
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: screenWidth, height: screenHeight/1.5)
-                        .foregroundStyle(.white)
-                    
-                    VStack (spacing: 10){
-                        Text("Store")
-                            .font(.system(size: 40))
-                            .frame(width: screenWidth-30, alignment: .leading)
-                            .padding(.top)
-                        
-                        //Picker
-                        HStack {
-                            ForEach(0..<3){ store in
-                                RoundedRectangle(cornerRadius: 5)
-                                    .frame(width: (screenWidth-30)/3, height: 40)
-                                    .foregroundStyle(getColor(userColorPreference))
-                                    .opacity(storeSelection == storeSelectionArray[store] ?  1 : 0.5)
-                                    .overlay {
-                                        Text(storeSelectionArray[store])
-                                            .foregroundStyle(.white)
-                                    }
-                                    .onTapGesture {
-                                        storeSelection = storeSelectionArray[store]
-                                    }
-                            }
-                        }
-                        .frame(width: screenWidth-30, height: 80)
-                        .foregroundStyle(getColor(userColorPreference))
-                        
-                        Divider()
-                            .padding()
-                        
-                        // Type of Store
-                        if storeSelection == "Upgrades" {
-                            VStack {
-                                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                                    ForEach(0..<4){ item in
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: (screenWidth-40)/2, height: 150)
-                                            .overlay {
-                                                Text("\(Upgrades[item].upgradeName)")
-                                                    .foregroundStyle(.white)
-                                            }
-                                            .onTapGesture {
-                                                print(Upgrades[item].upgradeName)
-                                                withAnimation {
-                                                    isScaled = true // Scale up
-                                                }
-                                                // After a short delay, scale down
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    withAnimation {
-                                                        isScaled = false // Scale back down
-                                                    }
-                                                }
-                                                if let user = users.first {
-                                                    user.inventory["\(Upgrades[item].upgradeName)", default: 0] += 1
-                                                    user.availableBalance -= Upgrades[item].cost
-                                                }
-                                                do {
-                                                    try context.save()
-                                                }
-                                                catch {
-                                                    print("Failed to save user: \(error.localizedDescription)")
-                                                }
-                                            }
-                                            .animation(.easeInOut(duration: 0.2), value: isScaled)
-                                    }
-                                }
-                                .padding(.horizontal)
-                            }
-                        }
-                        else if storeSelection == "Cosmetics" {
-                            
-                        }
-                        else if storeSelection == "Packs" {
-                            
-                        }
-                        
-                        Spacer()
-                    }
-                    .foregroundStyle(getColor(userColorPreference))
+                // Store Content
+                storeContentView
+            }
+            .onAppear {
+                growOnAppear = true
+            }
+            .animation(.linear(duration: 0.8), value: growOnAppear)
+            .sensoryFeedback(.impact(flexibility: .soft, intensity: 50), trigger: selectedUpgrade)
+        }
+    }
+    
+    private var headerView: some View {
+        HStack {
+            Text("Available Balance: ")
+            Text("$\(users.first?.availableBalance ?? 10000)")
+                .font(.system(size: 30))
+                .fontWeight(.bold)
+                .onTapGesture {
+                    // Handle tap if needed
                 }
-                .frame(width: screenWidth, height: screenHeight/1.5)
+        }
+        .padding()
+    }
+    
+    private var storeContentView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(.white)
+                .frame(width: screenWidth, height: growOnAppear ? screenHeight / 1 : screenHeight / 1.5)
+            
+            VStack(spacing: 10) {
+                storePickerView
+                storeDetailView
+                Spacer()
+            }
+            .foregroundColor(getColor(userColorPreference))
+        }
+        .frame(width: screenWidth, height: screenHeight / 1.5)
+    }
+    
+    private var storePickerView: some View {
+        HStack {
+            ForEach(0..<storeSelectionArray.count, id: \.self) { index in
+                storePickerButton(for: index)
+            }
+        }
+        .frame(width: screenWidth - 30, height: 110)
+    }
+    
+    private func storePickerButton(for index: Int) -> some View {
+        let selection = storeSelectionArray[index]
+        return Rectangle()
+            .frame(width: 80, height: 80)
+            .foregroundColor(storeSelection == selection ? getColor(userColorPreference) : .white)
+            .overlay {
+                Rectangle()
+                    .frame(width: 75, height: 75)
+                    .foregroundColor(.white)
+                    .overlay {
+                        Image(systemName: storeImageSelectionArray[index])
+                            .font(.system(size: 35))
+                    }
+            }
+            .onTapGesture {
+                storeSelection = selection
+            }
+    }
+    
+    private var storeDetailView: some View {
+        Group {
+            if storeSelection == "Upgrades" {
+                upgradesView
+            } else if storeSelection == "Cosmetics" {
+                Text("Placeholder: Cosmetics")
+            } else if storeSelection == "Packs" {
+                Text("Placeholder: Packs")
+            } else if storeSelection == "Specials" {
+                Text("Placeholder: Specials")
+            }
+        }
+    }
+    
+    private var upgradesView: some View {
+        ScrollView {
+            ForEach(upgrades.indices, id: \.self) { index in
+                upgradeItemView(for: upgrades[index], index: index)
+            }
+            .padding()
+        }
+        .padding(.horizontal)
+    }
+    
+    private func upgradeItemView(for upgrade: UpgradesDataModel, index: Int) -> some View {
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: screenWidth - 30, height: 140)
+            .scaleEffect(upgrade.upgradeName == selectedUpgrade ? 1.05 : 1)
+            .overlay {
+                HStack(spacing: 15) {
+                    Image(systemName: iconSelectionArray[index])
+                        .font(.system(size: 60))
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(upgrade.upgradeName)
+                            .font(.system(size: 25))
+                            .bold()
+                        Text(upgrade.upgradeDescription)
+                            .font(.system(size: 12))
+                            .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                            .frame(height: 30)
+                        buyButton(for: upgrade)
+                    }
+                    .frame(width: screenWidth / 2, alignment: .leading)
+                }
+                .foregroundStyle(.white)
+                .padding()
+            }
+    }
+    
+    private func buyButton(for upgrade: UpgradesDataModel) -> some View {
+        HStack {
+            Spacer()
+            RoundedRectangle(cornerRadius: 5)
+                .frame(width: 110, height: 30)
+                .overlay {
+                    Text("Buy: \(upgrade.cost)")
+                        .foregroundColor(getColor(userColorPreference))
+                        .onTapGesture {
+                            purchaseUpgrade(upgrade)
+                        }
+                }
+        }
+    }
+    
+    private func purchaseUpgrade(_ upgrade: UpgradesDataModel) {
+        selectedUpgrade = upgrade.upgradeName
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation {
+                selectedUpgrade = ""
+            }
+        }
+        
+        guard let user = users.first else { return }
+        
+        if user.availableBalance >= upgrade.cost {
+            user.inventory[upgrade.upgradeName, default: 0] += 1
+            user.availableBalance -= upgrade.cost
+            
+            print("Purchased: \(upgrade.upgradeName)")
+            
+            do {
+                try context.save()
+            } catch {
+                print("Failed to save user: \(error.localizedDescription)")
             }
         }
     }
 }
-
 
 
 

@@ -109,7 +109,7 @@ struct CreateNewBusiness: View {
                     dismiss()
                 }
                 .frame(width: 150, height: 50)
-                .background(getColor(userColorPreference))
+//                .background(getColor(userColorPreference))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .foregroundStyle(.white)
                 .fontWeight(.bold)

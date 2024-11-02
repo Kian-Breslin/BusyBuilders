@@ -62,49 +62,11 @@ struct Timer1: View {
                     }
                     
                     VStack {
-                        ZStack {
-                            Circle()
-                                .fill(getColor(userColorPreference))
-                                .frame(width: 200, height: 200)
-                            
-                            Circle()
-                                .stroke(Color.gray, style: StrokeStyle(lineWidth: 1))
-                                .frame(width: 200, height: 200)
-
-                            // Pizza slice shape
-                            Circle()
-                                .trim(from: clockNumber, to: 1)
-                                .stroke(Color.white, style: StrokeStyle(lineWidth: 5))
-                                .frame(width: 200, height: 200)
-                                .rotationEffect(Angle(degrees: -90))
-                                .overlay {
-                                    ForEach(0..<12) { turn in
-                                        let countdownValue = (60 - turn * 5) % 60
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .frame(width: 3, height: (clockCountDown == (countdownValue) ? 50 : 30))
-                                            .offset(x: 0, y: 50)
-                                            .rotationEffect(Angle(degrees: Double(turn) * 30 - 180))
-                                            .opacity(clockCountDown == (countdownValue) ? 1 : 0.3)
-                                    }
-                                }
-                            Circle()
-                                .frame(width: 105)
-                                .foregroundStyle(getColor(userColorPreference))
-                                .overlay {
-                                    Text("\(timeFormattedSec(clockCountDown))")
-                                        .font(.system(size: 30))
-                                }
-                        }
-                        .animation(.linear(duration: 0.2), value: clockNumber)
-                        .padding()
+                        clockUI
                         
                         Spacer()
                         
                         ZStack {
-                            //Background
-//                            RoundedRectangle(cornerRadius: 10)
-//                                .frame(width: 460, height: 50)
-                            // Timer Background
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 300, height: 45)
                                 .foregroundStyle(.white)
@@ -127,40 +89,7 @@ struct Timer1: View {
                         Spacer()
                         
                         Button("Clock Out") {
-                            // Do Calculations
-                            isTimerActive.toggle()
-                            currentView = 2
-                            
-                            let reductionsCost = selectedBusiness?.costPerMin ?? 0
-                            
-                            // Calculate Total Earnings
-                            totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
-                            // Calculate Total Earnings - Reductions
-                            if costReductionActive {
-                                totalCashEarned -= (totalCashEarned*(reductionsCost-0.05)).rounded()
-                            } else {
-                                totalCashEarned -= (totalCashEarned*(reductionsCost)).rounded()
-                            }
-                            // Final Calculations
-                            // If Cash Booster
-                            if cashBoosterActive {
-                                totalCashEarned += 100
-                            }
-                            print(totalCashEarned)
-                            
-                            // Add Cash earned to business
-                            selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-                            // Add Experience
-                            selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
-                            // Create new session entry
-                            let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
-                            
-                            // Add session to session history
-                            selectedBusiness?.sessionHistory.append(session)
-                            
-                            // Reset Numbers
-                            timeRemaining = 0
-                            
+                            clockOutButton()
                         }
                         .frame(width: 200, height: 50)
                         .background(.white)
@@ -277,31 +206,7 @@ struct Timer1: View {
                                         .foregroundStyle(.black)
                             }
                             Button("Clock Out") {
-                                // Do Calculations
-                                isTimerActive.toggle()
-                                currentView = 2
-                                
-                                // Final Calculations
-                                // If Cash Booster
-                                if cashBoosterActive {
-                                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded() + 100
-                                } else {
-                                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
-                                }
-                                print(totalCashEarned)
-                                
-                                // Add Cash earned to business
-                                selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-                                // Add Experience
-                                selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
-                                // Create new session entry
-                                let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
-                                
-                                // Add session to session history
-                                selectedBusiness?.sessionHistory.append(session)
-                                
-                                // Reset Numbers
-                                timeRemaining = 0
+                                clockOutButton()
                                 
                             }
                             .frame(width: 200, height: 50)
@@ -344,31 +249,7 @@ struct Timer1: View {
                 //Experience
                 experienceEarned += 10
             } else {
-                isTimerActive.toggle()
-                currentView = 2
-                
-                // Final Calculations
-                // If Cash Booster
-                if cashBoosterActive {
-                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded() + 100
-                } else {
-                    totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
-                }
-                print(totalCashEarned)
-                
-                
-                // Add Cash earned to business
-                selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-                // Add Experience
-                selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed/60
-                // Create new session entry
-                let session = SessionDataModel(sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
-                
-                // Add session to session history
-                selectedBusiness?.sessionHistory.append(session)
-                
-                // Reset Numbers
-                timeRemaining = 0
+                clockOutButton()
             }
         }
         .onChange(of: scenePhase){
@@ -377,6 +258,74 @@ struct Timer1: View {
             } else {
                 isTimerActive = false
             }
+        }
+    }
+    
+    func clockOutButton() {
+        // Do Calculations
+        isTimerActive.toggle()
+        currentView = 2
+        
+        let reductionsCost = selectedBusiness?.costPerMin ?? 0
+        
+        // Calculate Total Earnings
+        totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+        // Calculate Total Earnings - Reductions
+        if costReductionActive {
+            totalCashEarned -= (totalCashEarned*(reductionsCost-0.05)).rounded()
+        } else {
+            totalCashEarned -= (totalCashEarned*(reductionsCost)).rounded()
+        }
+        // Final Calculations
+        // If Cash Booster
+        if cashBoosterActive {
+            totalCashEarned += 100
+        }
+        print(totalCashEarned)
+        
+        // Add Cash earned to business
+        selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
+        // Add Experience
+//                            selectedBusiness?.businessLevel = timeElapsed
+        // Create new session entry
+        let session = SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
+        
+        // Add session to session history
+        selectedBusiness?.sessionHistory.append(session)
+        
+        // Reset Numbers
+        timeRemaining = 0
+        
+    }
+    
+    private var clockUI: some View {
+        ZStack {
+            Circle().fill(getColor(userColorPreference)).frame(width: 200, height: 200)
+            Circle().stroke(Color.gray, style: StrokeStyle(lineWidth: 1)).frame(width: 200, height: 200)
+            Circle()
+                .trim(from: clockNumber, to: 1)
+                .stroke(Color.white, style: StrokeStyle(lineWidth: 5))
+                .frame(width: 200, height: 200)
+                .rotationEffect(Angle(degrees: -90))
+                .overlay(clockTicks)
+            
+            Circle().frame(width: 105).foregroundStyle(getColor(userColorPreference))
+                .overlay {
+                    Text("\(timeFormattedSec(clockCountDown))").font(.system(size: 30))
+                }
+        }
+        .animation(.linear(duration: 0.2), value: clockNumber)
+        .padding()
+    }
+    
+    private var clockTicks: some View {
+        ForEach(0..<12) { turn in
+            let countdownValue = (60 - turn * 5) % 60
+            RoundedRectangle(cornerRadius: 5)
+                .frame(width: 3, height: (clockCountDown == countdownValue ? 50 : 30))
+                .offset(x: 0, y: 50)
+                .rotationEffect(Angle(degrees: Double(turn) * 30 - 180))
+                .opacity(clockCountDown == countdownValue ? 1 : 0.3)
         }
     }
 }
