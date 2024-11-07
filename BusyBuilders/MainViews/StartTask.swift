@@ -215,7 +215,36 @@ struct StartTask: View {
                                                     .foregroundStyle(.white)
                                             }
                                             .onTapGesture {
-                                                let newBusiness = BusinessDataModel(businessName: "\(devNames[Int.random(in: 0..<10)])", businessTheme: "Red", businessType: "Eco Friendly", businessIcon: "triangle", cashPerMin: 1000)
+                                                let newBusiness = BusinessDataModel(
+                                                    businessName: "Kians Shop",
+                                                    businessTheme: "Blue",
+                                                    businessType: "Economic",
+                                                    businessIcon: "triangle",
+                                                    owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
+                                                    cashPerMin: 3000,
+                                                    netWorth: 6000,
+                                                    investors: [
+                                                        UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
+                                                        UserDataModel(username: "Jack_00", name: "Jack", email: "JackJake@gmail.com"),
+                                                        UserDataModel(username: "Jay_09", name: "Jay", email: "JayYo@gmail.com")
+                                                    ],
+                                                    badges: ["10 Days Streak", "$1000 Earned", "First Upgrade", "", "", "", "", "", "", "",],
+                                                    sessionHistory:
+                                                        [SessionDataModel(
+                                                            id: UUID(),
+                                                            sessionDate: Date.now,
+                                                            sessionStart: formatFullDateTime(date: Date()),
+                                                            sessionEnd: formatFullDateTime(date: Date()),
+                                                            totalStudyTime: 3600, businessId: UUID()),
+                                                         SessionDataModel(
+                                                             id: UUID(),
+                                                             sessionDate: Date.now,
+                                                             sessionStart: formatFullDateTime(date: Date()),
+                                                             sessionEnd: formatFullDateTime(date: Date()),
+                                                             totalStudyTime: 3600, businessId: UUID())
+                                                        ],
+                                                    businessLevel: 7200,
+                                                    businessPrestige: "Growing Business")
                                                 
                                                 context.insert(newBusiness)
                                                 

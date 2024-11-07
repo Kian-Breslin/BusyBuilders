@@ -61,8 +61,8 @@ struct Settings: View {
                                     .resizable()
                                     .frame(width: 90, height: 90)
                                 VStack(alignment: .leading) {
-                                    Text("Kian Breslin")
-                                    Text("\(emailAddress)")
+                                    Text("\(users.first?.username ?? "No User Found")")
+                                    Text("\(users.first?.email ?? "No User Found)")")
                                 }
                                 Spacer()
                                 Image(systemName: "chevron.right")

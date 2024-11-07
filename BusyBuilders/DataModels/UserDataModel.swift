@@ -10,6 +10,7 @@ import SwiftData
 @Model
 public class UserDataModel: Identifiable, ObservableObject {
     public var id: UUID // Unique identifier for the user
+    var username: String
     var name: String // User's chosen username
     var email: String // User's email address
     var password: String
@@ -21,12 +22,14 @@ public class UserDataModel: Identifiable, ObservableObject {
     
     // Initialize the UserDataModel with default values
     init(id: UUID = UUID(),
+         username: String,
          name: String,
          email: String,
          password: String = "",
          availableBalance: Int = 0,
          netWorth: Int = 0) {
         self.id = id
+        self.username = username
         self.name = name
         self.email = email
         self.password = password

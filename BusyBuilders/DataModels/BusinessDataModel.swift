@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class BusinessDataModel : ObservableObject {
+class BusinessDataModel : ObservableObject, Identifiable {
     var id: UUID
     var businessName: String
     var businessTheme: String
@@ -28,9 +28,10 @@ class BusinessDataModel : ObservableObject {
     var securityLevel: Int // Level of security
     var businessLevel: Int // Current level of the business
     var businessPrestige: String
+    var streak : Int
 
     // Initializer
-    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], cashPerMin: Int = 1000, netWorth: Double = 0, costPerMin: Double = 0.10, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up") {
+    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], cashPerMin: Int = 1000, netWorth: Double = 0, costPerMin: Double = 0.10, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0) {
         self.id = UUID() // Automatically generate a new UUID
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -49,5 +50,6 @@ class BusinessDataModel : ObservableObject {
         self.securityLevel = securityLevel
         self.businessLevel = businessLevel
         self.businessPrestige = businessPrestige
+        self.streak = streak
     }
 }

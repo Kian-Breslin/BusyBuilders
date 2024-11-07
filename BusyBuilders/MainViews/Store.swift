@@ -72,7 +72,7 @@ struct Store: View {
             }
             .foregroundColor(getColor(userColorPreference))
         }
-        .frame(width: screenWidth, height: screenHeight / 1.5)
+        .frame(width: screenWidth, height: (screenHeight-80) / 1.5)
     }
     
     private var storePickerView: some View {

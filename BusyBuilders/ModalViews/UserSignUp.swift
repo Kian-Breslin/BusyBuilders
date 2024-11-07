@@ -14,7 +14,7 @@ struct UserSignUp: View {
     @Query var users: [UserDataModel]
     @EnvironmentObject var userManager: UserManager
     
-    
+    @State var username = ""
     @State var name = ""
     @State var email = ""
     @State var password = ""
@@ -32,6 +32,13 @@ struct UserSignUp: View {
                     Text("Enter your name below!")
                         .frame(width: screenWidth-30, alignment: .leading)
                     TextField("Name", text: $name)
+                        .cornerRadius(8)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.horizontal, 15)
+                    
+                    Text("Enter a username")
+                        .frame(width: screenWidth-30, alignment: .leading)
+                    TextField("Username", text: $name)
                         .cornerRadius(8)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.horizontal, 15)
@@ -54,7 +61,7 @@ struct UserSignUp: View {
                 Spacer()
                 
                 Button("Get Started!"){
-                    let newUser = UserDataModel(name: name, email: email, password: password)
+                    let newUser = UserDataModel(username: username, name: name, email: email, password: password)
                     
                     context.insert(newUser)
                     do {

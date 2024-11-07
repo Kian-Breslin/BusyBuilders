@@ -45,6 +45,8 @@ func getColor(_ name: String) -> Color {
         return Color(red: 85/255, green: 107/255, blue: 47/255)
     case "blue":
         return Color(red: 70/255, green: 130/255, blue: 180/255) // Steel Blue
+    case "yellow":
+        return Color(red: 240/255, green: 210/255, blue: 80/255)
     case "purple":
         return Color.purple
     case "pink":
@@ -57,6 +59,14 @@ func getColor(_ name: String) -> Color {
     default:
         return Color.gray // Fallback if no color matches
     }
+}
+
+func createUserFromUsername(_ username : String) -> UserDataModel {
+    let name = username
+    let username = username
+    let email = username+"@gmail.com"
+    
+    return UserDataModel(username: username, name: name, email: email)
 }
 
 extension Color {
@@ -127,6 +137,12 @@ public func timeFormatted(_ totalSeconds: Int) -> String {
     let minutes = (totalSeconds % 3600) / 60
     let seconds = totalSeconds % 60
     return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+}
+public func timeFormattedWithText(_ totalSeconds: Int) -> String {
+    let hours = totalSeconds / 3600
+    let minutes = (totalSeconds % 3600) / 60
+    let seconds = totalSeconds % 60
+    return String(format: "%02d hrs %02d mins %02d secs", hours, minutes, seconds)
 }
 
 public func formatFullDateTime(date: Date) -> String {

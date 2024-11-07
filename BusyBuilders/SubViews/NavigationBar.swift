@@ -22,7 +22,7 @@ struct NavigationBar: View {
         ZStack (alignment: .top){
             Rectangle()
                 .frame(width: screenWidth, height: 75)
-                .foregroundStyle(Color.main)
+                .foregroundStyle(getColor("white"))
             
             HStack (alignment: .top ,spacing: 15){
                 ForEach(0 ..< 5) { i in
