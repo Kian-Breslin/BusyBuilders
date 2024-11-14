@@ -20,8 +20,6 @@ struct StartTask: View {
     
     // Show Inventory
     @State var placeholderSheet = false
-    @State var showInventory = "Inventory"
-    @State var showInventoryMoney = 0.0
     
     // Show Warning - No "Modifiers" Available
     @State var isWarningShowing = false
@@ -47,9 +45,15 @@ struct StartTask: View {
     @State var isCashBoosterActive = false
     @State var isCostReductionActive = false
     @State var isXPBoosterActive = false
+    @State var showInventory = false
     
     // Dev Tests
     let devNames = ["Math Masters","Eco Innovators","Science Solutions","Code Creators","Design Depot","Robotics Realm","Tech Repair Hub","Game Forge","AI Insights","Physics Powerhouse"]
+    
+    @State var Title = "Play"
+    @State var buttonImages = ["star", "banknote", "bag.badge.minus", "archivebox"]
+    @State var buttonText = ["XP +", "Cash +", "Cost -", "Inventory"]
+    @State var selectedScreen = ""
 
     var body: some View {
         if (currentView == 1) {
@@ -74,14 +78,9 @@ struct StartTask: View {
                     VStack {
                         // Top Header
                         HStack {
-                            VStack (alignment: .leading){
-                                Text("Play")
-                                    .font(.system(size: 35))
-                                    .fontWeight(.bold)
-                            }
-                            .onTapGesture {
-                                
-                            }
+                            Text(Title)
+                                .font(.system(size: 35))
+                                .fontWeight(.bold)
                             Spacer()
                             HStack (spacing: 15){
                                 ZStack {
@@ -89,9 +88,17 @@ struct StartTask: View {
                                     Image(systemName: "2.circle.fill")
                                         .font(.system(size: 15))
                                         .offset(x: 10, y: -10)
+                                        .onTapGesture {
+                                            
+                                        }
                                 }
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
+                                    .overlay(content: {
+                                        Image("userImage-2")
+                                            .resizable()
+                                            .frame(width: 40,height: 40)
+                                    })
                                     .onTapGesture {
                                         
                                         
@@ -99,21 +106,23 @@ struct StartTask: View {
                             }
                             .font(.system(size: 25))
                         }
-                        .frame(width: screenWidth-30, height: 80)
+                        .frame(width: screenWidth-30, height: 60)
                         
                         HStack {
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "\(isXPBoosterActive ? "star.fill" : "star")")
+                                        Image(systemName: isXPBoosterActive ? "\(buttonImages[0]).fill" : "\(buttonImages[0])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor(userColorPreference))
+                                            .foregroundStyle(getColor("black"))
+                                            
                                     }
                                     .onTapGesture {
                                         isXPBoosterActive.toggle()
                                     }
-                                Text("XP Booster")
+                                
+                                Text(buttonText[0])
                             }
                             .frame(width: 60, height: 80)
                             Spacer()
@@ -121,15 +130,16 @@ struct StartTask: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "\(isCashBoosterActive ? "banknote.fill" : "banknote")")
+                                        Image(systemName: isCashBoosterActive ? "\(buttonImages[1]).fill" : "\(buttonImages[1])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor(userColorPreference))
+                                            .foregroundStyle(getColor("black"))
+                                            
                                     }
                                     .onTapGesture {
                                         isCashBoosterActive.toggle()
-                                        print(" \(users.first?.inventory["\(Upgrades[0].upgradeName)"] ?? 0)")
                                     }
-                                Text("Cash Booster")
+                                
+                                Text(buttonText[1])
                             }
                             .frame(width: 60, height: 80)
                             Spacer()
@@ -137,14 +147,16 @@ struct StartTask: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "\(isCostReductionActive ? "bag.fill.badge.minus" : "bag.badge.minus")")
+                                        Image(systemName: isCostReductionActive ? "\(buttonImages[2]).fill" : "\(buttonImages[2])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor(userColorPreference))
+                                            .foregroundStyle(getColor("black"))
+                                            
                                     }
                                     .onTapGesture {
                                         isCostReductionActive.toggle()
                                     }
-                                Text("Cost Reduction")
+                                
+                                Text(buttonText[2])
                             }
                             .frame(width: 60, height: 80)
                             Spacer()
@@ -152,194 +164,199 @@ struct StartTask: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
                                     .overlay {
-                                        Image(systemName: "info")
+                                        Image(systemName: showInventory ? "\(buttonImages[3]).fill" : "\(buttonImages[3])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor(userColorPreference))
+                                            .foregroundStyle(getColor("black"))
+                                            
                                     }
                                     .onTapGesture {
-                                        placeholderSheet.toggle()
+                                        showInventory.toggle()
                                     }
-                                Text("More Info")
+                                
+                                Text(buttonText[3])
                             }
                             .frame(width: 60, height: 80)
+                            
                         }
-                        .frame(width: screenWidth-30, height: 80)
                         .font(.system(size: 12))
+                        .foregroundStyle(getColor("white"))
+                        .frame(width: screenWidth-30, height: 100)
                     }
-                    .foregroundStyle(getColor("white"))
-                    .frame(width: screenWidth-30, height: 180)
+                    .frame(width: screenWidth-30, height: 160)
 
-                    ZStack {
-                        // White Background
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: screenWidth, height: screenHeight/1.5)
-                            .foregroundStyle(.white)
-                        VStack {
-                            // Everything inside the white background
-                            Text("Start New Task")
-                                .frame(width: screenWidth-30, alignment: .leading)
-                                .font(.system(size: 35))
-                                .bold()
-                                .foregroundStyle(getColor(userColorPreference))
-                                .padding(.top, 20)
-                            VStack (alignment: .leading, spacing: 5){
-                                Text("Chose a business: \(selectedBusiness?.businessName ?? "")")
-                                    .font(.system(size: 15))
-                                ScrollView (.horizontal){
-                                    if !businesses.isEmpty {
-                                        HStack {
-                                            ForEach(businesses) { business in
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .frame(width: 120, height: 100)
-                                                    .overlay {
-                                                        VStack {
-                                                            Text("\(business.businessName)")
-                                                                .foregroundStyle(.white)
-                                                            
+                    // White Background
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: screenWidth)
+                        .foregroundStyle(getColor("white"))
+                        .overlay {
+                            VStack {
+                                // Everything inside the white background
+                                Text("Start New Task")
+                                    .frame(width: screenWidth-30, alignment: .leading)
+                                    .font(.system(size: 35))
+                                    .bold()
+                                    .foregroundStyle(getColor(userColorPreference))
+                                    .padding(.top, 20)
+                                VStack (alignment: .leading, spacing: 5){
+                                    Text("Chose a business: \(selectedBusiness?.businessName ?? "")")
+                                        .font(.system(size: 15))
+                                        .foregroundStyle(getColor("black"))
+                                    ScrollView (.horizontal){
+                                        if !businesses.isEmpty {
+                                            HStack {
+                                                ForEach(businesses) { business in
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .frame(width: 120, height: 100)
+                                                        .overlay {
+                                                            VStack {
+                                                                Text("\(business.businessName)")
+                                                                    .foregroundStyle(.white)
+                                                                
+                                                            }
                                                         }
-                                                    }
-                                                    .foregroundStyle(getColor(userColorPreference))
-                                                    .onTapGesture {
-                                                        selectedBusiness = business
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: screenWidth-30, height: 100)
-                                            .foregroundStyle(getColor(userColorPreference))
-                                            .overlay {
-                                                Text("Please add a business to begin!")
-                                                    .bold()
-                                                    .font(.system(size: 24))
-                                                    .foregroundStyle(.white)
-                                            }
-                                            .onTapGesture {
-                                                let newBusiness = BusinessDataModel(
-                                                    businessName: "Kians Shop",
-                                                    businessTheme: "Blue",
-                                                    businessType: "Economic",
-                                                    businessIcon: "triangle",
-                                                    owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
-                                                    cashPerMin: 3000,
-                                                    netWorth: 6000,
-                                                    investors: [
-                                                        UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
-                                                        UserDataModel(username: "Jack_00", name: "Jack", email: "JackJake@gmail.com"),
-                                                        UserDataModel(username: "Jay_09", name: "Jay", email: "JayYo@gmail.com"),
-                                                        UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
-                                                        UserDataModel(username: "LilJimmy", name: "Jim", email: "Jim@gmail.com"),
-                                                        UserDataModel(username: "LilLimmy", name: "Lim", email: "Lim@gmail.com"),
-                                                        UserDataModel(username: "LilPimmy", name: "Pim", email: "Pim@gmail.com"),
-                                                        UserDataModel(username: "LilTimmy", name: "Tim", email: "Tim@gmail.com"),
-                                                        UserDataModel(username: "LilRimmy", name: "Rim", email: "Rim@gmail.com")
-                                                    ],
-                                                    badges: ["10 Days Streak", "$1000 Earned", "First Upgrade", "", "", "", "", "", "", "",],
-                                                    sessionHistory:
-                                                        [SessionDataModel(
-                                                            id: UUID(),
-                                                            sessionDate: Date.now,
-                                                            sessionStart: formatFullDateTime(date: Date()),
-                                                            sessionEnd: formatFullDateTime(date: Date()),
-                                                            totalStudyTime: 3600, businessId: UUID()),
-                                                         SessionDataModel(
-                                                             id: UUID(),
-                                                             sessionDate: Date.now,
-                                                             sessionStart: formatFullDateTime(date: Date()),
-                                                             sessionEnd: formatFullDateTime(date: Date()),
-                                                             totalStudyTime: 3600, businessId: UUID())
-                                                        ],
-                                                    businessLevel: 7200,
-                                                    businessPrestige: "Growing Business")
-                                                
-                                                context.insert(newBusiness)
-                                                
-                                                do {
-                                                    try context.save()
-                                                    print("Made Placeholder Business")
-                                                } catch {
-                                                    print("Failed to save new business: \(error)")
+                                                        .foregroundStyle(getColor(userColorPreference))
+                                                        .onTapGesture {
+                                                            selectedBusiness = business
+                                                        }
                                                 }
                                             }
-                                    }
-                                }
-                            }
-                            .frame(width: screenWidth-30, alignment: .leading)
-                            
-                            TimeSelect(moveFiveMins: $timeRemaining)
-                            
-                            Button("Clock In!"){
-                                if selectedBusiness != nil && timeRemaining > 0 {
-                                    isWarningShowing = false // Reset the warning showing flag
-
-                                    // Check for Cash Booster
-                                    if isCashBoosterActive {
-                                        if let currentAmount = users.first?.inventory["\(Upgrades[0].upgradeName)"], currentAmount > 0 {
-                                            users.first!.inventory["\(Upgrades[0].upgradeName)"] = currentAmount - 1
-                                        } else {
-                                            isWarningShowing = true
-                                            warningErrorMessage = "Not Enough Cash Boosters"
+                                        }
+                                        else {
+                                            
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .frame(width: screenWidth-30, height: 100)
+                                                .foregroundStyle(getColor(userColorPreference))
+                                                .overlay {
+                                                    Text("Please add a business to begin!")
+                                                        .bold()
+                                                        .font(.system(size: 24))
+                                                        .foregroundStyle(.white)
+                                                }
+                                                .onTapGesture {
+                                                    let newBusiness = BusinessDataModel(
+                                                        businessName: "Kians Shop",
+                                                        businessTheme: "Blue",
+                                                        businessType: "Economic",
+                                                        businessIcon: "triangle",
+                                                        owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
+                                                        cashPerMin: 3000,
+                                                        netWorth: 6000,
+                                                        investors: [
+                                                            UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
+                                                            UserDataModel(username: "Jack_00", name: "Jack", email: "JackJake@gmail.com"),
+                                                            UserDataModel(username: "Jay_09", name: "Jay", email: "JayYo@gmail.com"),
+                                                            UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
+                                                            UserDataModel(username: "LilJimmy", name: "Jim", email: "Jim@gmail.com"),
+                                                            UserDataModel(username: "LilLimmy", name: "Lim", email: "Lim@gmail.com"),
+                                                            UserDataModel(username: "LilPimmy", name: "Pim", email: "Pim@gmail.com"),
+                                                            UserDataModel(username: "LilTimmy", name: "Tim", email: "Tim@gmail.com"),
+                                                            UserDataModel(username: "LilRimmy", name: "Rim", email: "Rim@gmail.com")
+                                                        ],
+                                                        badges: ["10 Days Streak", "$1000 Earned", "First Upgrade", "", "", "", "", "", "", "",],
+                                                        sessionHistory:
+                                                            [SessionDataModel(
+                                                                id: UUID(),
+                                                                sessionDate: Date.now,
+                                                                sessionStart: formatFullDateTime(date: Date()),
+                                                                sessionEnd: formatFullDateTime(date: Date()),
+                                                                totalStudyTime: 3600, businessId: UUID()),
+                                                             SessionDataModel(
+                                                                 id: UUID(),
+                                                                 sessionDate: Date.now,
+                                                                 sessionStart: formatFullDateTime(date: Date()),
+                                                                 sessionEnd: formatFullDateTime(date: Date()),
+                                                                 totalStudyTime: 3600, businessId: UUID())
+                                                            ],
+                                                        businessLevel: 7200,
+                                                        businessPrestige: "Growing Business")
+                                                    
+                                                    context.insert(newBusiness)
+                                                    
+                                                    do {
+                                                        try context.save()
+                                                        print("Made Placeholder Business")
+                                                    } catch {
+                                                        print("Failed to save new business: \(error)")
+                                                    }
+                                                }
                                         }
                                     }
+                                }
+                                .frame(width: screenWidth-30, alignment: .leading)
+                                
+                                TimeSelect(moveFiveMins: $timeRemaining)
+                                
+                                Button("Clock In!"){
+                                    if selectedBusiness != nil && timeRemaining > 0 {
+                                        isWarningShowing = false // Reset the warning showing flag
 
-                                    // Check for Cost Reduction
-                                    if isCostReductionActive {
-                                        if let currentAmountOfCostReductions = users.first?.inventory["\(Upgrades[2].upgradeName)"] {
-                                            if currentAmountOfCostReductions > 0 {
-                                                users.first!.inventory["\(Upgrades[2].upgradeName)"] = currentAmountOfCostReductions - 1
+                                        // Check for Cash Booster
+                                        if isCashBoosterActive {
+                                            if let currentAmount = users.first?.inventory["\(Upgrades[0].upgradeName)"], currentAmount > 0 {
+                                                users.first!.inventory["\(Upgrades[0].upgradeName)"] = currentAmount - 1
                                             } else {
                                                 isWarningShowing = true
-                                                warningErrorMessage = "Not Enough Cost Reductions"
+                                                warningErrorMessage = "Not Enough Cash Boosters"
                                             }
                                         }
-                                    }
 
-                                    // Check for XP Booster
-                                    if isXPBoosterActive {
-                                        if let currentAmount = users.first?.inventory["\(Upgrades[1].upgradeName)"], currentAmount > 0 {
-                                            users.first!.inventory["\(Upgrades[1].upgradeName)"] = currentAmount - 1
+                                        // Check for Cost Reduction
+                                        if isCostReductionActive {
+                                            if let currentAmountOfCostReductions = users.first?.inventory["\(Upgrades[2].upgradeName)"] {
+                                                if currentAmountOfCostReductions > 0 {
+                                                    users.first!.inventory["\(Upgrades[2].upgradeName)"] = currentAmountOfCostReductions - 1
+                                                } else {
+                                                    isWarningShowing = true
+                                                    warningErrorMessage = "Not Enough Cost Reductions"
+                                                }
+                                            }
+                                        }
+
+                                        // Check for XP Booster
+                                        if isXPBoosterActive {
+                                            if let currentAmount = users.first?.inventory["\(Upgrades[1].upgradeName)"], currentAmount > 0 {
+                                                users.first!.inventory["\(Upgrades[1].upgradeName)"] = currentAmount - 1
+                                            } else {
+                                                isWarningShowing = true
+                                                warningErrorMessage = "Not Enough XP Boosters"
+                                            }
+                                        }
+
+                                        // If any warning is shown, handle the warning
+                                        if isWarningShowing {
+                                            print(warningErrorMessage) // Log the warning message
                                         } else {
-                                            isWarningShowing = true
-                                            warningErrorMessage = "Not Enough XP Boosters"
-                                        }
-                                    }
+                                            // Proceed with saving the context and starting the timer
+                                            do {
+                                                try context.save()
+                                            } catch {
+                                                print("Failed to save user: \(error.localizedDescription)")
+                                            }
 
-                                    // If any warning is shown, handle the warning
-                                    if isWarningShowing {
-                                        print(warningErrorMessage) // Log the warning message
+                                            timeElapsed = 0
+                                            currentView = 1
+                                            isTimerActive.toggle()
+
+                                            timeStarted = formatFullDateTime(date: Date())
+                                            print(timeStarted)
+                                        }
                                     } else {
-                                        // Proceed with saving the context and starting the timer
-                                        do {
-                                            try context.save()
-                                        } catch {
-                                            print("Failed to save user: \(error.localizedDescription)")
-                                        }
-
-                                        timeElapsed = 0
-                                        currentView = 1
-                                        isTimerActive.toggle()
-
-                                        timeStarted = formatFullDateTime(date: Date())
-                                        print(timeStarted)
+                                        // Show a warning if no business is selected or time is not remaining
+                                        print("Please select a business before starting a timer!")
+                                        warningErrorMessage = "Please select a business before starting a timer!"
+                                        isWarningShowing.toggle()
                                     }
-                                } else {
-                                    // Show a warning if no business is selected or time is not remaining
-                                    print("Please select a business before starting a timer!")
-                                    warningErrorMessage = "Please select a business before starting a timer!"
-                                    isWarningShowing.toggle()
                                 }
+                                .frame(width: screenWidth-30, height: 50)
+                                .background(getColor(userColorPreference))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .foregroundStyle(.white)
+                                .fontWeight(.bold)
+                                
+                                Spacer()
                             }
-                            .frame(width: screenWidth-30, height: 50)
-                            .background(getColor(userColorPreference))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundStyle(.white)
-                            .fontWeight(.bold)
-                            
-                            Spacer()
-                        }
-                    }
+                            }
+                        
                 }
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: 200, height: 110)
@@ -360,15 +377,11 @@ struct StartTask: View {
                     }
                     .opacity(isWarningShowing ? 1 : 0)
             }
-            .foregroundStyle(.black)
+            .foregroundStyle(getColor("white"))
             .onAppear {
                 isCashBoosterActive = false
                 isCostReductionActive = false
                 isXPBoosterActive = false
-            }
-            .sheet(isPresented: $placeholderSheet) {
-                DashboardTopButtons(title: $showInventory, totalNetWorth: $showInventoryMoney, userColor: getColor(userColorPreference))
-                    .presentationDetents([.fraction(0.763)])
             }
         }
     }

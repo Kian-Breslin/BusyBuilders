@@ -21,13 +21,16 @@ struct Dashboard: View {
     @State var selectedTopButtons = ""
     @State var changeTopLeftValue = true
     
+    @State var Title = "Dashboard"
+    @State var buttonImages = ["house", "list.bullet", "banknote", "archivebox"]
+    @State var buttonText = ["Home", "List", "Bank", "Inventory"]
+    @State var selectedScreen = "house"
+    
     // Calculate Users NetWorth
     @State private var userTotalNetWorth: Double = 0.0 // This is a variable to store the users total net worth
     
     var body: some View {
-        
         ZStack {
-            
             getColor(userColorPreference)
                 .ignoresSafeArea()
             
@@ -36,14 +39,9 @@ struct Dashboard: View {
                 VStack {
                     // Top Header
                     HStack {
-                        VStack (alignment: .leading){
-                            Text("Dashboard")
-                                .font(.system(size: 35))
-                                .fontWeight(.bold)
-                        }
-                        .onTapGesture {
-                            
-                        }
+                        Text(Title)
+                            .font(.system(size: 35))
+                            .fontWeight(.bold)
                         Spacer()
                         HStack (spacing: 15){
                             ZStack {
@@ -52,7 +50,7 @@ struct Dashboard: View {
                                     .font(.system(size: 15))
                                     .offset(x: 10, y: -10)
                                     .onTapGesture {
-                                        isNotificationsShowing.toggle()
+                                        
                                     }
                             }
                             RoundedRectangle(cornerRadius: 10)
@@ -63,86 +61,46 @@ struct Dashboard: View {
                                         .frame(width: 40,height: 40)
                                 })
                                 .onTapGesture {
-                                    isSettingsShowing.toggle()
+                                    
                                     
                                 }
                         }
                         .font(.system(size: 25))
                     }
-                    .frame(width: screenWidth-30, height: 80)
+                    .frame(width: screenWidth-30, height: 60)
                     
                     HStack {
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "dollarsign")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    selectedTopButtons = "Send"
-                                    placeholderSheet.toggle()
-                                }
-                            Text("Send")
+                        ForEach(0..<4){ i in
+                            VStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 60, height: 60)
+                                    .overlay {
+                                        Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
+                                            .font(.system(size: 30))
+                                            .foregroundStyle(getColor("black"))
+                                            
+                                    }
+                                    .onTapGesture {
+                                        selectedScreen = buttonImages[i]
+                                    }
+                                Text(buttonText[i])
+                            }
+                            .frame(width: 60, height: 80)
+                            
+                            if i < 3 {
+                                Spacer()
+                            }
                         }
-                        .frame(width: 60, height: 80)
-                        Spacer()
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "dollarsign.arrow.circlepath")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    selectedTopButtons = "Withdraw"
-                                    placeholderSheet.toggle()
-                                }
-                            Text("Withdraw")
-                        }
-                        .frame(width: 60, height: 80)
-                        Spacer()
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "creditcard")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    selectedTopButtons = "Loan"
-                                    placeholderSheet.toggle()
-                                }
-                            Text("Loans")
-                        }
-                        .frame(width: 60, height: 80)
-                        Spacer()
-                        VStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 60, height: 60)
-                                .overlay {
-                                    Image(systemName: "archivebox")
-                                        .font(.system(size: 30))
-                                        .foregroundStyle(getColor(userColorPreference))
-                                }
-                                .onTapGesture {
-                                    selectedTopButtons = "Inventory"
-                                    placeholderSheet.toggle()
-                                }
-                            Text("Inventory")
-                        }
-                        .frame(width: 60, height: 80)
                     }
                     .font(.system(size: 12))
-                    .frame(width: screenWidth-30, height: 80)
+                    .foregroundStyle(getColor("white"))
+                    .frame(width: screenWidth-30, height: 100)
                 }
-                .frame(width: screenWidth-30, height: 180)
+                .frame(width: screenWidth-30, height: 160)
+
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .frame(width: screenWidth, height: screenHeight/1.5)
+                    .frame(width: screenWidth)
                     .overlay {
                         ScrollView (showsIndicators: false){
                             VStack (spacing: 10){
@@ -210,7 +168,7 @@ struct Dashboard: View {
         .fullScreenCover(isPresented: $showCalendar){
             Calendar()
         }
-        .onAppear{
+        .onAppear {
             userTotalNetWorth = calculateTotalBalance() + Double(users.first?.availableBalance ?? 0)
         }
     }

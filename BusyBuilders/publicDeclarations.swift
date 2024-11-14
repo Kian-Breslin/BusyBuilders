@@ -35,6 +35,7 @@ func textColor(_ name: String) -> Color {
 
 extension Color {
     static let main = Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255)
+    static let secondary = Color(red: 0.949, green: 0.949, blue: 0.949)
 }
 
 func getColor(_ name: String) -> Color {
