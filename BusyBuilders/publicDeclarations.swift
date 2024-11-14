@@ -112,6 +112,13 @@ public func timeFormattedSec(_ totalSeconds: Int) -> String {
     return String(format: "%02d:%02d", minutes, seconds)
 }
 
+public func timeFormattedSecToString ( _ totalSeconds : Int) -> String {
+    let minutes = totalSeconds / 60
+    let seconds = totalSeconds % 60
+    
+    return String(format: "%02dm %02ds", minutes, seconds)
+}
+
 func getDayOfMonth(from date: Date) -> Int? {
     let formatter = DateFormatter()
     formatter.dateFormat = "d" // 'd' corresponds to the day of the month
@@ -119,6 +126,18 @@ func getDayOfMonth(from date: Date) -> Int? {
         return day
     }
     return nil
+}
+
+public func getDayMonthYear(from date: Date) -> String? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEEE, d MMMM yyyy" // Format for "Monday, 9 September 2024"
+    return formatter.string(from: date)
+}
+
+public func getDateMonthYear(from date: Date) -> String? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "d MMMM yyyy" // Format for "Monday, 9 September 2024"
+    return formatter.string(from: date)
 }
 
 public func timeFormattedMins(_ totalSeconds: Int) -> String {
@@ -195,5 +214,12 @@ public func getLevelFromSec(_ sec: Int) -> Int {
     let level = min / 60
     
     return level
+}
+
+func timeComponents(from seconds: Int) -> [Int] {
+    let hours = seconds / 3600
+    let minutes = (seconds % 3600) / 60
+    let secs = seconds % 60
+    return [hours, minutes, secs]
 }
 

@@ -17,6 +17,7 @@ public class UserDataModel: Identifiable, ObservableObject {
     var businesses: [BusinessDataModel] // List of businesses owned by the user
     var availableBalance: Int
     var netWorth: Int
+    var created: Date
     
     var inventory: [String : Int] = [:]
     
@@ -27,7 +28,8 @@ public class UserDataModel: Identifiable, ObservableObject {
          email: String,
          password: String = "",
          availableBalance: Int = 0,
-         netWorth: Int = 0) {
+         netWorth: Int = 0,
+         created: Date = Date.now) {
         self.id = id
         self.username = username
         self.name = name
@@ -36,6 +38,7 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.businesses = []
         self.availableBalance = availableBalance
         self.netWorth = netWorth
+        self.created = created
         self.inventory = [
             "Cash Booster" : 0,
             "Experience Booster" : 0,

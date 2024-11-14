@@ -29,7 +29,7 @@ struct addNewUserToBusiness: View {
                         isOwner ? print("User added \(newUser) to Owners") : print("User added \(newUser) to Investors")
                         
                         if isOwner == true {
-                            business.owners.append(UserDataModel(username: newUser, name: newUser, email: "\(newUser)@gmail.com"))
+                            business.Owners.append(UserDataModel(username: newUser, name: newUser, email: "\(newUser)@gmail.com"))
                         } else {
                             business.investors.append(UserDataModel(username: newUser, name: newUser, email: "\(newUser)@gmail.com"))
                         }

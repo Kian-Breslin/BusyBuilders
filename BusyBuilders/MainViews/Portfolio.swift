@@ -30,6 +30,8 @@ struct Portfolio: View {
     @State var owners = ""
     
     @State var searchForUser = ""
+    @State var selectedBusinessToDelete : BusinessDataModel?
+    @State var confirmDeleteBusiness = false
     
     // For Developement
     let devNames = ["Math Masters","Eco Innovators","Science Solutions","Code Creators","Design Depot","Robotics Realm","Tech Repair Hub","Game Forge","AI Insights","Physics Powerhouse"]
@@ -43,11 +45,9 @@ struct Portfolio: View {
                     VStack {
                         // Top Header
                         HStack {
-                            VStack (alignment: .leading){
-                                Text("Portfolio")
-                                    .font(.system(size: 35))
-                                    .fontWeight(.bold)
-                            }
+                            Text("Portfolio")
+                                .font(.system(size: 35))
+                                .fontWeight(.bold)
                             .onTapGesture {
                                 
                             }
@@ -69,14 +69,9 @@ struct Portfolio: View {
                                             .resizable()
                                             .frame(width: 40,height: 40)
                                     })
-                                    .onTapGesture {
-                                        
-                                        
-                                    }
                             }
                             .font(.system(size: 25))
                         }
-                        .padding(15)
                         
                         HStack {
                             VStack {
@@ -92,6 +87,7 @@ struct Portfolio: View {
                                     }
                                 Text("My Stats")
                             }
+                            .frame(width: 60, height: 80)
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -106,6 +102,7 @@ struct Portfolio: View {
                                     }
                                 Text("My Businesses")
                             }
+                            .frame(width: 60, height: 80)
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -120,6 +117,7 @@ struct Portfolio: View {
                                     }
                                 Text("My City")
                             }
+                            .frame(width: 60, height: 80)
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -134,16 +132,18 @@ struct Portfolio: View {
                                     }
                                 Text("Investments")
                             }
+                            .frame(width: 60, height: 80)
                         }
-                        .padding(.horizontal, 15)
+                        .frame(width: screenWidth-30, height: 80)
                         .font(.system(size: 12))
                     }
+                    .frame(width: screenWidth-30, height: 180)
 
                     
                     // List existing businesses
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: screenWidth, height: screenHeight/1.45)
+                            .frame(width: screenWidth, height: screenHeight/1.5)
                             .foregroundStyle(getColor("white"))
                         
                         if selectedScreen == "person" {
@@ -207,26 +207,94 @@ struct Portfolio: View {
                             .frame(width: screenWidth-30, height: (screenHeight-90) / 1.4, alignment: .leading)
                         }
                         else if selectedScreen == "building" {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 20) {
-                                    ForEach(businesses) { business in
-                                        BusinessCard(business: business)
-                                            .containerRelativeFrame(.horizontal, count: 1, spacing: 16)
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 250, height: 150)
+                                .foregroundStyle(getColor("black"))
+                                .overlay {
+                                    VStack {
+                                        Text("Confirm Deletion")
+                                            .bold()
+                                            .foregroundStyle(getColor("white"))
+                                        Spacer()
+                                        Text("Are you sure you want to delete \(selectedBusinessToDelete?.businessName ?? "Name")?")
+                                            .font(.system(size: 15))
+                                            .multilineTextAlignment(.center)
+                                       
+                                        Spacer()
+                                        HStack {
+                                            Text("Back")
+                                                .font(.system(size: 20))
+                                                .foregroundStyle(getColor("blue"))
+                                                .frame(width: 120)
+                                                .onTapGesture {
+                                                    confirmDeleteBusiness.toggle()
+                                                }
+                                            Rectangle()
+                                                .frame(width: 2, height: 20)
+                                                .opacity(0.5)
+                                                .foregroundStyle(getColor("white"))
+                                            Text("Confirm")
+                                                .foregroundStyle(getColor("red"))
+                                                .font(.system(size: 20))
+                                                .frame(width: 120)
+                                                .onTapGesture {
+                                                    print("Deleted: \(selectedBusinessToDelete!)")
+                                                    context.delete(selectedBusinessToDelete!)
+                                                    do {
+                                                        try context.save()
+                                                        confirmDeleteBusiness.toggle()
+                                                    } catch {
+                                                        print("Error Deleting Business")
+                                                    }
+                                                }
+                                        }
                                     }
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: screenWidth - 60, height: 520)
-                                        .foregroundStyle(getColor("black"))
-                                        .containerRelativeFrame(.horizontal, count: 1, spacing: 16)
-                                        .overlay {
-                                            Text("Add New User")
-                                        }
-                                        .onTapGesture {
-                                            isNewBusinessSheetShowing.toggle()
-                                        }
+                                    .padding()
+                                    .foregroundStyle(getColor("white"))
                                 }
-                                .scrollTargetLayout()
+                                .opacity(confirmDeleteBusiness ? 1 : 0)
+                                .zIndex(99)
+                            ScrollView {
+                                VStack {
+                                    ForEach(businesses){ b in 
+                                        NavigationLink(destination : BusinessNavigationDestination(business: b)){
+                                            BusinessListItem(business: b)
+                                                .onLongPressGesture(minimumDuration: 0.5) {
+                                                    selectedBusinessToDelete = b
+                                                    confirmDeleteBusiness.toggle()
+                                                }
+                                                .sensoryFeedback(.impact(flexibility: .soft, intensity: 50), trigger: confirmDeleteBusiness)
+                                        }
+                                    }
+                                }
+                                RoundedRectangle(cornerRadius: 5)
+                                    .frame(width: screenWidth-30, height: 100)
+                                    .foregroundStyle(getColor("black"))
+                                    .overlay {
+                                        Text("Click here to add a Business")
+                                            .opacity(0.7)
+                                            .font(.system(size: 25))
+                                    }
+                                    .onTapGesture {
+                                        let n = randomNumber(in: 0...4)
+                                        let t = randomNumber(in: 0...2)
+                                        let newBusiness = BusinessDataModel(businessName: "\(devNames[n])", businessTheme: "\(colorNames[n])", businessType: "\(businessTypes[t])", businessIcon: "\(iconNames[n])",owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com"),UserDataModel(username: "Kim_01", name: "Kimberly", email: "kimberly01leon@gmail.com")], investors: [
+                                            UserDataModel(username: "Kimmy_9", name: "Kim", email: "Kim@gmail.com"),
+                                            UserDataModel(username: "Jim_00", name: "Jim", email: "Jim@gmail.com"),
+                                            UserDataModel(username: "Jack_99", name: "Jack", email: "Jack@gmail.com"),
+                                            UserDataModel(username: "LilPimmy", name: "Pim", email: "Pim@gmail.com"),
+                                            UserDataModel(username: "LilTimmy", name: "Tim", email: "Tim@gmail.com"),
+                                            UserDataModel(username: "LilYimmy", name: "Yim", email: "Yim@gmail.com")
+                                        ])
+
+                                        
+                                        context.insert(newBusiness)
+                                        print("New Business Added")
+                                    }
                             }
-                            .scrollTargetBehavior(.viewAligned)                        }
+                            .blur(radius: confirmDeleteBusiness ? 5 : 0)
+                            .padding(.top, 15)
+                        }
                         else if selectedScreen == "building.columns" {
                             Text("My City")
                                 .foregroundStyle(.black)
@@ -236,7 +304,9 @@ struct Portfolio: View {
                                 .foregroundStyle(.black)
                         }
                     }
+                    Spacer()
                 }
+                
             }
         }
         .sheet(isPresented: $isNewBusinessSheetShowing) {
@@ -245,6 +315,13 @@ struct Portfolio: View {
         }
     }
 }
+
+struct test: View {
+    var body: some View {
+        Text("It Worked")
+    }
+}
+
 
 #Preview {
     Portfolio()

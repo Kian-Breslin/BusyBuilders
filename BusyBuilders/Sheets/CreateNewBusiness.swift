@@ -122,6 +122,7 @@ struct CreateNewBusiness: View {
                             .onTapGesture {
                                 if owners != "" {
                                     ownersArray.append(createUserFromUsername(owners))
+                                    print(ownersArray)
                                 }
                                 owners = ""
                             }
@@ -137,8 +138,8 @@ struct CreateNewBusiness: View {
                         
                         let newBusiness = BusinessDataModel(businessName: businessName, businessTheme: businessTheme, businessType: businessType, businessIcon: businessIcon, investment: investment)
                         
-                        newBusiness.owners.insert(user!, at: 0)
-                        newBusiness.owners.insert(contentsOf: ownersArray, at: 1)
+                        newBusiness.Owners.insert(user!, at: 0)
+                        newBusiness.Owners.insert(contentsOf: ownersArray, at: 1)
                         
                         context.insert(newBusiness)
                         

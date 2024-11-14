@@ -285,8 +285,10 @@ struct Timer1: View {
         
         // Add Cash earned to business
         selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-        // Add Experience
-//                            selectedBusiness?.businessLevel = timeElapsed
+        // Add Experience - Calc with XP Booster
+        selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed
+        // Add Time
+        selectedBusiness?.time = (selectedBusiness?.time ?? 0) + timeElapsed
         // Create new session entry
         let session = SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
         

@@ -15,7 +15,8 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var businessTheme: String
     var businessType: String // New property for business type
     var businessIcon: String
-    var owners: [UserDataModel] // Assuming it's an array of owner IDs or names
+    var Owners: [UserDataModel] // Assuming it's an array of owner IDs or names
+    var time: Int // Keeps track of the Users time spent
     var cashPerMin: Int
     var netWorth: Double
     var costPerMin: Double
@@ -31,13 +32,14 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var streak : Int
 
     // Initializer
-    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], cashPerMin: Int = 1000, netWorth: Double = 0, costPerMin: Double = 0.10, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0) {
+    init(businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, cashPerMin: Int = 1000, netWorth: Double = 0, costPerMin: Double = 0.10, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0) {
         self.id = UUID() // Automatically generate a new UUID
         self.businessName = businessName
         self.businessTheme = businessTheme
         self.businessType = businessType
         self.businessIcon = businessIcon
-        self.owners = owners
+        self.Owners = owners
+        self.time = time
         self.cashPerMin = cashPerMin
         self.costPerMin = costPerMin
         self.netWorth = netWorth

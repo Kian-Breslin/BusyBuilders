@@ -75,15 +75,12 @@ struct StartTask: View {
                         // Top Header
                         HStack {
                             VStack (alignment: .leading){
-                                Text("$\(selectedBusiness?.netWorth ?? 0, specifier: "%.f")")
+                                Text("Play")
                                     .font(.system(size: 35))
                                     .fontWeight(.bold)
-                                    .onTapGesture {
-                                        
-                                    }
-                                HStack (spacing: 35){
-                                    Text("Net Worth")
-                                }
+                            }
+                            .onTapGesture {
+                                
                             }
                             Spacer()
                             HStack (spacing: 15){
@@ -102,7 +99,7 @@ struct StartTask: View {
                             }
                             .font(.system(size: 25))
                         }
-                        .padding(15)
+                        .frame(width: screenWidth-30, height: 80)
                         
                         HStack {
                             VStack {
@@ -118,6 +115,7 @@ struct StartTask: View {
                                     }
                                 Text("XP Booster")
                             }
+                            .frame(width: 60, height: 80)
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -133,6 +131,7 @@ struct StartTask: View {
                                     }
                                 Text("Cash Booster")
                             }
+                            .frame(width: 60, height: 80)
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -147,6 +146,7 @@ struct StartTask: View {
                                     }
                                 Text("Cost Reduction")
                             }
+                            .frame(width: 60, height: 80)
                             Spacer()
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -161,11 +161,13 @@ struct StartTask: View {
                                     }
                                 Text("More Info")
                             }
+                            .frame(width: 60, height: 80)
                         }
-                        .padding(.horizontal, 15)
+                        .frame(width: screenWidth-30, height: 80)
                         .font(.system(size: 12))
                     }
-                    .foregroundStyle(.white)
+                    .foregroundStyle(getColor("white"))
+                    .frame(width: screenWidth-30, height: 180)
 
                     ZStack {
                         // White Background
@@ -226,7 +228,13 @@ struct StartTask: View {
                                                     investors: [
                                                         UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
                                                         UserDataModel(username: "Jack_00", name: "Jack", email: "JackJake@gmail.com"),
-                                                        UserDataModel(username: "Jay_09", name: "Jay", email: "JayYo@gmail.com")
+                                                        UserDataModel(username: "Jay_09", name: "Jay", email: "JayYo@gmail.com"),
+                                                        UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
+                                                        UserDataModel(username: "LilJimmy", name: "Jim", email: "Jim@gmail.com"),
+                                                        UserDataModel(username: "LilLimmy", name: "Lim", email: "Lim@gmail.com"),
+                                                        UserDataModel(username: "LilPimmy", name: "Pim", email: "Pim@gmail.com"),
+                                                        UserDataModel(username: "LilTimmy", name: "Tim", email: "Tim@gmail.com"),
+                                                        UserDataModel(username: "LilRimmy", name: "Rim", email: "Rim@gmail.com")
                                                     ],
                                                     badges: ["10 Days Streak", "$1000 Earned", "First Upgrade", "", "", "", "", "", "", "",],
                                                     sessionHistory:

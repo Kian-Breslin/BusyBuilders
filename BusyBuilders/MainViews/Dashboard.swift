@@ -37,13 +37,12 @@ struct Dashboard: View {
                     // Top Header
                     HStack {
                         VStack (alignment: .leading){
-                            Text(changeTopLeftValue ? "$\(userTotalNetWorth, specifier: "%.f")" : "$\(users.first?.availableBalance ?? 0)")
+                            Text("Dashboard")
                                 .font(.system(size: 35))
                                 .fontWeight(.bold)
-                            Text(changeTopLeftValue ? "Total Net Worth" : "Total Available Balance")
                         }
                         .onTapGesture {
-                            changeTopLeftValue.toggle()
+                            
                         }
                         Spacer()
                         HStack (spacing: 15){
@@ -70,7 +69,7 @@ struct Dashboard: View {
                         }
                         .font(.system(size: 25))
                     }
-                    .padding(15)
+                    .frame(width: screenWidth-30, height: 80)
                     
                     HStack {
                         VStack {
@@ -82,11 +81,12 @@ struct Dashboard: View {
                                         .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
-                                    selectedTopButtons = "Send Money"
+                                    selectedTopButtons = "Send"
                                     placeholderSheet.toggle()
                                 }
-                            Text("Send Money")
+                            Text("Send")
                         }
+                        .frame(width: 60, height: 80)
                         Spacer()
                         VStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -97,11 +97,12 @@ struct Dashboard: View {
                                         .foregroundStyle(getColor(userColorPreference))
                                 }
                                 .onTapGesture {
-                                    selectedTopButtons = "Withdraw Money"
+                                    selectedTopButtons = "Withdraw"
                                     placeholderSheet.toggle()
                                 }
-                            Text("Withdraw Money")
+                            Text("Withdraw")
                         }
+                        .frame(width: 60, height: 80)
                         Spacer()
                         VStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -117,6 +118,7 @@ struct Dashboard: View {
                                 }
                             Text("Loans")
                         }
+                        .frame(width: 60, height: 80)
                         Spacer()
                         VStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -132,10 +134,12 @@ struct Dashboard: View {
                                 }
                             Text("Inventory")
                         }
+                        .frame(width: 60, height: 80)
                     }
-                    .padding(.horizontal, 15)
                     .font(.system(size: 12))
+                    .frame(width: screenWidth-30, height: 80)
                 }
+                .frame(width: screenWidth-30, height: 180)
                 
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: screenWidth, height: screenHeight/1.5)
