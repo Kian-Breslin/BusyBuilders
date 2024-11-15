@@ -12,11 +12,6 @@ struct LargeWidget: View {
     @AppStorage("userTextPreference") var userTextPreference: String = "white"
     @State var selectedView : Int
     var colorName : Color
-    // List of Widget :
-    // 1. Revenue ( Daily, Weekly, Monthly )
-    // 2. Streak Calendar
-    // 3. Leaderboard
-    // 4. Specific Business Stats ( Revenue, Total Hours, Level, Quick start )
     let daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     let daysInMonth: [Int] = Array(1...31) // Adjust based on the month
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
@@ -54,7 +49,7 @@ struct LargeWidget: View {
         else if selectedView == 2 {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(colorName)
-                .frame(width: screenWidth-15, height: 200)
+                .frame(width: screenWidth-30, height: 200)
                 .overlay {
                     HStack {
                         // LEFT SIDE
@@ -253,5 +248,5 @@ struct LargeWidget: View {
 
 
 #Preview {
-    LargeWidget(selectedView: 3, colorName: Color(red: 244/255, green: 73/255, blue: 73/255))
+    LargeWidget(selectedView: 2, colorName: Color(red: 244/255, green: 73/255, blue: 73/255))
 }

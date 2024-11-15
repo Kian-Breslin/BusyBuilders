@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct FlashCard: View {
+struct FCTest: View {
     
     @AppStorage("userColorPreference") var userColorPreference: String = "red"
     @Environment(\.dismiss) var dismiss
@@ -64,5 +64,5 @@ struct FlashCard: View {
 }
 
 #Preview {
-    FlashCard(question: "What is the capital of Ireland", answer: "Dublin")
+    FCTest(question: "What is the capital of Ireland", answer: "Dublin")
 }

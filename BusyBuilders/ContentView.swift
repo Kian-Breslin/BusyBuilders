@@ -16,18 +16,6 @@ struct ContentView: View {
     @State var isTaskActive = false
     @EnvironmentObject var userManager: UserManager
     
-    let DashboardButtonImages = ["house", "list.bullet", "banknote", "archivebox"]
-    let CommunitiesButtonImages = ["person.2.fill", "message.fill", "bubble.left.and.bubble.right.fill", "flag.fill"]
-    let StartTaskButtonImages = ["sparkles", "dollarsign.circle", "scissors", "tray.full"]
-    let StoreButtonImages = ["arrow.up.circle", "paintbrush", "cube.box.fill", "star.circle.fill"]
-    let PortfolioButtonImages = ["person", "building", "building.columns", "chart.line.flattrend.xyaxis"]
-
-    let DashboardButtonTitles = ["Home", "List", "Bank", "Inventory"]
-    let CommunitiesButtonTitles = ["People", "Messages", "Chat", "Disputes"]
-    let StartTaskButtonTitles = ["XPBooster", "CashBooster", "CostReduction", "Inventory"]
-    let StoreButtonTitles = ["Upgrades", "Cosmetics", "Packs", "Specials"]
-    let PortfolioButtonTitles = ["My Stats", "My Businesses", "My City", "Investments"]
-    
     var body: some View {
         if userManager.isUserCreated == false {
             UserSignUp()

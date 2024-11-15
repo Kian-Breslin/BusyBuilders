@@ -77,18 +77,18 @@ struct MyBusinesses: View {
                             .sensoryFeedback(.impact(flexibility: .soft, intensity: 50), trigger: confirmDeleteBusiness)
                     }
                 }
+                RoundedRectangle(cornerRadius: 5)
+                    .frame(width: screenWidth-30, height: 100)
+                    .foregroundStyle(getColor("black"))
+                    .overlay {
+                        Text("Click here to add a Business")
+                            .opacity(0.7)
+                            .font(.system(size: 25))
+                    }
+                    .onTapGesture {
+                        createNewBusiness = true
+                    }
             }
-            RoundedRectangle(cornerRadius: 5)
-                .frame(width: screenWidth-30, height: 100)
-                .foregroundStyle(getColor("black"))
-                .overlay {
-                    Text("Click here to add a Business")
-                        .opacity(0.7)
-                        .font(.system(size: 25))
-                }
-                .onTapGesture {
-                    createNewBusiness = true
-                }
         }
         .blur(radius: confirmDeleteBusiness ? 5 : 0)
         .padding(.top, 15)
