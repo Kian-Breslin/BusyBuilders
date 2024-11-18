@@ -14,7 +14,9 @@ struct ContentView: View {
     
     @State var selectedView = 0
     @State var isTaskActive = false
+    @State var isSettingsShowing = false
     @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         if userManager.isUserCreated == false {
@@ -23,7 +25,7 @@ struct ContentView: View {
         else {
             ZStack {
                 if (selectedView == 0) {
-                    Dashboard(dashboardSelection: $selectedView)
+                    Dashboard(dashboardSelection: $selectedView, isSettingsShowing: $isSettingsShowing)
                 } else if selectedView == 1 {
                     Communities()
                 } else if selectedView == 2 {
@@ -41,6 +43,9 @@ struct ContentView: View {
                 }
                 .ignoresSafeArea()
             }
+            .fullScreenCover(isPresented: $isSettingsShowing) {
+                Settings()
+            }
         }
     }
 }
@@ -49,6 +54,7 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: [UserDataModel.self], inMemory: true)
         .environmentObject(UserManager())
+        .environmentObject(ThemeManager())
 }
 
 /*

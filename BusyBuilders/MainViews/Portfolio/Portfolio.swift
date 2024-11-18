@@ -10,7 +10,7 @@ import SwiftData
 
 struct Portfolio: View {
     
-    @AppStorage("userColorPreference") var userColorPreference: String = "red"
+    @EnvironmentObject var themeManager: ThemeManager
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
@@ -28,7 +28,7 @@ struct Portfolio: View {
     var body: some View {
         NavigationView {
             ZStack {
-                getColor(userColorPreference)
+                getColor("Black")
                     .ignoresSafeArea()
                 VStack {
                     VStack {
@@ -120,4 +120,6 @@ struct Portfolio: View {
 
 #Preview {
     Portfolio()
+        .environmentObject(UserManager())
+        .environmentObject(ThemeManager())
 }

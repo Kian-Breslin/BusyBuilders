@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MyStats: View {
+    @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
         VStack (alignment: .leading){
             
@@ -72,4 +73,5 @@ struct MyStats: View {
 
 #Preview {
     MyStats()
+        .environmentObject(ThemeManager())
 }

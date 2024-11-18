@@ -300,4 +300,5 @@ struct BusinessDetails: View {
 #Preview {
     BusinessDetails( business: BusinessDataModel(businessName: "Kims Shop", businessTheme: "Blue", businessType: "Economic", businessIcon: "triangle", cashPerMin: 3000, netWorth: 250000, sessionHistory: [SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: formatFullDateTime(date: Date()), sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: 3600, businessId: UUID())], businessLevel: 302400, businessPrestige: "Growing Business"))
         .modelContainer(for: UserDataModel.self, inMemory: true)
+        .environmentObject(ThemeManager())
 }

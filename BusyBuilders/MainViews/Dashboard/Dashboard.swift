@@ -2,18 +2,17 @@ import SwiftUI
 import SwiftData
 
 struct Dashboard: View {
+    @EnvironmentObject var themeManager: ThemeManager
     
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel] // Query for businesses
     @Binding var dashboardSelection : Int
-    
-    @AppStorage("userColorPreference") var userColorPreference: String = "black"
-    @AppStorage("userTextPreference") var userTextPreference: String = "white"
+
     
     @State var colorWhite = Color(red: 0.95, green: 0.95, blue: 0.95)
     
-    @State var isSettingsShowing = false
+    @Binding var isSettingsShowing : Bool
     @State var isNotificationsShowing = false
     @State var showFlashCards = false
     @State var showCalendar = false
@@ -24,7 +23,7 @@ struct Dashboard: View {
     @State var Title = "Dashboard"
     @State var buttonImages = ["house", "clipboard", "banknote", "archivebox"]
     @State var buttonText = ["Home", "Flashcards", "Bank", "Inventory"]
-    @State var selectedScreen = "clipboard"
+    @State var selectedScreen = "house"
     
     // Calculate Users NetWorth
     @State private var userTotalNetWorth: Double = 0.0 // This is a variable to store the users total net worth
@@ -32,7 +31,7 @@ struct Dashboard: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                getColor(userColorPreference)
+                getColor("Black")
                     .ignoresSafeArea()
                 
                 VStack {
@@ -62,8 +61,7 @@ struct Dashboard: View {
                                             .frame(width: 40,height: 40)
                                     })
                                     .onTapGesture {
-                                        
-                                        
+                                        isSettingsShowing.toggle()
                                     }
                             }
                             .font(.system(size: 25))
@@ -75,10 +73,11 @@ struct Dashboard: View {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
+                                        .foregroundStyle(getColor("white"))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(getColor("Black"))
                                                 
                                         }
                                         .onTapGesture {
@@ -105,52 +104,8 @@ struct Dashboard: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
                         .overlay {
-                            if selectedScreen == "house" {
-                                ScrollView (showsIndicators: false){
-                                    VStack (spacing: 10){
-                                        LargeWidget(selectedView: 2, colorName: getColor(userColorPreference))
-                                            .padding(.top, 10)
-                                        HStack {
-                                            MediumWidget(colorName: getColor(userColorPreference))
-                                                .onTapGesture {
-                                                    showFlashCards.toggle()
-                                                }
-                                            Spacer()
-                                            
-                                            MediumWidget(colorName: getColor(userColorPreference))
-                                                .onTapGesture {
-                                                    showFlashCards.toggle()
-                                                }
-                                        }
-                                        .frame(width: screenWidth-15)
-                                        
-                                        LargeWidget(selectedView: 1, colorName: getColor(userColorPreference))
-                                            .onTapGesture {
-                                                showCalendar.toggle()
-                                            }
-                                        
-                                        HStack {
-                                            MediumWidget(colorName: getColor(userColorPreference))
-                                            Spacer()
-                                            MediumWidget(colorName: getColor(userColorPreference))
-                                        }
-                                        .frame(width: screenWidth-15)
-                                        
-                                        LargeWidget(selectedView: 2, colorName: getColor(userColorPreference))
-                                            .frame(width: screenWidth-15)
-                                        
-                                        HStack {
-                                            MediumWidget(colorName: getColor(userColorPreference))
-                                            Spacer()
-                                            MediumWidget(colorName: getColor(userColorPreference))
-                                        }
-                                        .frame(width: screenWidth-15)
-                                        
-                                        Spacer()
-                                    }
-                                }
-                                .padding(.bottom, 35)
-                                .padding(.top, 5)
+                            if selectedScreen == buttonImages[0] {
+                                DashboardHomeView()
                             }
                             else if selectedScreen == buttonImages[1] {
                                 ScrollView (showsIndicators: false){
@@ -158,13 +113,13 @@ struct Dashboard: View {
                                         NavigationLink (destination: FlashCardWidget()){
                                             VStack (alignment: .leading, spacing: 5){
                                                 Text("Weekly Goals")
-                                                    .foregroundStyle(getColor("black"))
+                                                    .foregroundStyle(getColor("Black"))
                                                     .font(.system(size: 15))
                                                     .opacity(0.7)
                                                 ScrollView (.horizontal, showsIndicators: false){
                                                     HStack {
                                                         ForEach(0..<2) { i in
-                                                            WeeklyStudyGoal()
+                                                            WeeklyStudyGoal(mainColor: themeManager.mainColor, secondaryColor: getColor(themeManager.secondaryColor), textColor: themeManager.textColor)
                                                                 .containerRelativeFrame(.horizontal, count: 1, spacing: 16)
                                                         }
                                                     }
@@ -176,23 +131,23 @@ struct Dashboard: View {
                                         
                                         VStack (alignment: .leading, spacing: 5){
                                             Text("Flash Cards")
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(getColor("Black"))
                                                 .font(.system(size: 15))
                                                 .opacity(0.7)
                                             
                                             NavigationLink( destination: DeckList()){
-                                                WeeklyStudyGoal()
+                                                
                                             }
                                         }
                                         
                                         VStack (alignment: .leading, spacing: 5){
                                             Text("Create Flash Cards")
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(getColor("Black"))
                                                 .font(.system(size: 15))
                                                 .opacity(0.7)
                                             
                                             NavigationLink( destination: CreateFlashcard()){
-                                                WeeklyStudyGoal()
+                                                
                                             }
                                         }
 
@@ -205,42 +160,18 @@ struct Dashboard: View {
                         }
                 }
             }
-            .foregroundStyle(colorWhite)
-        }
-        .fullScreenCover(isPresented: $isSettingsShowing){
-            Settings(userColorPreference: $userColorPreference)
-        }
-        .sheet(isPresented: $placeholderSheet) {
-            DashboardTopButtons(title: $selectedTopButtons, totalNetWorth: $userTotalNetWorth, userColor: getColor(userColorPreference))
-                .presentationDetents([.fraction(0.763)])
+            .foregroundStyle(getColor("white"))
         }
         .sheet(isPresented: $isNotificationsShowing) {
             Notifications()
                 .presentationDetents([.fraction(0.883)])
         }
-        .fullScreenCover(isPresented: $showFlashCards){
-            
-        }
-        .fullScreenCover(isPresented: $showCalendar){
-            Calendar()
-        }
-        .onAppear {
-            userTotalNetWorth = calculateTotalBalance() + Double(users.first?.availableBalance ?? 0)
-        }
-    }
-    
-    private func calculateTotalBalance() -> Double {
-        // Sum the net worth from all businesses
-        var totalBalance: Double {
-            // Sum the net worth from all businesses using reduce
-            businesses.reduce(0) { $0 + $1.netWorth }
-        }
-        
-        return totalBalance
     }
 }
 
 #Preview {
-    Dashboard(dashboardSelection: .constant(0))
+    Dashboard(dashboardSelection: .constant(0), isSettingsShowing: .constant(false))
         .modelContainer(for: [UserDataModel.self])
+        .environmentObject(UserManager())
+        .environmentObject(ThemeManager())
 }

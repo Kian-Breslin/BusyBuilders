@@ -8,43 +8,24 @@
 import SwiftUI
 
 struct Test_View: View {
-    @State private var businessName: String = ""
-    @State private var investment: Double = 0.0
-    @State private var businessType: String = "Corporate"
-    @State private var isConfirmed: Bool = false
-
-    let businessTypes = ["Eco-Friendly", "Corporate", "Innovative"]
+    
+    @State var mainColor : Color
+    @State var secondaryColor: Color
+    @State var textColor: Color
 
     var body: some View {
-        Form {
-            Section(header: Text("Business Details")) {
-                TextField("Business Name", text: $businessName)
-                
-                Picker("Business Type", selection: $businessType) {
-                    ForEach(businessTypes, id: \.self) {
-                        Text($0)
-                    }
-                }
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: 300, height: 100)
+            .foregroundStyle(mainColor)
+            .overlay{
+                Text("This text should be white")
+                    .foregroundStyle(textColor)
             }
-
-            Section(header: Text("Investment")) {
-                Slider(value: $investment, in: 0...100000, step: 500)
-                Text("Investment: \(Int(investment))")
-            }
-            
-            Section {
-                Toggle("Confirm Details", isOn: $isConfirmed)
-            }
-
-            Button("Create Business") {
-                // Action to create the business
-            }
-            .disabled(!isConfirmed) // Disable until confirmed
-        }
-        .navigationTitle("New Business")
+        
     }
 }
 
 #Preview {
-    Test_View()
+    Test_View(mainColor: getColor("black"), secondaryColor: getColor("red"), textColor: getColor("white"))
+        .environmentObject(ThemeManager())
 }

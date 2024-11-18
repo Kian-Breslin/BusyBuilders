@@ -13,6 +13,7 @@ struct MyBusinesses: View {
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
     @Environment(\.modelContext) var context
+    @EnvironmentObject var themeManager: ThemeManager
     @State var selectedBusinessToDelete : BusinessDataModel?
     @State var confirmDeleteBusiness = false
     @State var createNewBusiness = false
@@ -102,4 +103,5 @@ struct MyBusinesses: View {
 #Preview {
     MyBusinesses()
         .modelContainer(for: UserDataModel.self, inMemory: true)
+        .environmentObject(ThemeManager())
 }

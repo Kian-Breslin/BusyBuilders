@@ -16,6 +16,24 @@ class AppSettings: ObservableObject {
 
 class UserManager: ObservableObject {
     @AppStorage("isUserCreated") var isUserCreated: Bool = false
+    @AppStorage("colorScheme") var colorScheme: String = "Red"
+    @AppStorage("isDarkMode") var isDarkMode: Bool = true
+    @AppStorage("textColor") var textColor: String = "white"
+}
+
+import SwiftUI
+
+class ThemeManager: ObservableObject {
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+    @AppStorage("secondaryColor") var secondaryColor: String = "red"
+
+    var mainColor: Color {
+        isDarkMode ? getColor("black") : getColor("white")
+    }
+    
+    var textColor: Color {
+        isDarkMode ? getColor("white") : getColor("black")
+    }
 }
 
 
