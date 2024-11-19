@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct SettingsNavigation: View {
+    @EnvironmentObject var themeManager: ThemeManager
+    @EnvironmentObject var userManager: UserManager
     
     @Query var users: [UserDataModel]
     @Environment(\.modelContext) var context
@@ -108,6 +110,22 @@ struct SettingsNavigation: View {
                     }
                     .frame(width: 200, height: 40)
                     .background(getColor("red"))
+                    .foregroundStyle(getColor("white"))
+                    
+                    Button("Remove All Users"){
+                        for user in users {
+                                context.delete(user)
+                            }
+                        
+                        do {
+                            try context.save()
+                            userManager.isUserCreated = false
+                        } catch {
+                            print("Couldnt delete users")
+                        }
+                    }
+                    .frame(width: 200, height: 40)
+                    .background(getColor("blue"))
                     .foregroundStyle(getColor("white"))
                 }
             }

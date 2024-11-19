@@ -20,7 +20,7 @@ struct ContentView: View {
     
     var body: some View {
         if userManager.isUserCreated == false {
-            UserSignUp()
+            Onboarding()
         }
         else {
             ZStack {

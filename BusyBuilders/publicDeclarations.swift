@@ -24,7 +24,7 @@ class UserManager: ObservableObject {
 import SwiftUI
 
 class ThemeManager: ObservableObject {
-    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+    @AppStorage("isDarkMode") var isDarkMode: Bool = true
     @AppStorage("secondaryColor") var secondaryColor: String = "red"
 
     var mainColor: Color {
