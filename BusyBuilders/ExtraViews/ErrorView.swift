@@ -19,7 +19,7 @@ struct ErrorView: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: 250, height: 150)
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
             .overlay {
                 VStack {
                     Text("\(title)")
@@ -56,7 +56,7 @@ struct ErrorView: View {
                     .frame(height: 30)
                 }
                 .padding(.vertical, 10)
-                .foregroundStyle(getColor("white"))
+                .foregroundStyle(themeManager.textColor)
             }
     }
 }

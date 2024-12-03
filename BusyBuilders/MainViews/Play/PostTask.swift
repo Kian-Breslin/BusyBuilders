@@ -16,7 +16,7 @@ struct PostTask: View {
     var body: some View {
         ZStack {
             
-            getColor("Black")
+            themeManager.mainColor
                 .ignoresSafeArea()
             
             VStack {
@@ -27,7 +27,7 @@ struct PostTask: View {
                 .frame(width: 300, height: 50)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .foregroundStyle(getColor("Black"))
+                .foregroundStyle(themeManager.mainColor)
                 .fontWeight(.bold)
             }
         }

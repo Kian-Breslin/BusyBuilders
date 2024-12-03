@@ -26,7 +26,7 @@ struct CreateFlashcard: View {
     
     var body: some View {
         ZStack {
-            getColor("white")
+            themeManager.textColor
                 .ignoresSafeArea()
             
             VStack (alignment: .leading){
@@ -75,15 +75,15 @@ struct CreateFlashcard: View {
                             Text("Question")
                                 .font(.system(size: 15))
                                 .opacity(0.8)
-                                .foregroundStyle(getColor("black"))
+                                .foregroundStyle(themeManager.mainColor)
                             
                             ZStack (alignment: .topLeading){
                                 RoundedRectangle(cornerRadius: 5)
                                     .frame(width: 180, height: 90)
                                     .opacity(0.5)
-                                    .foregroundStyle(getColor("black"))
+                                    .foregroundStyle(themeManager.mainColor)
                                 TextField("\(flashcardQuestion)", text: $flashcardQuestion, axis: .vertical)
-                                    .foregroundStyle(getColor("white"))
+                                    .foregroundStyle(themeManager.textColor)
                                     .padding(.horizontal, 5)
                                     .frame(width: 180, height: 90, alignment: .topLeading)
                             }
@@ -93,15 +93,15 @@ struct CreateFlashcard: View {
                             Text("Answer")
                                 .font(.system(size: 15))
                                 .opacity(0.8)
-                                .foregroundStyle(getColor("black"))
+                                .foregroundStyle(themeManager.mainColor)
                             
                             ZStack (alignment: .topLeading){
                                 RoundedRectangle(cornerRadius: 5)
                                     .frame(width: 180, height: 90)
                                     .opacity(0.5)
-                                    .foregroundStyle(getColor("black"))
+                                    .foregroundStyle(themeManager.mainColor)
                                 TextField("\(flashcardAnswer)", text: $flashcardAnswer, axis: .vertical)
-                                    .foregroundStyle(getColor("white"))
+                                    .foregroundStyle(themeManager.textColor)
                                     .padding(.horizontal, 5)
                                     .frame(width: 180, height: 90, alignment: .topLeading)
                             }
@@ -118,7 +118,7 @@ struct CreateFlashcard: View {
                         .overlay {
                             Image(systemName: "plus")
                                 .font(.system(size: 25))
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                         }
                         .onTapGesture {
                             let newFlashCard = Flashcard(id: UUID(), question: flashcardQuestion, answer: flashcardAnswer)
@@ -142,11 +142,11 @@ struct CreateFlashcard: View {
                             RoundedRectangle(cornerRadius: 5)
                                 .frame(width: 80, height: 120)
                                 .rotationEffect(Angle(degrees: Double.random(in: -30...30)))
-                                .foregroundColor((newFlashcardDeck.firstIndex(of: card) ?? 0) % 2 == 0 ? .gray : getColor("black"))
+                                .foregroundColor((newFlashcardDeck.firstIndex(of: card) ?? 0) % 2 == 0 ? .gray : themeManager.mainColor)
                                 .overlay {
                                     Text("Flashcard")
                                         .font(.system(size: 15))
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .rotationEffect(Angle(degrees: Double.random(in: -30...30)))
                                 }
                         }
@@ -159,7 +159,7 @@ struct CreateFlashcard: View {
                 }
                 Spacer()
             }
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
             .frame(width: screenWidth-30, alignment: .leading)
         }
     }

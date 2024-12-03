@@ -22,11 +22,11 @@ struct Timer2: View {
     var body: some View {
         ZStack {
             
-            getColor("white")
+            themeManager.textColor
                 .ignoresSafeArea()
             Circle()
                 .frame(width: 300, height: 300)
-                .foregroundStyle(getColor("black"))
+                .foregroundStyle(themeManager.mainColor)
             
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color.white)

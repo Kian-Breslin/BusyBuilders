@@ -15,12 +15,13 @@ struct FlashCardWidget: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: screenWidth-30, height: 100)
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
             .overlay {
                 if selectedSubject == 0 {
                     HStack {
                         VStack (alignment: .leading, spacing: 5){
                             Text(subjects[0])
+                                .foregroundStyle(getColor("\(themeManager.secondaryColor)"))
                                 .font(.system(size: 25))
                             Text("Top Score: 20 pts")
                             Text("Total Cards in Deck: 38")
@@ -30,7 +31,7 @@ struct FlashCardWidget: View {
                         flashCardImage()
                             .frame(width: 100, height: 100)
                     }
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                     .padding()
                 }
             }

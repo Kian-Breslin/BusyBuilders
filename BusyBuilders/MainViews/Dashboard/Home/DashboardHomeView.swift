@@ -10,7 +10,36 @@ import SwiftUI
 struct DashboardHomeView: View {
     @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack (spacing: 5) {
+
+            HStack (spacing: 5){
+                MediumModularWidget()
+                
+                MediumModularWidget()
+            }
+            
+            HStack (spacing: 5){
+                SquareModularWidget()
+
+                VStack (spacing: 5){
+                    HStack (spacing: 5){
+                        BabyModularWidget(numberDisplay: 1)
+                        BabyModularWidget(numberDisplay: 2)
+                    }
+                    HStack (spacing: 5){
+                        BabyModularWidget(numberDisplay: 3)
+                        BabyModularWidget(numberDisplay: 4)
+                    }
+                }
+            }
+            
+            RectangleMediumModularWidget()
+            
+            OverviewChartWidget()
+        }
+        .foregroundStyle(themeManager.mainColor)
+        .frame(width: screenWidth)
     }
 }
 

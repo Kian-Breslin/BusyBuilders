@@ -45,7 +45,7 @@ struct BusinessCard: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: screenWidth-60, height: 450)
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
             .overlay {
                 
                 DeleteConfirmation(Business: $business, deletingUserIndex: $deletingUserIndex, user: $deletingUser, confirm: $confirmDelete)
@@ -57,7 +57,7 @@ struct BusinessCard: View {
                     HStack (spacing: 15){
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 130, height: 130)
-                            .foregroundStyle(getColor("white"))
+                            .foregroundStyle(themeManager.textColor)
                             .overlay {
                                 Image(systemName: business.businessIcon)
                                     .foregroundStyle(getColor(business.businessTheme))
@@ -211,7 +211,7 @@ struct BusinessCard: View {
                                 .frame(width: screenWidth-90, height: 40)
                                 .overlay{
                                     Text("Show Sessions")
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                 }
                                 .onTapGesture {
                                     isShowSessions.toggle()
@@ -230,7 +230,7 @@ struct BusinessCard: View {
                                         ForEach(0..<5){ i in
                                             RoundedRectangle(cornerRadius: 5)
                                                 .frame(width: 50, height: 30)
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                                 .overlay {
                                                     RoundedRectangle(cornerRadius: 5)
                                                         .foregroundStyle(.gray)
@@ -257,7 +257,7 @@ struct BusinessCard: View {
                                         ForEach(0..<5){ i in
                                             RoundedRectangle(cornerRadius: 5)
                                                 .frame(width: 50, height: 30)
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                                 .overlay {
                                                     RoundedRectangle(cornerRadius: 5)
                                                         .foregroundStyle(.gray)
@@ -347,7 +347,7 @@ struct BusinessCard: View {
                                 .frame(width: screenWidth-90, height: 40)
                                 .overlay{
                                     Text("Save")
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                 }
                                 .onTapGesture {
                                     do {
@@ -421,7 +421,7 @@ struct BusinessCard: View {
                                             if business.investors.isEmpty {
                                                 RoundedRectangle(cornerRadius: 10)
                                                     .frame(width: 80, height: 25)
-                                                    .foregroundStyle(getColor("black"))
+                                                    .foregroundStyle(themeManager.mainColor)
                                             }
                                         }
                                     }
@@ -432,7 +432,7 @@ struct BusinessCard: View {
                                     .frame(width: screenWidth-90, height: 40)
                                     .overlay{
                                         Text("Edit")
-                                            .foregroundStyle(getColor("white"))
+                                            .foregroundStyle(themeManager.textColor)
                                     }
                                     .onTapGesture {
                                         isEditInfo.toggle()
@@ -494,13 +494,13 @@ struct BusinessCard: View {
                 sessionDate: Date.now,
                 sessionStart: formatFullDateTime(date: Date()),
                 sessionEnd: formatFullDateTime(date: Date()),
-                totalStudyTime: 3600, businessId: UUID()),
+                businessId: UUID(), totalStudyTime: 3600),
              SessionDataModel(
                  id: UUID(),
                  sessionDate: Date.now,
                  sessionStart: formatFullDateTime(date: Date()),
                  sessionEnd: formatFullDateTime(date: Date()),
-                 totalStudyTime: 3600, businessId: UUID())
+                 businessId: UUID(), totalStudyTime: 3600)
             ],
         businessLevel: 7200,
         businessPrestige: "Growing Business"))

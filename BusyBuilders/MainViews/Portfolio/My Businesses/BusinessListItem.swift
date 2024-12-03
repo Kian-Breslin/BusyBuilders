@@ -14,7 +14,7 @@ struct BusinessListItem: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
             .frame(width: screenWidth-30, height: 100)
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
             .overlay {
                 HStack {
                     VStack (alignment: .leading){
@@ -25,7 +25,7 @@ struct BusinessListItem: View {
                         HStack (spacing: 4){
                             Text("Total Net Worth:")
                                 .font(.system(size: 12))
-                            Text("$\(business.netWorth, specifier: "%.f")")
+                            Text("$\(business.netWorth)")
                                 .font(.system(size: 15))
                         }
                         HStack (alignment: .bottom, spacing: 4){
@@ -53,7 +53,7 @@ struct BusinessListItem: View {
                     Image(systemName: "chevron.right")
                 }
                 .padding(10)
-                .foregroundStyle(getColor("white"))
+                .foregroundStyle(themeManager.textColor)
             }
     }
 }
@@ -83,13 +83,13 @@ struct BusinessListItem: View {
                 sessionDate: Date.now,
                 sessionStart: formatFullDateTime(date: Date()),
                 sessionEnd: formatFullDateTime(date: Date()),
-                totalStudyTime: 3600, businessId: UUID()),
+                businessId: UUID(), totalStudyTime: 3600),
              SessionDataModel(
                  id: UUID(),
                  sessionDate: Date.now,
                  sessionStart: formatFullDateTime(date: Date()),
                  sessionEnd: formatFullDateTime(date: Date()),
-                 totalStudyTime: 3600, businessId: UUID())
+                 businessId: UUID(), totalStudyTime: 3600)
             ],
         businessLevel: 7200,
         businessPrestige: "Growing Business"))

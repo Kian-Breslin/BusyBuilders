@@ -59,7 +59,7 @@ struct StartTask: View {
         if (currentView == 1) {
             // Active Task View
             ZStack {
-                getColor("black")
+                themeManager.mainColor
                     .ignoresSafeArea()
                 
                 Timer1(currentView: $currentView, selectedBusiness: $selectedBusiness, timeRemaining: $timeRemaining, timeElapsed: $timeElapsed, isTimerActive: $isTimerActive, timeStarted: $timeStarted, totalCashEarned: $totalCashEarned, cashBoosterActive: isCashBoosterActive, costReductionActive: isCostReductionActive, XPBoosterActive: isXPBoosterActive)
@@ -72,7 +72,7 @@ struct StartTask: View {
         else {
             // Start Task View
             ZStack {
-                getColor("black")
+                themeManager.mainColor
                     .ignoresSafeArea()
                 VStack {
                     VStack {
@@ -115,14 +115,16 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: isXPBoosterActive ? "\(buttonImages[0]).fill" : "\(buttonImages[0])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor("black"))
-                                            
+                                            .foregroundStyle(themeManager.mainColor)
+                                        
                                     }
                                     .onTapGesture {
                                         isXPBoosterActive.toggle()
                                     }
                                 
                                 Text(buttonText[0])
+                                    .font(.system(size: 10))
+                                    .scaledToFit()
                             }
                             .frame(width: 60, height: 80)
                             Spacer()
@@ -132,14 +134,16 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: isCashBoosterActive ? "\(buttonImages[1]).fill" : "\(buttonImages[1])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor("black"))
-                                            
+                                            .foregroundStyle(themeManager.mainColor)
+                                        
                                     }
                                     .onTapGesture {
                                         isCashBoosterActive.toggle()
                                     }
                                 
                                 Text(buttonText[1])
+                                    .font(.system(size: 10))
+                                    .scaledToFit()
                             }
                             .frame(width: 60, height: 80)
                             Spacer()
@@ -149,14 +153,16 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: isCostReductionActive ? "\(buttonImages[2]).fill" : "\(buttonImages[2])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor("black"))
-                                            
+                                            .foregroundStyle(themeManager.mainColor)
+                                        
                                     }
                                     .onTapGesture {
                                         isCostReductionActive.toggle()
                                     }
                                 
                                 Text(buttonText[2])
+                                    .font(.system(size: 10))
+                                    .scaledToFit()
                             }
                             .frame(width: 60, height: 80)
                             Spacer()
@@ -166,28 +172,30 @@ struct StartTask: View {
                                     .overlay {
                                         Image(systemName: showInventory ? "\(buttonImages[3]).fill" : "\(buttonImages[3])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(getColor("black"))
-                                            
+                                            .foregroundStyle(themeManager.mainColor)
+                                        
                                     }
                                     .onTapGesture {
                                         showInventory.toggle()
                                     }
                                 
                                 Text(buttonText[3])
+                                    .font(.system(size: 10))
+                                    .scaledToFit()
                             }
                             .frame(width: 60, height: 80)
                             
                         }
                         .font(.system(size: 12))
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .frame(width: screenWidth-30, height: 100)
                     }
                     .frame(width: screenWidth-30, height: 160)
-
+                    
                     // White Background
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .overlay {
                             VStack {
                                 // Everything inside the white background
@@ -195,12 +203,12 @@ struct StartTask: View {
                                     .frame(width: screenWidth-30, alignment: .leading)
                                     .font(.system(size: 35))
                                     .bold()
-                                    .foregroundStyle(getColor("black"))
+                                    .foregroundStyle(themeManager.mainColor)
                                     .padding(.top, 20)
                                 VStack (alignment: .leading, spacing: 5){
                                     Text("Chose a business: \(selectedBusiness?.businessName ?? "")")
                                         .font(.system(size: 15))
-                                        .foregroundStyle(getColor("black"))
+                                        .foregroundStyle(themeManager.mainColor)
                                     ScrollView (.horizontal){
                                         if !businesses.isEmpty {
                                             HStack {
@@ -210,11 +218,11 @@ struct StartTask: View {
                                                         .overlay {
                                                             VStack {
                                                                 Text("\(business.businessName)")
-                                                                    .foregroundStyle(.white)
+                                                                    .foregroundStyle(themeManager.textColor)
                                                                 
                                                             }
                                                         }
-                                                        .foregroundStyle(getColor("black"))
+                                                        .foregroundStyle(themeManager.mainColor)
                                                         .onTapGesture {
                                                             selectedBusiness = business
                                                         }
@@ -225,12 +233,12 @@ struct StartTask: View {
                                             
                                             RoundedRectangle(cornerRadius: 10)
                                                 .frame(width: screenWidth-30, height: 100)
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                                 .overlay {
                                                     Text("Please add a business to begin!")
                                                         .bold()
                                                         .font(.system(size: 24))
-                                                        .foregroundStyle(.white)
+                                                        .foregroundStyle(themeManager.textColor)
                                                 }
                                                 .onTapGesture {
                                                     let newBusiness = BusinessDataModel(
@@ -259,13 +267,13 @@ struct StartTask: View {
                                                                 sessionDate: Date.now,
                                                                 sessionStart: formatFullDateTime(date: Date()),
                                                                 sessionEnd: formatFullDateTime(date: Date()),
-                                                                totalStudyTime: 3600, businessId: UUID()),
+                                                                businessId: UUID(),totalStudyTime: 3600),
                                                              SessionDataModel(
-                                                                 id: UUID(),
-                                                                 sessionDate: Date.now,
-                                                                 sessionStart: formatFullDateTime(date: Date()),
-                                                                 sessionEnd: formatFullDateTime(date: Date()),
-                                                                 totalStudyTime: 3600, businessId: UUID())
+                                                                id: UUID(),
+                                                                sessionDate: Date.now,
+                                                                sessionStart: formatFullDateTime(date: Date()),
+                                                                sessionEnd: formatFullDateTime(date: Date()),
+                                                                businessId: UUID(),totalStudyTime: 3600)
                                                             ],
                                                         businessLevel: 7200,
                                                         businessPrestige: "Growing Business")
@@ -289,7 +297,7 @@ struct StartTask: View {
                                 Button("Clock In!"){
                                     if selectedBusiness != nil && timeRemaining > 0 {
                                         isWarningShowing = false // Reset the warning showing flag
-
+                                        
                                         // Check for Cash Booster
                                         if isCashBoosterActive {
                                             if let currentAmount = users.first?.inventory["\(Upgrades[0].upgradeName)"], currentAmount > 0 {
@@ -299,7 +307,7 @@ struct StartTask: View {
                                                 warningErrorMessage = "Not Enough Cash Boosters"
                                             }
                                         }
-
+                                        
                                         // Check for Cost Reduction
                                         if isCostReductionActive {
                                             if let currentAmountOfCostReductions = users.first?.inventory["\(Upgrades[2].upgradeName)"] {
@@ -311,7 +319,7 @@ struct StartTask: View {
                                                 }
                                             }
                                         }
-
+                                        
                                         // Check for XP Booster
                                         if isXPBoosterActive {
                                             if let currentAmount = users.first?.inventory["\(Upgrades[1].upgradeName)"], currentAmount > 0 {
@@ -321,7 +329,7 @@ struct StartTask: View {
                                                 warningErrorMessage = "Not Enough XP Boosters"
                                             }
                                         }
-
+                                        
                                         // If any warning is shown, handle the warning
                                         if isWarningShowing {
                                             print(warningErrorMessage) // Log the warning message
@@ -332,11 +340,11 @@ struct StartTask: View {
                                             } catch {
                                                 print("Failed to save user: \(error.localizedDescription)")
                                             }
-
+                                            
                                             timeElapsed = 0
                                             currentView = 1
                                             isTimerActive.toggle()
-
+                                            
                                             timeStarted = formatFullDateTime(date: Date())
                                             print(timeStarted)
                                         }
@@ -348,15 +356,15 @@ struct StartTask: View {
                                     }
                                 }
                                 .frame(width: screenWidth-30, height: 50)
-                                .background(getColor("black"))
+                                .background(themeManager.mainColor)
+                                .foregroundStyle(themeManager.textColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .foregroundStyle(.white)
                                 .fontWeight(.bold)
                                 
                                 Spacer()
                             }
-                            }
-                        
+                        }
                 }
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: 200, height: 110)
@@ -377,7 +385,7 @@ struct StartTask: View {
                     }
                     .opacity(isWarningShowing ? 1 : 0)
             }
-            .foregroundStyle(getColor("white"))
+            .foregroundStyle(themeManager.textColor)
             .onAppear {
                 isCashBoosterActive = false
                 isCostReductionActive = false

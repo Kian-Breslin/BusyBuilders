@@ -13,13 +13,9 @@ struct WeeklyStudyGoal: View {
     @State var goalProgress = 0.6705
     @State var goalType = "Study Time"
     
-    @State var mainColor : Color
-    @State var secondaryColor : Color
-    @State var textColor : Color
-    
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .foregroundStyle(mainColor)
+            .foregroundStyle(themeManager.mainColor)
             .frame(width: screenWidth-30, height: 100)
             .overlay {
                 HStack {
@@ -42,13 +38,13 @@ struct WeeklyStudyGoal: View {
                     ZStack {
                         Circle()
                             .trim(from: goalProgress, to: 1)
-                            .stroke(getColor("white"),style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                            .stroke(themeManager.textColor,style: StrokeStyle(lineWidth: 5, lineCap: .round))
                             .rotationEffect(.degrees(-90))
                             .frame(width: 80)
                         
                         Circle()
                             .trim(from: 0, to: goalProgress)
-                            .stroke(getColor("red"),style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                            .stroke(getColor("\(themeManager.secondaryColor)"),style: StrokeStyle(lineWidth: 5, lineCap: .round))
                             .rotationEffect(.degrees(-90))
                             .frame(width: 80)
                         
@@ -57,13 +53,13 @@ struct WeeklyStudyGoal: View {
                             .bold()
                     }
                 }
-                .foregroundStyle(getColor("white"))
+                .foregroundStyle(themeManager.textColor)
                 .padding()
             }
     }
 }
 
 #Preview {
-    WeeklyStudyGoal(mainColor: getColor("black"), secondaryColor: getColor("red"), textColor: getColor("white"))
+    WeeklyStudyGoal()
         .environmentObject(ThemeManager())
 }

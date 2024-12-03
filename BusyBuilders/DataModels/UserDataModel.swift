@@ -19,6 +19,7 @@ public class UserDataModel: Identifiable, ObservableObject {
     var netWorth: Int
     var created: Date
     var flashcards: [DeckModel]
+    var transactions: [TransactionDataModel]
     
     var inventory: [String : Int] = [:]
     
@@ -31,7 +32,8 @@ public class UserDataModel: Identifiable, ObservableObject {
          availableBalance: Int = 0,
          netWorth: Int = 0,
          created: Date = Date.now,
-         flashcards: [DeckModel] = []) {
+         flashcards: [DeckModel] = [],
+         transactions: [TransactionDataModel] = []) {
         self.id = id
         self.username = username
         self.name = name
@@ -48,5 +50,6 @@ public class UserDataModel: Identifiable, ObservableObject {
             "Break Booster" : 0
         ]
         self.flashcards = flashcards
+        self.transactions = transactions
     }
 }

@@ -28,12 +28,12 @@ struct BusinessSettings: View {
             
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 250, height: 150)
-                .foregroundStyle(getColor("black"))
+                .foregroundStyle(themeManager.mainColor)
                 .overlay {
                     VStack {
                         Text("Confirm Deletion")
                             .bold()
-                            .foregroundStyle(getColor("white"))
+                            .foregroundStyle(themeManager.textColor)
                         Spacer()
                         Text("Are you sure you want to delete \(selectedOwner?.username ?? "")?")
                             .font(.system(size: 15))
@@ -51,7 +51,7 @@ struct BusinessSettings: View {
                             Rectangle()
                                 .frame(width: 2, height: 20)
                                 .opacity(0.5)
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                             Text("Confirm")
                                 .foregroundStyle(getColor("red"))
                                 .font(.system(size: 20))
@@ -72,19 +72,19 @@ struct BusinessSettings: View {
                         }
                     }
                     .padding()
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                 }
                 .opacity(confirmDeleteOwner ? 1 : 0)
                 .zIndex(99)
             
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 250, height: 150)
-                .foregroundStyle(getColor("black"))
+                .foregroundStyle(themeManager.mainColor)
                 .overlay {
                     VStack {
                         Text("Confirm Deletion")
                             .bold()
-                            .foregroundStyle(getColor("white"))
+                            .foregroundStyle(themeManager.textColor)
                         Spacer()
                         Text("Are you sure you want to delete \(selectedInvestor?.username ?? "")?")
                             .font(.system(size: 15))
@@ -102,7 +102,7 @@ struct BusinessSettings: View {
                             Rectangle()
                                 .frame(width: 2, height: 20)
                                 .opacity(0.5)
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                             Text("Confirm")
                                 .foregroundStyle(getColor("red"))
                                 .font(.system(size: 20))
@@ -121,7 +121,7 @@ struct BusinessSettings: View {
                         }
                     }
                     .padding()
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                 }
                 .opacity(confirmDeleteInvestor ? 1 : 0)
                 .zIndex(99)
@@ -133,7 +133,7 @@ struct BusinessSettings: View {
                 
                 VStack (alignment: .leading, spacing: 0){
                     Text("Business Name")
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .font(.system(size: 15))
                         .opacity(0.8)
                     TextField("\(business.businessName)", text: $business.businessName)
@@ -142,7 +142,7 @@ struct BusinessSettings: View {
                 
                 VStack (alignment: .leading, spacing: 5){
                     Text("Business Theme")
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .font(.system(size: 15))
                         .opacity(0.8)
                     
@@ -167,7 +167,7 @@ struct BusinessSettings: View {
                 
                 VStack (alignment: .leading, spacing: 5){
                     Text("Business Icon")
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .font(.system(size: 15))
                         .opacity(0.8)
                     
@@ -198,7 +198,7 @@ struct BusinessSettings: View {
                 
                 VStack (alignment: .leading, spacing: 0){
                     Text("Owners")
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .font(.system(size: 15))
                         .opacity(0.8)
                     
@@ -211,11 +211,11 @@ struct BusinessSettings: View {
                                             selectedOwner = o
                                             confirmDeleteOwner.toggle()
                                         }
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .frame(width: 100, height: 30)
                                         .overlay {
                                             Text("\(o.username)")
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                         }
                                         .padding(.vertical, 10)
                                         
@@ -227,7 +227,7 @@ struct BusinessSettings: View {
                 
                 VStack (alignment: .leading, spacing: 0){
                     Text("Investors")
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .font(.system(size: 15))
                         .opacity(0.8)
                     
@@ -240,11 +240,11 @@ struct BusinessSettings: View {
                                             selectedInvestor = i
                                             confirmDeleteInvestor.toggle()
                                         }
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .frame(width: 100, height: 30)
                                         .overlay {
                                             Text("\(i.username)")
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                         }
                                         .padding(.vertical, 10)
                                 }
@@ -297,13 +297,13 @@ struct BusinessSettings: View {
                 sessionDate: Date.now,
                 sessionStart: formatFullDateTime(date: Date()),
                 sessionEnd: formatFullDateTime(date: Date()),
-                totalStudyTime: 3600, businessId: UUID()),
+                businessId: UUID(), totalStudyTime: 3600),
              SessionDataModel(
                  id: UUID(),
                  sessionDate: Date.now,
                  sessionStart: formatFullDateTime(date: Date()),
                  sessionEnd: formatFullDateTime(date: Date()),
-                 totalStudyTime: 3600, businessId: UUID())
+                 businessId: UUID(), totalStudyTime: 3600)
             ],
         businessLevel: 7200,
         businessPrestige: "Growing Business"))

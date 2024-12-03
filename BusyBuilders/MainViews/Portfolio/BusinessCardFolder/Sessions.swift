@@ -14,14 +14,14 @@ struct Sessions: View {
     
     var body: some View {
         ZStack {
-            getColor("Black")
+            themeManager.mainColor
                 .ignoresSafeArea()
             
             VStack (alignment:.leading){
                 
                 Text("Sessions")
                     .font(.system(size: 40))
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                 
                 ScrollView (.vertical){
                     VStack {
@@ -33,9 +33,9 @@ struct Sessions: View {
                                 Text("\(timeFormattedSecToString(s.totalStudyTime))")
                                     .font(.system(size: 18))
                             }
-                            .foregroundStyle(getColor("black"))
+                            .foregroundStyle(themeManager.mainColor)
                             .frame(width: screenWidth-30, height: 100)
-                            .background(getColor("white"))
+                            .background(themeManager.textColor)
                             .clipShape(RoundedRectangle(cornerRadius: 5))
                         }
                     }
@@ -62,13 +62,13 @@ struct Sessions: View {
                 sessionDate: Date.now,
                 sessionStart: formatFullDateTime(date: Date()),
                 sessionEnd: formatFullDateTime(date: Date()),
-                totalStudyTime: 1452, businessId: UUID()),
+                businessId: UUID(), totalCashEarned: 3454),
              SessionDataModel(
                  id: UUID(),
                  sessionDate: Date.now,
                  sessionStart: formatFullDateTime(date: Date()),
                  sessionEnd: formatFullDateTime(date: Date()),
-                 totalStudyTime: 1874, businessId: UUID())
+                 businessId: UUID(), totalCashEarned: 5436)
             ],
         businessLevel: 7200,
         businessPrestige: "Growing Business"))

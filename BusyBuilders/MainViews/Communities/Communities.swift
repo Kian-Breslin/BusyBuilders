@@ -13,10 +13,10 @@ struct Communities: View {
     
     var body: some View {
         ZStack {
-            getColor("Black")
+            themeManager.mainColor
                 .ignoresSafeArea()
             
-            Test_View(mainColor: themeManager.mainColor, secondaryColor: getColor(themeManager.secondaryColor), textColor: themeManager.textColor)
+            Test_View()
         }
         .foregroundStyle(.white)
     }

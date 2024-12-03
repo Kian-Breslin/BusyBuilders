@@ -8,24 +8,21 @@
 import SwiftUI
 
 struct Test_View: View {
-    
-    @State var mainColor : Color
-    @State var secondaryColor: Color
-    @State var textColor: Color
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: 300, height: 100)
-            .foregroundStyle(mainColor)
+            .foregroundStyle(themeManager.mainColor)
             .overlay{
                 Text("This text should be white")
-                    .foregroundStyle(textColor)
+                    .foregroundStyle(themeManager.textColor)
             }
         
     }
 }
 
 #Preview {
-    Test_View(mainColor: getColor("black"), secondaryColor: getColor("red"), textColor: getColor("white"))
+    Test_View()
         .environmentObject(ThemeManager())
 }

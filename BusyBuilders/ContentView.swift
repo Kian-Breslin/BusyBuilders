@@ -14,6 +14,7 @@ struct ContentView: View {
     
     @State var selectedView = 0
     @State var isTaskActive = false
+    @State var isNavShowing = false
     @State var isSettingsShowing = false
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var themeManager: ThemeManager
@@ -29,7 +30,8 @@ struct ContentView: View {
                 } else if selectedView == 1 {
                     Communities()
                 } else if selectedView == 2 {
-                    StartTask(isTimerActive: $isTaskActive)
+//                    StartTask(isTimerActive: $isTaskActive)
+                    Play(isTimerActive: $isTaskActive, isTaskActive: $isNavShowing)
                 } else if selectedView == 3 {
                     Store()
                 } else if selectedView == 4 {
@@ -39,7 +41,7 @@ struct ContentView: View {
                 VStack {
                     Spacer()
                     NavigationBar(selectedView: $selectedView)
-                        .opacity(isTaskActive ? 0 : 1)
+                        .opacity(isTaskActive || isNavShowing ? 0 : 1)
                 }
                 .ignoresSafeArea()
             }

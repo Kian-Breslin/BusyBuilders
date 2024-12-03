@@ -66,7 +66,7 @@ struct MyStats: View {
             }
             Spacer()
         }
-        .foregroundStyle(getColor("white"))
+        .foregroundStyle(themeManager.mainColor)
         .frame(width: screenWidth-30, height: (screenHeight-90) / 1.4, alignment: .leading)
     }
 }

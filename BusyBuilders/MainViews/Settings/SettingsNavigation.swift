@@ -28,7 +28,7 @@ struct SettingsNavigation: View {
     var body: some View {
         if textForView == "Profile Settings" {
             ZStack {
-                getColor("black")
+                themeManager.mainColor
                     .ignoresSafeArea()
                 
                 VStack {
@@ -36,7 +36,7 @@ struct SettingsNavigation: View {
                     VStack (spacing: 15){
                         VStack (alignment: .leading, spacing: 2){
                             Text("New User Name")
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                                 .font(.system(size: 12))
                             TextField("\(updatedUserName)", text: $updatedUserName)
                                 .textFieldStyle(.roundedBorder)
@@ -45,7 +45,7 @@ struct SettingsNavigation: View {
                         
                         VStack (alignment: .leading, spacing: 2){
                             Text("New User Username")
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                                 .font(.system(size: 12))
                             TextField("\(updatedUserUsername)", text: $updatedUserUsername)
                                 .textFieldStyle(.roundedBorder)
@@ -54,7 +54,7 @@ struct SettingsNavigation: View {
                         
                         VStack (alignment: .leading, spacing: 2){
                             Text("New User Email")
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                                 .font(.system(size: 12))
                             TextField("\(updatedUserEmail)", text: $updatedUserEmail)
                                 .textFieldStyle(.roundedBorder)
@@ -78,7 +78,7 @@ struct SettingsNavigation: View {
                         }
                         .frame(width: 200, height: 40)
                         .background(getColor("red"))
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                     }
                     
                     ScrollView (.horizontal){
@@ -88,7 +88,7 @@ struct SettingsNavigation: View {
                                     .frame(width: 100, height: 100)
                                     .overlay {
                                         Text("\(u.username)")
-                                            .foregroundStyle(getColor("black"))
+                                            .foregroundStyle(themeManager.mainColor)
                                     }
                             }
                         }
@@ -110,7 +110,7 @@ struct SettingsNavigation: View {
                     }
                     .frame(width: 200, height: 40)
                     .background(getColor("red"))
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                     
                     Button("Remove All Users"){
                         for user in users {
@@ -126,7 +126,7 @@ struct SettingsNavigation: View {
                     }
                     .frame(width: 200, height: 40)
                     .background(getColor("blue"))
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                 }
             }
         }

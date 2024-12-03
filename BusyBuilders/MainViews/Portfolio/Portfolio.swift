@@ -28,7 +28,7 @@ struct Portfolio: View {
     var body: some View {
         NavigationView {
             ZStack {
-                getColor("Black")
+                themeManager.mainColor
                     .ignoresSafeArea()
                 VStack {
                     VStack {
@@ -36,6 +36,7 @@ struct Portfolio: View {
                         HStack {
                             Text(Title)
                                 .font(.system(size: 35))
+                                .foregroundStyle(themeManager.textColor)
                                 .fontWeight(.bold)
                             Spacer()
                             HStack (spacing: 15){
@@ -48,15 +49,24 @@ struct Portfolio: View {
                                             
                                         }
                                 }
+                                .foregroundStyle(themeManager.textColor)
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
+                                    .foregroundStyle(themeManager.textColor)
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
                                             .frame(width: 40,height: 40)
                                     })
                                     .onTapGesture {
+                                        let newBusiness = BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle")
+                                        context.insert(newBusiness)
                                         
+                                        do {
+                                            try context.save()
+                                        } catch {
+                                            print("Couldnt create quick business")
+                                        }
                                         
                                     }
                             }
@@ -72,12 +82,14 @@ struct Portfolio: View {
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
-                                                .foregroundStyle(getColor("black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                         }
                                         .onTapGesture {
                                             selectedScreen = buttonImages[i]
                                         }
                                     Text(buttonText[i])
+                                        .font(.system(size: 10))
+                                        .scaledToFit()
                                 }
                                 .frame(width: 60, height: 80)
                                 
@@ -88,14 +100,14 @@ struct Portfolio: View {
                             }
                         }
                         .font(.system(size: 12))
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .frame(width: screenWidth - 30, height: 100)
                     }
                     .frame(width: screenWidth-30, height: 160)
                     
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .overlay {
                             if selectedScreen == "person" {
                                 MyStats()

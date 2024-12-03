@@ -59,13 +59,13 @@ struct addNewUserToBusiness: View {
                 sessionDate: Date.now,
                 sessionStart: formatFullDateTime(date: Date()),
                 sessionEnd: formatFullDateTime(date: Date()),
-                totalStudyTime: 3600, businessId: UUID()),
+                businessId: UUID(), totalStudyTime: 3600),
              SessionDataModel(
                  id: UUID(),
                  sessionDate: Date.now,
                  sessionStart: formatFullDateTime(date: Date()),
                  sessionEnd: formatFullDateTime(date: Date()),
-                 totalStudyTime: 3600, businessId: UUID())
+                 businessId: UUID(), totalStudyTime: 3600)
             ],
         businessLevel: 7200,
         businessPrestige: "Growing Business")))

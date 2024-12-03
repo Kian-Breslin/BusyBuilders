@@ -17,7 +17,7 @@ struct DeckView: View {
     
     var body: some View {
         ZStack {
-            getColor("black")
+            themeManager.mainColor
                 .ignoresSafeArea()
             
             VStack (alignment: .leading){
@@ -35,7 +35,7 @@ struct DeckView: View {
                         ForEach(deck.flashCards){ card in
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 150, height: 200)
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                                 .overlay {
                                     VStack (alignment: .leading){
                                         Text("Question:")
@@ -46,7 +46,7 @@ struct DeckView: View {
                                         Text("\(card.answer)")
                                             .font(.system(size: 12))
                                     }
-                                    .foregroundStyle(getColor("black"))
+                                    .foregroundStyle(themeManager.mainColor)
                                     .padding()
                                 }
                         }

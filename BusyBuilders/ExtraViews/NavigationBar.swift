@@ -16,24 +16,23 @@ struct NavigationBar: View {
     
     @Binding var selectedView : Int
     
-    @State var darkMode = Color.black
-    @State var lightMode = Color.white
-    
     var body: some View {
         ZStack (alignment: .top){
             Rectangle()
                 .frame(width: screenWidth, height: 75)
-                .foregroundStyle(getColor("white"))
+                .foregroundStyle(themeManager.textColor)
             
             HStack (alignment: .top ,spacing: 15){
                 ForEach(0 ..< 5) { i in
                     ZStack {
                         if selectedView == i {
                             Image(systemName: "\(iconListSelected[i])")
+                                .foregroundStyle(themeManager.mainColor)
                         } else {
                             Image(systemName: "\(iconListNotSelected[i])")
+                                .foregroundStyle(themeManager.mainColor)
                         }
-                        Text("Dashboard")
+                        Text("\(iconListName[i])")
                             .font(.system(size: 10))
                             .offset(y:25)
                             .opacity(0)
@@ -44,7 +43,6 @@ struct NavigationBar: View {
                     }
                 }
             }
-            .foregroundStyle(darkMode)
             .font(.system(size: 24))
             .fontWeight(.light)
         }

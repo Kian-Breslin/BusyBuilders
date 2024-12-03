@@ -21,22 +21,22 @@ struct DeckList: View {
         if !deck.isEmpty {
             NavigationStack {
                 ZStack {
-                    getColor("white")
+                    themeManager.textColor
                         .ignoresSafeArea()
                     VStack (alignment: .leading){
                         Text("Decks")
                             .font(.system(size: 30))
-                            .foregroundStyle(getColor("black"))
+                            .foregroundStyle(themeManager.mainColor)
                         Spacer()
                         ForEach(deck, id: \.id) { deck in
                             NavigationLink (destination: DeckView(deck: deck)){
                                 RoundedRectangle(cornerRadius: 5)
-                                    .foregroundStyle(getColor("black"))
+                                    .foregroundStyle(themeManager.mainColor)
                                     .frame(width: screenWidth-30, height: 100)
                                     .opacity(0.5)
                                     .overlay{
                                         Text("Deck: \(deck.subject)")
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                 }
                             }
                         }
@@ -47,11 +47,11 @@ struct DeckList: View {
 
         } else {
             ZStack {
-                getColor("black")
+                themeManager.mainColor
                     .ignoresSafeArea()
                 VStack (spacing: 35){
                     Text("No Decks Found, Create One!")
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                     
                     VStack (alignment:.leading){
                         Text("Subject")
@@ -63,13 +63,13 @@ struct DeckList: View {
                                 .frame(width: 250, height: 40)
                                 .opacity(0.5)
                             TextField("\(newDeck)", text: $newDeck)
-                                .foregroundStyle(getColor("white"))
+                                .foregroundStyle(themeManager.textColor)
                                 .padding(.horizontal, 5)
                                 .frame(width: 250)
                         }
                             
                     }
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                     
                     HStack {
                         Spacer()
@@ -80,7 +80,7 @@ struct DeckList: View {
                             .overlay {
                                 Text("Create Deck")
                                     .font(.system(size: 25))
-                                    .foregroundStyle(getColor("white"))
+                                    .foregroundStyle(themeManager.textColor)
                             }
                             .onTapGesture {
                                 print("Before user is confirmed")

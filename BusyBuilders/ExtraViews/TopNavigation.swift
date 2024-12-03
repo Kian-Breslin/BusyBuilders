@@ -51,6 +51,7 @@ struct TopNavigation: View {
                 }
                 .font(.system(size: 25))
             }
+            .foregroundStyle(themeManager.textColor)
             .frame(width: screenWidth-30, height: 80)
             
             HStack {
@@ -62,20 +63,20 @@ struct TopNavigation: View {
                             .overlay {
                                 Image(systemName: buttonImages[i])
                                     .font(.system(size: 30))
-                                    .foregroundStyle(getColor("black"))
-                                    
+                                    .foregroundStyle(themeManager.mainColor)
                             }
                             .onTapGesture {
                                 
                             }
                         Text(buttonText[i])
                     }
+                    .foregroundStyle(themeManager.textColor)
                     .frame(width: (screenWidth-60)/4, height: 80)
                     Spacer()
                 }
             }
             .font(.system(size: 12))
-            .foregroundStyle(getColor("white"))
+            .foregroundStyle(themeManager.mainColor)
             .frame(width: screenWidth-30, height: 100)
         }
         .frame(width: screenWidth-30, height: 180)

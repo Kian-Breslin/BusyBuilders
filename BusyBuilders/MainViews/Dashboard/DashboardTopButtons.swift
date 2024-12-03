@@ -67,7 +67,7 @@ struct DashboardTopButtons: View {
                                 users.first?.availableBalance += 5000
                                 
                                 // Manually update the total net worth
-                                totalNetWorth = businesses.reduce(0) { $0 + $1.netWorth } + Double(users.first?.availableBalance ?? 0)
+                                totalNetWorth = Double(businesses.reduce(0) { $0 + $1.netWorth } + (users.first?.availableBalance ?? 0))
                                 
                                 do {
                                     try context.save()
@@ -165,6 +165,6 @@ struct DashboardTopButtons: View {
 
 
 #Preview {
-    DashboardTopButtons(title: .constant("Inventory"), totalNetWorth: .constant(20000.0), userColor: Color.red)
+    DashboardTopButtons(title: .constant("Withdraw Money"), totalNetWorth: .constant(20000.0), userColor: Color.red)
         .environmentObject(ThemeManager())
 }

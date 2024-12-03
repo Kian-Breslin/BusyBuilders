@@ -11,7 +11,7 @@ struct Clock: View {
             // Background black circle
             Circle()
                 .stroke(Color.white, lineWidth: 1)
-                .foregroundColor(getColor("Black"))
+                .foregroundColor(themeManager.mainColor)
                 .frame(width: 200, height: 200)
             
             // Markings at 12, 3, 6, 9 positions

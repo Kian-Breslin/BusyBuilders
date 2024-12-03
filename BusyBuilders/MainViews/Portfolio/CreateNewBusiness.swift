@@ -32,7 +32,7 @@ struct CreateNewBusiness: View {
     
     var body: some View {
         ZStack {
-            getColor("Black")
+            themeManager.mainColor
                 .ignoresSafeArea()
             
             VStack(alignment: .leading, spacing: 10) {
@@ -166,10 +166,10 @@ struct CreateNewBusiness: View {
                         dismiss()
                     }
                     .frame(width: 150, height: 40)
-                    .background(getColor("white"))
+                    .background(themeManager.textColor)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .disabled(businessName.isEmpty || businessType.isEmpty)
-                    .foregroundStyle(getColor("Black").opacity(businessName.isEmpty || businessType.isEmpty ? 0.5 : 1))
+                    .foregroundStyle(themeManager.mainColor.opacity(businessName.isEmpty || businessType.isEmpty ? 0.5 : 1))
                     .fontWeight(.bold)
                     Spacer()
                 }            }

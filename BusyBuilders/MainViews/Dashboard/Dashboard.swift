@@ -31,7 +31,7 @@ struct Dashboard: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                getColor("Black")
+                themeManager.mainColor
                     .ignoresSafeArea()
                 
                 VStack {
@@ -73,11 +73,11 @@ struct Dashboard: View {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
-                                                .foregroundStyle(getColor("Black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                                 
                                         }
                                         .onTapGesture {
@@ -95,72 +95,38 @@ struct Dashboard: View {
                             }
                         }
                         .font(.system(size: 12))
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                         .frame(width: screenWidth-30, height: 100)
                     }
                     .frame(width: screenWidth-30, height: 160)
 
-                    
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
+                        .foregroundStyle(themeManager.textColor)
                         .overlay {
                             if selectedScreen == buttonImages[0] {
-                                DashboardHomeView()
+                                ScrollView (showsIndicators: false){
+                                    DashboardHomeView()
+                                }
+                                .padding(.bottom, 45)
+                                .padding(.top, 15)
                             }
                             else if selectedScreen == buttonImages[1] {
+                                DashboardFlashcardView()
+                                .padding(.bottom, 45)
+                                .padding(.top, 10)
+                            }
+                            else if selectedScreen == buttonImages[2] {
                                 ScrollView (showsIndicators: false){
-                                    VStack (alignment: .leading, spacing: 20){
-                                        NavigationLink (destination: FlashCardWidget()){
-                                            VStack (alignment: .leading, spacing: 5){
-                                                Text("Weekly Goals")
-                                                    .foregroundStyle(getColor("Black"))
-                                                    .font(.system(size: 15))
-                                                    .opacity(0.7)
-                                                ScrollView (.horizontal, showsIndicators: false){
-                                                    HStack {
-                                                        ForEach(0..<2) { i in
-                                                            WeeklyStudyGoal(mainColor: themeManager.mainColor, secondaryColor: getColor(themeManager.secondaryColor), textColor: themeManager.textColor)
-                                                                .containerRelativeFrame(.horizontal, count: 1, spacing: 16)
-                                                        }
-                                                    }
-                                                    .scrollTargetLayout()
-                                                }
-                                                .scrollTargetBehavior(.viewAligned)
-                                            }
-                                        }
-                                        
-                                        VStack (alignment: .leading, spacing: 5){
-                                            Text("Flash Cards")
-                                                .foregroundStyle(getColor("Black"))
-                                                .font(.system(size: 15))
-                                                .opacity(0.7)
-                                            
-                                            NavigationLink( destination: DeckList()){
-                                                
-                                            }
-                                        }
-                                        
-                                        VStack (alignment: .leading, spacing: 5){
-                                            Text("Create Flash Cards")
-                                                .foregroundStyle(getColor("Black"))
-                                                .font(.system(size: 15))
-                                                .opacity(0.7)
-                                            
-                                            NavigationLink( destination: CreateFlashcard()){
-                                                
-                                            }
-                                        }
-
-                                    }
-                                    .padding(.bottom, 35)
-                                    .padding(.top, 15)
-                                    .frame(width: screenWidth-30)
+                                    DashboardBankView()
                                 }
+                                .padding(.bottom, 45)
+                                .padding(.top, 10)
                             }
                         }
                 }
             }
-            .foregroundStyle(getColor("white"))
+            .foregroundStyle(themeManager.textColor)
         }
         .sheet(isPresented: $isNotificationsShowing) {
             Notifications()

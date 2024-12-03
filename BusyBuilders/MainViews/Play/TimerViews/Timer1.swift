@@ -57,7 +57,7 @@ struct Timer1: View {
                         
                         Rectangle()
                             .frame(width: screenWidth, height: CGFloat(screenHeight - CGFloat(clockCountDown*10)))
-                            .foregroundStyle(getColor("Black"))
+                            .foregroundStyle(themeManager.mainColor)
                             .ignoresSafeArea()
                     }
                     
@@ -75,7 +75,7 @@ struct Timer1: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: CGFloat(timerLengthAnimation), height: 40)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .foregroundStyle(getColor("Black"))
+                                    .foregroundStyle(themeManager.mainColor)
                                 
                             }
                             .frame(width: 290, height: 40)
@@ -89,12 +89,12 @@ struct Timer1: View {
                         Spacer()
                         
                         Button("Clock Out") {
-                            clockOutButton()
+                            /*clockOutButton()*/
                         }
                         .frame(width: 200, height: 50)
                         .background(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .foregroundStyle(getColor("Black"))
+                        .foregroundStyle(themeManager.mainColor)
                         .fontWeight(.bold)
                     }
                     .padding(50)
@@ -102,7 +102,7 @@ struct Timer1: View {
             }
             else {
                 ZStack {
-                    getColor("Black")
+                    themeManager.mainColor
                         .ignoresSafeArea()
                     
                     HStack {
@@ -111,7 +111,7 @@ struct Timer1: View {
                                 // Background black circle
                                 Circle()
                                     .stroke(Color.white, lineWidth: 1)
-                                    .foregroundColor(getColor("Black"))
+                                    .foregroundColor(themeManager.mainColor)
                                     .frame(width: 200, height: 200)
                                 
                                 // Markings at 12, 3, 6, 9 positions
@@ -155,7 +155,7 @@ struct Timer1: View {
                                         .opacity(0.8)
                                         .overlay {
                                             Text("+$\(selectedBusiness?.cashPerMin ?? 1000)")
-                                                .foregroundStyle(getColor("Black"))
+                                                .foregroundStyle(themeManager.mainColor)
                                                 .font(.system(size: 8))
                                         }
                                 }
@@ -195,7 +195,7 @@ struct Timer1: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: CGFloat(timerLengthAnimation), height: 40)
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                        .foregroundStyle(getColor("Black"))
+                                        .foregroundStyle(themeManager.mainColor)
                                     
                                 }
                                 .frame(width: 450, height: 40)
@@ -206,13 +206,13 @@ struct Timer1: View {
                                         .foregroundStyle(.black)
                             }
                             Button("Clock Out") {
-                                clockOutButton()
+//                                clockOutButton()
                                 
                             }
                             .frame(width: 200, height: 50)
                             .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundStyle(getColor("Black"))
+                            .foregroundStyle(themeManager.mainColor)
                             .fontWeight(.bold)
                         }
                     }
@@ -249,7 +249,7 @@ struct Timer1: View {
                 //Experience
                 experienceEarned += 10
             } else {
-                clockOutButton()
+//                clockOutButton()
             }
         }
         .onChange(of: scenePhase){
@@ -261,48 +261,48 @@ struct Timer1: View {
         }
     }
     
-    func clockOutButton() {
-        // Do Calculations
-        isTimerActive.toggle()
-        currentView = 2
-        
-        let reductionsCost = selectedBusiness?.costPerMin ?? 0
-        
-        // Calculate Total Earnings
-        totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
-        // Calculate Total Earnings - Reductions
-        if costReductionActive {
-            totalCashEarned -= (totalCashEarned*(reductionsCost-0.05)).rounded()
-        } else {
-            totalCashEarned -= (totalCashEarned*(reductionsCost)).rounded()
-        }
-        // Final Calculations
-        // If Cash Booster
-        if cashBoosterActive {
-            totalCashEarned += 100
-        }
-        print(totalCashEarned)
-        
-        // Add Cash earned to business
-        selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
-        // Add Experience - Calc with XP Booster
-        selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed
-        // Add Time
-        selectedBusiness?.time = (selectedBusiness?.time ?? 0) + timeElapsed
-        // Create new session entry
-        let session = SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
-        
-        // Add session to session history
-        selectedBusiness?.sessionHistory.append(session)
-        
-        // Reset Numbers
-        timeRemaining = 0
-        
-    }
+//    func clockOutButton() {
+//        // Do Calculations
+//        isTimerActive.toggle()
+//        currentView = 2
+//        
+//        let reductionsCost = selectedBusiness?.costPerMin ?? 0
+//        
+//        // Calculate Total Earnings
+//        totalCashEarned = (Double(timeElapsed * (selectedBusiness?.cashPerMin ?? 0)) / 60).rounded()
+//        // Calculate Total Earnings - Reductions
+//        if costReductionActive {
+//            totalCashEarned -= (totalCashEarned*(reductionsCost-0.05)).rounded()
+//        } else {
+//            totalCashEarned -= (totalCashEarned*(reductionsCost)).rounded()
+//        }
+//        // Final Calculations
+//        // If Cash Booster
+//        if cashBoosterActive {
+//            totalCashEarned += 100
+//        }
+//        print(totalCashEarned)
+//        
+//        // Add Cash earned to business
+//        selectedBusiness?.netWorth = (selectedBusiness?.netWorth ?? 0) + totalCashEarned
+//        // Add Experience - Calc with XP Booster
+//        selectedBusiness?.businessLevel = (selectedBusiness?.businessLevel ?? 0) + timeElapsed
+//        // Add Time
+//        selectedBusiness?.time = (selectedBusiness?.time ?? 0) + timeElapsed
+//        // Create new session entry
+//        let session = SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: timeStarted, sessionEnd: formatFullDateTime(date: Date()), totalStudyTime: timeElapsed, businessId: selectedBusiness?.id ?? UUID())
+//        
+//        // Add session to session history
+//        selectedBusiness?.sessionHistory.append(session)
+//        
+//        // Reset Numbers
+//        timeRemaining = 0
+//        
+//    }
     
     private var clockUI: some View {
         ZStack {
-            Circle().fill(getColor("Black")).frame(width: 200, height: 200)
+            Circle().fill(themeManager.mainColor).frame(width: 200, height: 200)
             Circle().stroke(Color.gray, style: StrokeStyle(lineWidth: 1)).frame(width: 200, height: 200)
             Circle()
                 .trim(from: clockNumber, to: 1)
@@ -311,7 +311,7 @@ struct Timer1: View {
                 .rotationEffect(Angle(degrees: -90))
                 .overlay(clockTicks)
             
-            Circle().frame(width: 105).foregroundStyle(getColor("Black"))
+            Circle().frame(width: 105).foregroundStyle(themeManager.mainColor)
                 .overlay {
                     Text("\(timeFormattedSec(clockCountDown))").font(.system(size: 30))
                 }

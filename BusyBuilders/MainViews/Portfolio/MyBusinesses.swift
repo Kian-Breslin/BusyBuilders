@@ -21,12 +21,12 @@ struct MyBusinesses: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: 250, height: 150)
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
             .overlay {
                 VStack {
                     Text("Confirm Deletion")
                         .bold()
-                        .foregroundStyle(getColor("white"))
+                        .foregroundStyle(themeManager.textColor)
                     Spacer()
                     Text("Are you sure you want to delete \(selectedBusinessToDelete?.businessName ?? "Name")?")
                         .font(.system(size: 15))
@@ -44,7 +44,7 @@ struct MyBusinesses: View {
                         Rectangle()
                             .frame(width: 2, height: 20)
                             .opacity(0.5)
-                            .foregroundStyle(getColor("white"))
+                            .foregroundStyle(themeManager.textColor)
                         Text("Confirm")
                             .foregroundStyle(getColor("red"))
                             .font(.system(size: 20))
@@ -62,7 +62,7 @@ struct MyBusinesses: View {
                     }
                 }
                 .padding()
-                .foregroundStyle(getColor("white"))
+                .foregroundStyle(themeManager.textColor)
             }
             .opacity(confirmDeleteBusiness ? 1 : 0)
             .zIndex(99)
@@ -80,9 +80,10 @@ struct MyBusinesses: View {
                 }
                 RoundedRectangle(cornerRadius: 5)
                     .frame(width: screenWidth-30, height: 100)
-                    .foregroundStyle(getColor("black"))
+                    .foregroundStyle(themeManager.mainColor)
                     .overlay {
                         Text("Click here to add a Business")
+                            .foregroundStyle(themeManager.textColor)
                             .opacity(0.7)
                             .font(.system(size: 25))
                     }

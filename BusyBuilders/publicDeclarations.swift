@@ -43,12 +43,40 @@ let screenHeight = UIScreen.main.bounds.height
 func textColor(_ name: String) -> Color {
     switch name.lowercased() {
     case "white" :
-        return Color(red: 237 / 255, green: 237 / 255, blue: 237 / 255)
+        return Color(red: 217 / 255, green: 217 / 255, blue: 217 / 255)
     case "black" :
         return Color.black
     default:
         return Color.teal
     }
+}
+
+public func getNumberArray() -> [Int] {
+    var numbers : Set<Int> = []
+    while numbers.count < 5 {
+        let num = randomNumber(in: 1...10)
+        numbers.insert(num)
+    }
+    return Array(numbers)
+}
+
+public func getRandomToolsArray() -> [String] {
+    // Define the weighted pool
+    let weightedTools = Array(repeating: "screwdriver", count: 40) +
+                        Array(repeating: "wrench.adjustable", count: 15) +
+                        Array(repeating: "hammer", count: 10) +
+                        Array(repeating: "star", count: 1)
+    
+    var randomTools: [String] = []
+    
+    // Generate a random array of 10 items from the weighted pool
+    while randomTools.count < 10 {
+        if let randomTool = weightedTools.randomElement() {
+            randomTools.append(randomTool)
+        }
+    }
+    
+    return randomTools
 }
 
 extension Color {
@@ -71,9 +99,9 @@ func getColor(_ name: String) -> Color {
     case "pink":
         return Color.pink
     case "black":
-        return Color(red: 51 / 255, green: 51 / 255, blue: 51 / 255)
+        return Color(red: 60 / 255, green: 60 / 255, blue: 60 / 255)
     case "white":
-        return Color(red: 0.949, green: 0.949, blue: 0.949)
+        return Color(red: 221 / 255, green: 220 / 255, blue: 216 / 255)
     // Add other colors as needed
     default:
         return Color.gray // Fallback if no color matches
@@ -147,6 +175,32 @@ func getDayOfMonth(from date: Date) -> Int? {
     return nil
 }
 
+public func getDateComponents(from date: Date) -> [String] {
+    let dateFormatter = DateFormatter()
+    
+    // Day (19)
+    dateFormatter.dateFormat = "d"
+    let day = dateFormatter.string(from: date)
+    
+    // Full Month Name (November)
+    dateFormatter.dateFormat = "MMM"
+    let month = dateFormatter.string(from: date)
+    
+    // Full Year (2024)
+    dateFormatter.dateFormat = "yyyy"
+    let year = dateFormatter.string(from: date)
+    
+    // Abbreviated Weekday (Tue)
+    dateFormatter.dateFormat = "EEEE"
+    let weekday = dateFormatter.string(from: date)
+    
+    // Current Time in 24-hour format (00:00)
+    dateFormatter.dateFormat = "HH:mm"
+    let currentTime = dateFormatter.string(from: date)
+        
+    return [day, month, year, weekday, currentTime]
+}
+
 public func getDayMonthYear(from date: Date) -> String? {
     let formatter = DateFormatter()
     formatter.dateFormat = "EEEE, d MMMM yyyy" // Format for "Monday, 9 September 2024"
@@ -155,7 +209,7 @@ public func getDayMonthYear(from date: Date) -> String? {
 
 public func getDateMonthYear(from date: Date) -> String? {
     let formatter = DateFormatter()
-    formatter.dateFormat = "d MMMM yyyy" // Format for "Monday, 9 September 2024"
+    formatter.dateFormat = "d MMMM yyyy"
     return formatter.string(from: date)
 }
 

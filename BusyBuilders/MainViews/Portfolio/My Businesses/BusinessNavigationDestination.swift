@@ -28,7 +28,7 @@ struct BusinessNavigationDestination: View {
                 }
                 .frame(width: screenWidth-30)
                 .font(.system(size: 30))
-                .foregroundStyle(getColor("white"))
+                .foregroundStyle(themeManager.textColor)
                 
                 ScrollView (.vertical, showsIndicators: false){
                     NavigationLink(destination: BusinessNavTotalNetWorth()){
@@ -36,7 +36,7 @@ struct BusinessNavigationDestination: View {
                                 .frame(width: screenWidth-30, height: 300)
                                 .overlay {
                                     Image(systemName: "chevron.right")
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .offset(x: (screenWidth-60)/2, y: -130)
                                         .opacity(0.5)
                                         .bold()
@@ -76,7 +76,7 @@ struct BusinessNavigationDestination: View {
                                         .frame(width: screenWidth-70)
                                         .padding(.top)
                                     }
-                                    .foregroundStyle(getColor("white"))
+                                    .foregroundStyle(themeManager.textColor)
                                 }
                         }
                     
@@ -85,7 +85,7 @@ struct BusinessNavigationDestination: View {
                                 .frame(width: ((screenWidth-45)/2), height: ((screenWidth-30)/2)-15)
                                 .overlay{
                                     Image(systemName: "chevron.right")
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .offset(x: ((screenWidth-100)/2)/2, y: -((screenWidth-130)/2)/2)
                                         .opacity(0.5)
                                         .bold()
@@ -96,7 +96,7 @@ struct BusinessNavigationDestination: View {
                                 .frame(width: ((screenWidth-45)/2), height: ((screenWidth-30)/2)-15)
                                 .overlay{
                                     Image(systemName: "chevron.right")
-                                        .foregroundStyle(getColor("white"))
+                                        .foregroundStyle(themeManager.textColor)
                                         .offset(x: ((screenWidth-100)/2)/2, y: -((screenWidth-130)/2)/2)
                                         .opacity(0.5)
                                         .bold()
@@ -107,7 +107,7 @@ struct BusinessNavigationDestination: View {
                             .frame(width: (screenWidth-30), height: ((screenWidth-30)/2)-15)
                             .overlay {
                                 Image(systemName: "chevron.right")
-                                    .foregroundStyle(getColor("white"))
+                                    .foregroundStyle(themeManager.textColor)
                                     .offset(x: (screenWidth-60)/2, y: -(((screenWidth-30)/2)-55)/2)
                                     .opacity(0.5)
                                     .bold()
@@ -117,7 +117,7 @@ struct BusinessNavigationDestination: View {
                 .padding(.top, 5)
                 }
             }
-            .foregroundStyle(getColor("black"))
+            .foregroundStyle(themeManager.mainColor)
     }
 }
 
@@ -146,13 +146,13 @@ struct BusinessNavigationDestination: View {
                 sessionDate: Date.now,
                 sessionStart: formatFullDateTime(date: Date()),
                 sessionEnd: formatFullDateTime(date: Date()),
-                totalStudyTime: 3600, businessId: UUID()),
+                businessId: UUID(), totalStudyTime: 3600),
              SessionDataModel(
                  id: UUID(),
                  sessionDate: Date.now,
                  sessionStart: formatFullDateTime(date: Date()),
                  sessionEnd: formatFullDateTime(date: Date()),
-                 totalStudyTime: 3600, businessId: UUID())
+                 businessId: UUID(), totalStudyTime: 3600)
             ],
         businessLevel: 7200,
         businessPrestige: "Growing Business"))

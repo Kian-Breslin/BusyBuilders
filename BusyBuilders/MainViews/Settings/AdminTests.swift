@@ -20,7 +20,7 @@ struct AdminTests: View {
     
     var body: some View {
         ZStack {
-            getColor("black")
+            themeManager.mainColor
                 .ignoresSafeArea()
             VStack (alignment: .leading, spacing: 10){
                 Text("Admin Tests")
@@ -34,7 +34,7 @@ struct AdminTests: View {
                         .frame(width: 150, height: 40)
                         .overlay {
                             Text("Reset User Stats")
-                                .foregroundStyle(getColor("black"))
+                                .foregroundStyle(themeManager.mainColor)
                         }
                         .onTapGesture {
                             resetUserStats()
@@ -43,11 +43,11 @@ struct AdminTests: View {
                     RoundedRectangle(cornerRadius: 5)
                         .frame(width: 180, height: 40)
                         .overlay {
-                            Text("User Details Change")
-                                .foregroundStyle(getColor("black"))
+                            Text("Add NetWorth")
+                                .foregroundStyle(themeManager.mainColor)
                         }
                         .onTapGesture {
-                            resetUserStats()
+                            addNetWorth()
                         }
                 }
                 VStack (alignment: .leading){
@@ -58,7 +58,7 @@ struct AdminTests: View {
                         .frame(width: 150, height: 40)
                         .overlay {
                             Text("Add Business")
-                                .foregroundStyle(getColor("black"))
+                                .foregroundStyle(themeManager.mainColor)
                         }
                         .onTapGesture {
                             quickAddBusiness()
@@ -239,21 +239,26 @@ struct AdminTests: View {
                         }
                     }
                     .font(.system(size: 20))
-                    .foregroundStyle(getColor("white"))
+                    .foregroundStyle(themeManager.textColor)
                     
                     RoundedRectangle(cornerRadius: 5)
                         .frame(width: 150, height: 40)
                         .overlay {
                             Text("Save")
-                                .foregroundStyle(getColor("black"))
+                                .foregroundStyle(themeManager.mainColor)
                         }
                 }
                 
                 Spacer()
             }
-            .foregroundStyle(getColor("white"))
+            .foregroundStyle(themeManager.textColor)
             .frame(width: screenWidth-30, alignment: .leading)
         }
+    }
+    
+    private func addNetWorth() {
+        print("Add $10,000")
+        users.first?.netWorth += 10000
     }
     
     // Functions
@@ -308,13 +313,13 @@ struct AdminTests: View {
                     sessionDate: Date.now,
                     sessionStart: formatFullDateTime(date: Date()),
                     sessionEnd: formatFullDateTime(date: Date()),
-                    totalStudyTime: 3600, businessId: UUID()),
+                    businessId: UUID(), totalStudyTime: 3600),
                  SessionDataModel(
                      id: UUID(),
                      sessionDate: Date.now,
                      sessionStart: formatFullDateTime(date: Date()),
                      sessionEnd: formatFullDateTime(date: Date()),
-                     totalStudyTime: 3600, businessId: UUID())
+                     businessId: UUID(), totalStudyTime: 3600)
                 ],
             businessLevel: 7200,
             businessPrestige: "Growing Business")

@@ -11,13 +11,13 @@ struct TimeSelect: View {
             ZStack {
                 // Background black circle
                 Circle()
-                    .foregroundColor(getColor("Black"))
+                    .foregroundColor(themeManager.mainColor)
                     .frame(width: 200, height: 200)
                 
                 // Markings at 12, 3, 6, 9 positions
                 ForEach([0, 90, 180, 270], id: \.self) { angle in
                     Rectangle()
-                        .fill(Color.white)
+                        .fill(themeManager.textColor)
                         .frame(width: 2, height: 10)
                         .offset(y: -95) // Adjust according to circle radius
                         .rotationEffect(.degrees(Double(angle)))
@@ -27,7 +27,7 @@ struct TimeSelect: View {
                 ZStack {
                     // Hour hand
                     Rectangle()
-                        .fill(Color.white)
+                        .fill(themeManager.textColor)
                         .frame(width: 2, height: 100)
                         .offset(y: -50) // Adjust length and placement
                         .rotationEffect(.degrees(Double((moveFiveMins/60)*6))) // For 1 o'clock position
@@ -41,7 +41,7 @@ struct TimeSelect: View {
                     
                     // Shaded area between hour and minute hand
                     SectorShape(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: Double((moveFiveMins/60)*6)))
-                        .fill(Color.white.opacity(0.2))
+                        .fill(themeManager.textColor.opacity(0.2))
                         .frame(width: 200)
                         .rotationEffect(.degrees(-90)) // For 1 o'clock position
                 }
@@ -53,7 +53,7 @@ struct TimeSelect: View {
                     .frame(width: 60, height: 40)
                     .overlay {
                         Image(systemName: "minus")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(themeManager.textColor)
                     }
                     .onTapGesture {
                         if moveFiveMins > 0 {
@@ -64,7 +64,7 @@ struct TimeSelect: View {
                     .frame(width: 150, height: 40)
                     .overlay {
                         Text("\(timeFormattedMins(moveFiveMins))")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(themeManager.textColor)
                             .font(.system(size: 30))
                             .kerning(2)
                     }
@@ -72,7 +72,7 @@ struct TimeSelect: View {
                     .frame(width: 60, height: 40)
                     .overlay {
                         Image(systemName: "plus")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(themeManager.textColor)
                     }
                     .onTapGesture {
                         if moveFiveMins < 3600 {
@@ -82,7 +82,7 @@ struct TimeSelect: View {
                         }
                     }
             }
-            .foregroundStyle(getColor("Black"))
+            .foregroundStyle(themeManager.mainColor)
         }
         .frame(width: screenWidth - 30, height: 280)
     }
