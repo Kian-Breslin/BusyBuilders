@@ -36,7 +36,7 @@ struct Slots: View {
                 SlotMachine(isGameActive: $isTaskActive)
                 Spacer()
             }
-            .frame(width: screenWidth-30)
+            .frame(width: screenWidth-20)
         }
         .foregroundStyle(themeManager.textColor)
     }

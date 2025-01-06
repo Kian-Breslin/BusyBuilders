@@ -17,9 +17,12 @@ public class UserDataModel: Identifiable, ObservableObject {
     var businesses: [BusinessDataModel] // List of businesses owned by the user
     var availableBalance: Int
     var netWorth: Int
+    var level: Int
     var created: Date
     var flashcards: [DeckModel]
     var transactions: [TransactionDataModel]
+    var miniGameSessions: [MiniGameSessionModel]
+    var flashcardSessions: [FlashcardSessionDataModel]
     
     var inventory: [String : Int] = [:]
     
@@ -31,9 +34,12 @@ public class UserDataModel: Identifiable, ObservableObject {
          password: String = "",
          availableBalance: Int = 0,
          netWorth: Int = 0,
+         level: Int = 0,
          created: Date = Date.now,
          flashcards: [DeckModel] = [],
-         transactions: [TransactionDataModel] = []) {
+         transactions: [TransactionDataModel] = [],
+         miniGameSessions: [MiniGameSessionModel] = [],
+         flashcardSessions: [FlashcardSessionDataModel] = []) {
         self.id = id
         self.username = username
         self.name = name
@@ -42,6 +48,7 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.businesses = []
         self.availableBalance = availableBalance
         self.netWorth = netWorth
+        self.level = level
         self.created = created
         self.inventory = [
             "Cash Booster" : 0,
@@ -51,5 +58,7 @@ public class UserDataModel: Identifiable, ObservableObject {
         ]
         self.flashcards = flashcards
         self.transactions = transactions
+        self.miniGameSessions = miniGameSessions
+        self.flashcardSessions = flashcardSessions
     }
 }

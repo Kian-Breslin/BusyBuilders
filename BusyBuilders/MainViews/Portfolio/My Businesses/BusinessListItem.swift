@@ -13,7 +13,7 @@ struct BusinessListItem: View {
     @State var business : BusinessDataModel
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
-            .frame(width: screenWidth-30, height: 100)
+            .frame(width: screenWidth-20, height: 100)
             .foregroundStyle(themeManager.mainColor)
             .overlay {
                 HStack {
@@ -58,7 +58,7 @@ struct BusinessListItem: View {
     }
 }
 
-#Preview {
+#Preview (traits: .sizeThatFitsLayout){
     BusinessListItem(business: BusinessDataModel(
         businessName: "Kians Shop",
         businessTheme: "Blue",
@@ -94,4 +94,5 @@ struct BusinessListItem: View {
         businessLevel: 7200,
         businessPrestige: "Growing Business"))
     .environmentObject(ThemeManager())
+    
 }

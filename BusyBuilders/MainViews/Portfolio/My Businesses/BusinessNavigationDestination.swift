@@ -26,98 +26,56 @@ struct BusinessNavigationDestination: View {
                         Image(systemName: "gearshape.fill")
                     }
                 }
-                .frame(width: screenWidth-30)
+                .frame(width: screenWidth-20)
                 .font(.system(size: 30))
                 .foregroundStyle(themeManager.textColor)
                 
                 ScrollView (.vertical, showsIndicators: false){
-                    NavigationLink(destination: BusinessNavTotalNetWorth()){
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: screenWidth-30, height: 300)
-                                .overlay {
-                                    Image(systemName: "chevron.right")
-                                        .foregroundStyle(themeManager.textColor)
-                                        .offset(x: (screenWidth-60)/2, y: -130)
-                                        .opacity(0.5)
-                                        .bold()
-                                    VStack {
-                                        Text("Total Net Worth")
-                                            .font(.system(size: 15))
-                                        Text("$\(business.netWorth, specifier: "%.f")")
-                                            .font(.system(size: 45))
-                                            .bold()
-                                        
-                                        VStack (spacing: 15){
-                                            HStack {
-                                                Text("Wed 13 Nov")
-                                                    .opacity(0.7)
-                                                Spacer()
-                                                Text("+ $103,400")
-                                                    .kerning(2)
-                                                    .bold()
-                                            }
-                                            HStack {
-                                                Text("Mon 02 Nov")
-                                                    .opacity(0.7)
-                                                Spacer()
-                                                Text("+ $82,000")
-                                                    .kerning(2)
-                                                    .bold()
-                                            }
-                                            HStack {
-                                                Text("Sat 27 Oct")
-                                                    .opacity(0.7)
-                                                Spacer()
-                                                Text("+ $33,000")
-                                                    .kerning(2)
-                                                    .bold()
-                                            }
-                                        }
-                                        .frame(width: screenWidth-70)
-                                        .padding(.top)
-                                    }
-                                    .foregroundStyle(themeManager.textColor)
-                                }
+                    VStack (alignment: .leading){
+                        Group {
+                            Text("Total Net Worth")
+                            Text("$\(business.netWorth)")
+                                .font(.system(size: 35))
                         }
-                    
-                        HStack (spacing: 15){
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: ((screenWidth-45)/2), height: ((screenWidth-30)/2)-15)
-                                .overlay{
-                                    Image(systemName: "chevron.right")
-                                        .foregroundStyle(themeManager.textColor)
-                                        .offset(x: ((screenWidth-100)/2)/2, y: -((screenWidth-130)/2)/2)
-                                        .opacity(0.5)
-                                        .bold()
-                                }
-                                                
-                            
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: ((screenWidth-45)/2), height: ((screenWidth-30)/2)-15)
-                                .overlay{
-                                    Image(systemName: "chevron.right")
-                                        .foregroundStyle(themeManager.textColor)
-                                        .offset(x: ((screenWidth-100)/2)/2, y: -((screenWidth-130)/2)/2)
-                                        .opacity(0.5)
-                                        .bold()
-                                }
+                        Group {
+                            Text("Prestige")
+                            Text("\(getPrestige(getLevelFromSec(business.businessLevel)))")
+                                .font(.system(size: 35))
                         }
-                    
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: (screenWidth-30), height: ((screenWidth-30)/2)-15)
-                            .overlay {
-                                Image(systemName: "chevron.right")
-                                    .foregroundStyle(themeManager.textColor)
-                                    .offset(x: (screenWidth-60)/2, y: -(((screenWidth-30)/2)-55)/2)
-                                    .opacity(0.5)
-                                    .bold()
-                            }
+                        Group {
+                            Text("Level")
+                            Text("\(getLevelFromSec(business.businessLevel))")
+                                .font(.system(size: 35))
+                        }
+                        Group {
+                            Text("Total Study Time")
+                            Text("\(timeFormattedWithText(business.time))")
+                                .font(.system(size: 35))
+                        }
                     }
-                .padding(.bottom, 55)
-                .padding(.top, 5)
+                    .frame(width: screenWidth-20, alignment: .leading)
+                    
+                    HStack (spacing: 10){
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: (screenWidth-30)/2, height: (screenWidth-30)/2)
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: (screenWidth-30)/2, height: (screenWidth-30)/2)
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+//                    NavigationLink(destination: BusinessSessionsView(currentBusiness: business)){
+//                            Text("List of Sessions")
+//                        }
+                    }
+                    .padding(.bottom, 55)
+                    .padding(.top, 5)
                 }
             }
-            .foregroundStyle(themeManager.mainColor)
+            .foregroundStyle(themeManager.textColor)
     }
 }
 
@@ -130,7 +88,7 @@ struct BusinessNavigationDestination: View {
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
         time: 9360,
         cashPerMin: 3000,
-        netWorth: 6000,
+        netWorth: 60000,
         investors: [
             UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
             UserDataModel(username: "LilJimmy", name: "Jim", email: "Jim@gmail.com"),

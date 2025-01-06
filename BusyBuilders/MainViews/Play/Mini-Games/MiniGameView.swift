@@ -35,8 +35,14 @@ struct MiniGameView: View {
                     }
                 }
                 HStack (spacing: 5){
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: (screenWidth-15)/2, height: 100)
+                    NavigationLink(destination: Stocks(isTaskActive: $isTaskActive, selectedBusiness: mockBusinesses(id: UUID(), name: "", businessLogo: "", industry: "", currentStockPrice: 0.0, volatilityRating: .low))){
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: (screenWidth-15)/2, height: 100)
+                            .overlay {
+                                Text("Stocks")
+                                    .foregroundStyle(themeManager.textColor)
+                            }
+                    }
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: (screenWidth-15)/2, height: 100)
                 }

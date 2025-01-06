@@ -34,7 +34,7 @@ struct Sessions: View {
                                     .font(.system(size: 18))
                             }
                             .foregroundStyle(themeManager.mainColor)
-                            .frame(width: screenWidth-30, height: 100)
+                            .frame(width: screenWidth-20, height: 100)
                             .background(themeManager.textColor)
                             .clipShape(RoundedRectangle(cornerRadius: 5))
                         }

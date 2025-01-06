@@ -20,7 +20,7 @@ struct BankTransferView: View {
             VStack (alignment:.leading, spacing: 50){
                 Text("Transfer")
                     .font(.title)
-                    .frame(width: screenWidth-30, alignment: .leading)
+                    .frame(width: screenWidth-20, alignment: .leading)
                 
                 
                 Menu {
@@ -34,7 +34,7 @@ struct BankTransferView: View {
                 label: {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(themeManager.textColor)
-                        .frame(width: screenWidth-30, height: 50)
+                        .frame(width: screenWidth-20, height: 50)
                         .overlay {
                             HStack {
                                 Text("Select User :")

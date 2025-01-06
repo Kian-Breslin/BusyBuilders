@@ -21,12 +21,12 @@ struct Dashboard: View {
     @State var changeTopLeftValue = true
     
     @State var Title = "Dashboard"
-    @State var buttonImages = ["house", "clipboard", "banknote", "archivebox"]
-    @State var buttonText = ["Home", "Flashcards", "Bank", "Inventory"]
+    @State var buttonImages = ["house", "archivebox", "banknote", "newspaper"]
+    @State var buttonText = ["Home", "Inventory", "Bank", "News"]
     @State var selectedScreen = "house"
     
     // Calculate Users NetWorth
-    @State private var userTotalNetWorth: Double = 0.0 // This is a variable to store the users total net worth
+    @State private var userTotalNetWorth: Double = 0.0 
     
     var body: some View {
         NavigationStack {
@@ -55,6 +55,7 @@ struct Dashboard: View {
                                 }
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
@@ -66,18 +67,18 @@ struct Dashboard: View {
                             }
                             .font(.system(size: 25))
                         }
-                        .frame(width: screenWidth-30, height: 60)
+                        .frame(width: screenWidth-20, height: 60)
                         
                         HStack {
                             ForEach(0..<4){ i in
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
-                                        .foregroundStyle(themeManager.textColor)
+                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
-                                                .foregroundStyle(themeManager.mainColor)
+                                                .foregroundStyle(themeManager.textColor)
                                                 
                                         }
                                         .onTapGesture {
@@ -96,23 +97,25 @@ struct Dashboard: View {
                         }
                         .font(.system(size: 12))
                         .foregroundStyle(themeManager.textColor)
-                        .frame(width: screenWidth-30, height: 100)
+                        .frame(width: screenWidth-20, height: 100)
                     }
-                    .frame(width: screenWidth-30, height: 160)
+                    .frame(width: screenWidth-20, height: 160)
 
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.textColor)
+                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                         .overlay {
                             if selectedScreen == buttonImages[0] {
                                 ScrollView (showsIndicators: false){
                                     DashboardHomeView()
                                 }
                                 .padding(.bottom, 45)
-                                .padding(.top, 15)
+                                .padding(.top, 10)
                             }
                             else if selectedScreen == buttonImages[1] {
-                                DashboardFlashcardView()
+                                ScrollView (showsIndicators: false){
+                                    DashboardInventoryView()
+                                }
                                 .padding(.bottom, 45)
                                 .padding(.top, 10)
                             }

@@ -52,7 +52,7 @@ struct TopNavigation: View {
                 .font(.system(size: 25))
             }
             .foregroundStyle(themeManager.textColor)
-            .frame(width: screenWidth-30, height: 80)
+            .frame(width: screenWidth-20, height: 80)
             
             HStack {
                 ForEach(0..<4){ i in
@@ -77,9 +77,9 @@ struct TopNavigation: View {
             }
             .font(.system(size: 12))
             .foregroundStyle(themeManager.mainColor)
-            .frame(width: screenWidth-30, height: 100)
+            .frame(width: screenWidth-20, height: 100)
         }
-        .frame(width: screenWidth-30, height: 180)
+        .frame(width: screenWidth-20, height: 180)
     }
 }
 

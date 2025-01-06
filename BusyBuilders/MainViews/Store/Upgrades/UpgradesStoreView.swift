@@ -18,12 +18,13 @@ struct UpgradesStoreView: View {
     let upgrades = availableUpgrades
     
     var body: some View {
-        VStack (spacing: 15){
-            HStack (spacing: 15){
+        VStack (spacing: 10){
+            HStack (spacing: 10){
                 UpgradeWidget(Upgrade: upgrades[0])
+                
                 UpgradeWidget(Upgrade: upgrades[1])
             }
-            HStack (spacing: 15){
+            HStack (spacing: 10){
                 UpgradeWidget(Upgrade: upgrades[2])
                 UpgradeWidget(Upgrade: upgrades[3])
             }

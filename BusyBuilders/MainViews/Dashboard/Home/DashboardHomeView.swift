@@ -14,7 +14,7 @@ struct DashboardHomeView: View {
         VStack (spacing: 5) {
 
             HStack (spacing: 5){
-                MediumModularWidget()
+                UserNetWorthWidget()
                 
                 MediumModularWidget()
             }

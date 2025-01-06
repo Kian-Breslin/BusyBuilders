@@ -106,7 +106,7 @@ struct StartTask: View {
                             }
                             .font(.system(size: 25))
                         }
-                        .frame(width: screenWidth-30, height: 60)
+                        .frame(width: screenWidth-20, height: 60)
                         
                         HStack {
                             VStack {
@@ -188,9 +188,9 @@ struct StartTask: View {
                         }
                         .font(.system(size: 12))
                         .foregroundStyle(themeManager.textColor)
-                        .frame(width: screenWidth-30, height: 100)
+                        .frame(width: screenWidth-20, height: 100)
                     }
-                    .frame(width: screenWidth-30, height: 160)
+                    .frame(width: screenWidth-20, height: 160)
                     
                     // White Background
                     RoundedRectangle(cornerRadius: 10)
@@ -200,7 +200,7 @@ struct StartTask: View {
                             VStack {
                                 // Everything inside the white background
                                 Text("Start New Task")
-                                    .frame(width: screenWidth-30, alignment: .leading)
+                                    .frame(width: screenWidth-20, alignment: .leading)
                                     .font(.system(size: 35))
                                     .bold()
                                     .foregroundStyle(themeManager.mainColor)
@@ -232,7 +232,7 @@ struct StartTask: View {
                                         else {
                                             
                                             RoundedRectangle(cornerRadius: 10)
-                                                .frame(width: screenWidth-30, height: 100)
+                                                .frame(width: screenWidth-20, height: 100)
                                                 .foregroundStyle(themeManager.mainColor)
                                                 .overlay {
                                                     Text("Please add a business to begin!")
@@ -290,7 +290,7 @@ struct StartTask: View {
                                         }
                                     }
                                 }
-                                .frame(width: screenWidth-30, alignment: .leading)
+                                .frame(width: screenWidth-20, alignment: .leading)
                                 
                                 TimeSelect(moveFiveMins: $timeRemaining)
                                 
@@ -355,7 +355,7 @@ struct StartTask: View {
                                         isWarningShowing.toggle()
                                     }
                                 }
-                                .frame(width: screenWidth-30, height: 50)
+                                .frame(width: screenWidth-20, height: 50)
                                 .background(themeManager.mainColor)
                                 .foregroundStyle(themeManager.textColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))

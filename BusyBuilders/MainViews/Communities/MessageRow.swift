@@ -21,7 +21,7 @@ struct MessageRow: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .frame(width: screenWidth-30, height: 75)
+            .frame(width: screenWidth-20, height: 75)
             .foregroundStyle(themeManager.mainColor)
             .overlay {
                 HStack {

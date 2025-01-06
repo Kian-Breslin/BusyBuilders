@@ -22,14 +22,14 @@ struct DashboardBankView: View {
         VStack {
             HStack {
                 RoundedRectangle(cornerRadius: 15)
-                    .frame(width: (screenWidth-30)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
+                    .frame(width: (screenWidth-20)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
                     .foregroundStyle(themeManager.mainColor)
                     .overlay {
                         Text("Savings")
                     }
                 
                 RoundedRectangle(cornerRadius: 15)
-                    .frame(width: (screenWidth-30)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
+                    .frame(width: (screenWidth-20)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
                     .foregroundStyle(themeManager.mainColor)
                     .overlay {
                         Text("Apply for a Loan")
@@ -37,7 +37,7 @@ struct DashboardBankView: View {
             }
             HStack {
                 RoundedRectangle(cornerRadius: 15)
-                    .frame(width: (screenWidth-30)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
+                    .frame(width: (screenWidth-20)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
                     .foregroundStyle(themeManager.mainColor)
                     .overlay {
                         Text("Get Credit Score")
@@ -45,7 +45,7 @@ struct DashboardBankView: View {
                 
                 NavigationLink(destination: BankTransferView()){
                     RoundedRectangle(cornerRadius: 15)
-                        .frame(width: (screenWidth-30)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
+                        .frame(width: (screenWidth-20)/2, height: ((screenWidth - 45) / 2 - 5) / 2)
                         .foregroundStyle(themeManager.mainColor)
                         .overlay {
                             Text("Transfer")
@@ -80,7 +80,7 @@ struct DashboardBankView: View {
                 
                 
             }
-            .frame(width: screenWidth-30, alignment: .leading)
+            .frame(width: screenWidth-20, alignment: .leading)
         }
         .foregroundStyle(themeManager.textColor)
     }

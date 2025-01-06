@@ -112,7 +112,7 @@ struct ownerItem: View {
                     }
                     
                 }
-                .frame(width: screenWidth-30, alignment: .leading)
+                .frame(width: screenWidth-20, alignment: .leading)
                 Spacer()
             }
         }

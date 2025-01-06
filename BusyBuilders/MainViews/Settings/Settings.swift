@@ -56,7 +56,7 @@ struct Settings: View {
                     NavigationLink(destination: SettingsNavigation(textForView: "Profile Settings")) {
                         ZStack(alignment: .leading) {
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(width: screenWidth-30, height: 100)
+                                .frame(width: screenWidth-20, height: 100)
                                 .opacity(0.1)
                             HStack {
                                 Image("userImage-2")

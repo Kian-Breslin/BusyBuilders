@@ -27,7 +27,7 @@ let costReduction = UpgradesDataModel(
     upgradeName: "Cost Reduction",
     upgradeDescription: "Reduce your business costs for this session",
     cost: 1000,
-    effect: EffectType(costReduction: 0.5),
+    effect: EffectType(costReduction: 0.15),
     levelRequired: 1
 )
 
@@ -35,7 +35,7 @@ let breakBooster = UpgradesDataModel(
     upgradeName: "Break Booster",
     upgradeDescription: "Earn while youre on your break",
     cost: 3000,
-    effect: EffectType(cashPerMinIncrease: 1.0),
+    effect: EffectType(breakBooster: 0.1),
     levelRequired: 1)
 
 // Array of all available upgrades

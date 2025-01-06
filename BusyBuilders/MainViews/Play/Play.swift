@@ -11,6 +11,7 @@ import SwiftData
 struct Play: View {
     @EnvironmentObject var themeManager: ThemeManager
     @Query var businesses: [BusinessDataModel]
+    @Query var users : [UserDataModel]
     // Testing
     let newBusiness = BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "pink", businessType: "Eco-Friendly", businessIcon: "circle")
     
@@ -24,6 +25,7 @@ struct Play: View {
     @State var isCostReductionActive = false
     @State var isXPBoosterActive = false
     @State var showInventory = false
+    @State var timeSelected = 0
     
     @State var Title = "Play"
     @State var buttonImages = ["stopwatch", "clipboard", "gamecontroller", "archivebox"]
@@ -56,6 +58,7 @@ struct Play: View {
                                 }
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
@@ -68,7 +71,7 @@ struct Play: View {
                             }
                             .font(.system(size: 25))
                         }
-                        .frame(width: screenWidth-30, height: 60)
+                        .frame(width: screenWidth-20, height: 60)
                         .foregroundStyle(themeManager.textColor)
                         
                         HStack {
@@ -76,10 +79,11 @@ struct Play: View {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
+                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
-                                                .foregroundStyle(themeManager.mainColor)
+                                                .foregroundStyle(themeManager.textColor)
                                         }
                                         .onTapGesture {
                                             selectedScreen = buttonImages[i]
@@ -100,41 +104,20 @@ struct Play: View {
                         .foregroundStyle(themeManager.textColor)
                         .frame(width: screenWidth - 30, height: 100)
                     }
-                    .frame(width: screenWidth-30, height: 160)
+                    .frame(width: screenWidth-20, height: 160)
                     
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.textColor)
+                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                         .overlay {
                             if selectedScreen == "stopwatch" {
-                                VStack {
-                                    Text("Select a Business: \(selectedBusiness?.businessName ?? "None Selected")")
-                                        .foregroundStyle(themeManager.mainColor)
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(businesses) { b in
-                                                RoundedRectangle(cornerRadius: 5)
-                                                    .foregroundStyle(themeManager.mainColor)
-                                                    .frame(width: 100, height: 100)
-                                                    .overlay {
-                                                        Text("\(b.businessName)")
-                                                            .foregroundStyle(themeManager.textColor)
-                                                    }
-                                                    .onTapGesture {
-                                                        selectedBusiness = b
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    .frame(width: screenWidth-30, height: 150)
-                                    
-                                    Button("Start"){
-                                        isTimerActive.toggle()
-                                    }
-                                }
+                                TimerConfig(isTimerActive: $isTimerActive)
+                                    .padding(.top, 10)
                             }
                             else if selectedScreen == "clipboard" {
-                                
+                                DashboardFlashcardView()
+                                .padding(.bottom, 45)
+                                .padding(.top, 10)
                             }
                             else if selectedScreen == "gamecontroller" {
                                 MiniGameView(isTaskActive: $isTaskActive)
@@ -142,9 +125,6 @@ struct Play: View {
                         }
                 }
             }
-        }
-        .fullScreenCover(isPresented: $isTimerActive) {
-            Timer3(selectedBusiness: selectedBusiness!, setTime: 3600, isXPBoosterActive: isXPBoosterActive, isCashBoosterActive: isCashBoosterActive, isCostReductionActive: isCostReductionActive, isTimerActive: $isTimerActive)
         }
     }
 }

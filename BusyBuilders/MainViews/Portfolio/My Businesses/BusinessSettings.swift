@@ -129,7 +129,7 @@ struct BusinessSettings: View {
             VStack (alignment: .leading){
                 Image(systemName: "\(business.businessIcon)")
                     .font(.system(size: 100))
-                    .frame(width: screenWidth-30,height: 150, alignment: .center)
+                    .frame(width: screenWidth-20,height: 150, alignment: .center)
                 
                 VStack (alignment: .leading, spacing: 0){
                     Text("Business Name")
@@ -162,7 +162,7 @@ struct BusinessSettings: View {
                             Spacer()
                         }
                     }
-                    .frame(width: screenWidth-30, alignment: .leading)
+                    .frame(width: screenWidth-20, alignment: .leading)
                 }
                 
                 VStack (alignment: .leading, spacing: 5){
@@ -193,7 +193,7 @@ struct BusinessSettings: View {
                             Spacer()
                         }
                     }
-                    .frame(width: screenWidth-30, alignment: .leading)
+                    .frame(width: screenWidth-20, alignment: .leading)
                 }
                 
                 VStack (alignment: .leading, spacing: 0){

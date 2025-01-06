@@ -17,7 +17,7 @@ struct TransactionPreview: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
-            .frame(width: screenWidth-30, height: 80)
+            .frame(width: screenWidth-20, height: 80)
             .foregroundStyle(themeManager.mainColor)
             .overlay {
                 HStack {

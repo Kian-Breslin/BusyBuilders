@@ -13,6 +13,7 @@ struct Timer3: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.verticalSizeClass) var heightSizeClass : UserInterfaceSizeClass?
     @Query var businesses: [BusinessDataModel]
+    @Query var users : [UserDataModel]
     @Environment(\.modelContext) var context
     
     @State var selectedBusiness : BusinessDataModel
@@ -39,7 +40,7 @@ struct Timer3: View {
     
     var body: some View {
         ZStack {
-            themeManager.textColor
+            themeManager.mainColor
                 .ignoresSafeArea()
             
             VStack (spacing: 50){
@@ -60,8 +61,6 @@ struct Timer3: View {
                     .onTapGesture {
                         isTimerActive.toggle()
                     }
-//                    .shadow(color: Color.green, radius: 25)
-//                    .shadow(color: Color.teal, radius: 35)
                 
                 VStack (alignment: .center){
                     Text("\(currentDate[3].uppercased())")
@@ -100,22 +99,6 @@ struct Timer3: View {
                 }
                 .frame(alignment: .center)
                 
-                
-                VStack (spacing: 5){
-                    Text("\((Double(timeElapsed) / 3600.0) * 100, specifier: "%.0f")%")
-                        .font(.system(size: 12))
-                    ZStack (alignment: .leading){
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: screenWidth-30, height: 20)
-                            .foregroundStyle(getColor(themeManager.secondaryColor))
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: (CGFloat(timeElapsed) / 3600)*(screenWidth-40), height: 10)
-                            .foregroundStyle(getColor("white"))
-                            .padding(.horizontal, 5)
-                    }
-                }
-                
                 Text("$\((selectedBusiness.cashPerMin/60) * timeElapsed)")
                     .font(.system(size: 60))
                 
@@ -135,19 +118,27 @@ struct Timer3: View {
                         }
                         .onTapGesture {
                             isTimeCounting.toggle()
-                            let totalIncomeCalculated = calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[2]
-                            let totalCostCalculated = calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[1]
-                            let totalXPCalculated = calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[0]
-//                            print("XP: \(calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[0])")
-//                            print("Cost: \(calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[1])")
-//                            print("Income: \(calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[2])")
                             
+                            let calculations = calculateEarnings(timeElapsed, selectedBusiness, isXPBoosterActive, isCashBoosterActive, isCostReductionActive)
+                            let totalIncomeCalculated = calculations[2]
+                            let totalCostCalculated = calculations[1]
+                            let totalXPCalculated = calculations[0]
+                            print(totalXPCalculated)
+                            
+                            if let user = users.first {
+                                user.netWorth += (totalIncomeCalculated - totalCostCalculated)
+                                user.level += totalXPCalculated
+                                print("\(user.level)")
+                            }
+                            else {
+                                print("No USer Found ????")
+                            }
                             selectedBusiness.netWorth += (totalIncomeCalculated - totalCostCalculated)
                             selectedBusiness.businessLevel += totalXPCalculated
                             selectedBusiness.time += timeElapsed
                             
-                            let newSession = SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "", sessionEnd: "", businessId: selectedBusiness.id)
-//
+                            let newSession = SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "", sessionEnd: "", businessId: selectedBusiness.id, totalCashEarned: totalIncomeCalculated, totalCostIncurred: totalCostCalculated, totalXPEarned: totalXPCalculated, totalStudyTime: timeElapsed)
+
                             selectedBusiness.sessionHistory.append(newSession)
                             
                             do {
@@ -160,12 +151,12 @@ struct Timer3: View {
                             
                         }
                 }
-                .frame(width: screenWidth-30)
+                .frame(width: screenWidth-20)
                 .foregroundStyle(getColor(themeManager.secondaryColor))
                 
                 Spacer()
             }
-            .foregroundStyle(themeManager.mainColor)
+            .foregroundStyle(themeManager.textColor)
         }
         .onAppear {
             timeStarted = formatFullDateTime(date: Date())
@@ -184,6 +175,20 @@ struct Timer3: View {
             }
         }
         .sheet(isPresented: $showEnd) {
+            showSessionStats(selectedBusiness: selectedBusiness, timeElapsed: timeElapsed, isTimerActive: $isTimerActive)
+            .presentationDetents([.fraction(0.50)])
+        }
+    }
+}
+
+struct showSessionStats: View {
+    @State var selectedBusiness : BusinessDataModel
+    @State var timeElapsed : Int
+    @Binding var isTimerActive : Bool
+    
+    var body: some View {
+        ZStack {
+            ThemeManager().mainColor.ignoresSafeArea()
             VStack {
                 Text("\(selectedBusiness.businessName)")
                 
@@ -200,39 +205,41 @@ struct Timer3: View {
                     isTimerActive.toggle()
                 }
             }
-            .presentationDetents([.fraction(0.50)])
+            .foregroundStyle(ThemeManager().textColor)
         }
     }
+}
+
+ func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel, _ XPA: Bool, _ CBA: Bool, _ CRA: Bool) -> [Int] {
+    let cashPerMin = business.cashPerMin
+    let costPerMin = business.costPerMin
+
+    // Convert timeElapsed to minutes
+    let timeElapsedInMinutes = Double(timeElapsed) / 60
+
+    // Base calculations
+    var totalIncome = Double(cashPerMin) * timeElapsedInMinutes
+    var totalCost = Double(costPerMin) * timeElapsedInMinutes
+    var totalXP = timeElapsedInMinutes
     
-    public func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel, _ XPA: Bool, _ CBA: Bool, _ CRA: Bool) -> [Int] {
-        let cashPerMin = business.cashPerMin
-        let costPerMin = business.costPerMin
+    print("Total XP: \(Int(totalXP.rounded()))")
 
-        // Convert timeElapsed to minutes
-        let timeElapsedInMinutes = Double(timeElapsed) / 60
-
-        // Base calculations
-        var totalIncome = Double(cashPerMin) * timeElapsedInMinutes
-        var totalCost = Double(costPerMin) * timeElapsedInMinutes
-        var totalXP = timeElapsedInMinutes
-
-        // Apply upgrades
-        if CBA {
-            totalIncome *= 1.5 // 50% more income
-        }
-        if CRA {
-            totalCost *= 0.5 // 50% less cost
-        }
-        if XPA {
-            totalXP *= 1.5 // 50% more XP
-        }
-
-        return [
-            Int(totalXP.rounded()), // Round to nearest Int for XP
-            Int(totalCost.rounded()), // Round to nearest Int for cost
-            Int(totalIncome.rounded()) // Round to nearest Int for income
-        ]
+    // Apply upgrades
+    if CBA {
+        totalIncome *= 1.5 // 50% more income
     }
+    if CRA {
+        totalCost *= 0.5 // 50% less cost
+    }
+    if XPA {
+        totalXP *= 1.5 // 50% more XP
+    }
+
+    return [
+        Int(totalXP.rounded()), // Round to nearest Int for XP
+        Int(totalCost.rounded()), // Round to nearest Int for cost
+        Int(totalIncome.rounded()) // Round to nearest Int for income
+    ]
 }
 
 #Preview {

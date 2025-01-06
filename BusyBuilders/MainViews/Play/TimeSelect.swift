@@ -12,14 +12,14 @@ struct TimeSelect: View {
                 // Background black circle
                 Circle()
                     .foregroundColor(themeManager.mainColor)
-                    .frame(width: 200, height: 200)
+                    .frame(width: 150, height: 150)
                 
                 // Markings at 12, 3, 6, 9 positions
                 ForEach([0, 90, 180, 270], id: \.self) { angle in
                     Rectangle()
                         .fill(themeManager.textColor)
-                        .frame(width: 2, height: 10)
-                        .offset(y: -95) // Adjust according to circle radius
+                        .frame(width: 1, height: 8)
+                        .offset(y: -70) // Adjust according to circle radius
                         .rotationEffect(.degrees(Double(angle)))
                 }
                 
@@ -28,63 +28,20 @@ struct TimeSelect: View {
                     // Hour hand
                     Rectangle()
                         .fill(themeManager.textColor)
-                        .frame(width: 2, height: 100)
-                        .offset(y: -50) // Adjust length and placement
+                        .frame(width: 2, height: 75)
+                        .offset(y: -35) // Adjust length and placement
                         .rotationEffect(.degrees(Double((moveFiveMins/60)*6))) // For 1 o'clock position
-                    
-                    // Minute hand
-    //                Rectangle()
-    //                    .fill(Color.white)
-    //                    .frame(width: 3, height: 80)
-    //                    .offset(y: -40) // Adjust length and placement
-    //                    .rotationEffect(.degrees(120)) // For 20 minutes
                     
                     // Shaded area between hour and minute hand
                     SectorShape(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: Double((moveFiveMins/60)*6)))
                         .fill(themeManager.textColor.opacity(0.2))
-                        .frame(width: 200)
+                        .frame(width: 150)
                         .rotationEffect(.degrees(-90)) // For 1 o'clock position
                 }
             }
             .animation(.linear, value: moveFiveMins)
-            
-            HStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 60, height: 40)
-                    .overlay {
-                        Image(systemName: "minus")
-                            .foregroundStyle(themeManager.textColor)
-                    }
-                    .onTapGesture {
-                        if moveFiveMins > 0 {
-                            moveFiveMins -= 300
-                        }
-                    }
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 150, height: 40)
-                    .overlay {
-                        Text("\(timeFormattedMins(moveFiveMins))")
-                            .foregroundStyle(themeManager.textColor)
-                            .font(.system(size: 30))
-                            .kerning(2)
-                    }
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 60, height: 40)
-                    .overlay {
-                        Image(systemName: "plus")
-                            .foregroundStyle(themeManager.textColor)
-                    }
-                    .onTapGesture {
-                        if moveFiveMins < 3600 {
-                            moveFiveMins += 300
-                        } else {
-                            moveFiveMins += 0
-                        }
-                    }
-            }
-            .foregroundStyle(themeManager.mainColor)
         }
-        .frame(width: screenWidth - 30, height: 280)
+        .frame(width: 150, height: 150)
     }
 }
 

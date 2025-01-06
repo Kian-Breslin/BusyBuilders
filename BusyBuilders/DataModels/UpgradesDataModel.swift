@@ -32,12 +32,14 @@ public class EffectType {
     var cashPerMinIncrease: Double? // Amount to increase cash per minute
     var xpBoost: Double?            // Amount to increase XP earned
     var costReduction: Double?      // Percentage reduction in costs
+    var breakBooster: Double?
     
     // Initialize EffectType
-    init(cashPerMinIncrease: Double? = nil, xpBoost: Double? = nil, costReduction: Double? = nil) {
+    init(cashPerMinIncrease: Double? = nil, xpBoost: Double? = nil, costReduction: Double? = nil, breakBooster: Double? = nil) {
         self.cashPerMinIncrease = cashPerMinIncrease
         self.xpBoost = xpBoost
         self.costReduction = costReduction
+        self.breakBooster = breakBooster
     }
 }
 

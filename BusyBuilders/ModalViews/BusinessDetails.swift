@@ -107,7 +107,7 @@ struct BusinessDetails: View {
                         }
                         
                     }
-                    .frame(width: screenWidth-30, alignment: .leading)
+                    .frame(width: screenWidth-20, alignment: .leading)
                     Spacer()
                     NavigationLink(destination: EditBusinessView(business: business)) {
                         Text("Edit Business Details")
@@ -210,7 +210,7 @@ struct BusinessDetails: View {
                                 .opacity(opacityDropdown)
                             
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(width: screenWidth-30, height: 100)
+                                .frame(width: screenWidth-20, height: 100)
                                 .opacity(0.2)
                                 .overlay {
                                     VStack (alignment: .leading){
@@ -227,7 +227,7 @@ struct BusinessDetails: View {
                                     .frame(width: screenWidth-50, alignment: .leading)
                                 }
                         }
-                        .frame(width: screenWidth-30,height: screenHeight-400, alignment: .leading)
+                        .frame(width: screenWidth-20,height: screenHeight-400, alignment: .leading)
                         .animation(.linear, value: heightDropdown)
                         Spacer()
                         // Navigation link to Session History

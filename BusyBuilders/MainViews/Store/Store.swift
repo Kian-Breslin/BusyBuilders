@@ -50,6 +50,7 @@ struct Store: View {
                             }
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 40)
+                                .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                 .overlay(content: {
                                     Image("userImage-2")
                                         .resizable()
@@ -61,7 +62,7 @@ struct Store: View {
                         }
                         .font(.system(size: 25))
                     }
-                    .frame(width: screenWidth-30, height: 60)
+                    .frame(width: screenWidth-20, height: 60)
                     .foregroundStyle(themeManager.textColor)
                     
                     HStack {
@@ -69,11 +70,11 @@ struct Store: View {
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
-                                    .foregroundStyle(themeManager.textColor)
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                     .overlay {
                                         Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                             .font(.system(size: 30))
-                                            .foregroundStyle(themeManager.mainColor)
+                                            .foregroundStyle(themeManager.textColor)
                                             
                                     }
                                     .onTapGesture {
@@ -92,19 +93,38 @@ struct Store: View {
                     }
                     .font(.system(size: 12))
                     .foregroundStyle(themeManager.textColor)
-                    .frame(width: screenWidth-30, height: 100)
+                    .frame(width: screenWidth-20, height: 100)
                 }
-                .frame(width: screenWidth-30, height: 160)
+                .frame(width: screenWidth-20, height: 160)
                 
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: screenWidth)
-                    .foregroundStyle(themeManager.textColor)
+                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                     .overlay {
                         if selectedScreen == "wrench.and.screwdriver" {
-                            UpgradesStoreView()
+                            VStack (alignment: .leading){
+                                Text("Current Balance :")
+                                    .padding(.top, 10)
+                                    .bold()
+                                if let user = users.first {
+                                    Text("$\(user.netWorth)")
+                                        .font(.system(size: 30))
+                                }
+                                else {
+                                    Text("$4,000,000")
+                                        .font(.system(size: 30))
+                                }
+                                UpgradesStoreView()
+                                Spacer()
+                            }
+                            .foregroundStyle(themeManager.textColor)
+                            .font(.system(size: 25))
                         }
                     }
             }
+        }
+        .onAppear {
+            print(users.first?.netWorth ?? "No")
         }
     }
 }

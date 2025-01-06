@@ -24,6 +24,17 @@ struct Portfolio: View {
     @State var Title = "Portfolio"
     @State var buttonImages = ["person", "building", "building.columns", "banknote"]
     @State var buttonText = ["My Stats", "My Businesses", "My City", "Investments"]
+    
+    let randomNames = ["Nova Nexus",
+                       "Echo Ventures",
+                       "Aspire Dynamics",
+                       "Vertex Innovations",
+                       "PulsePoint Solutions",
+                       "Summit Strategies",
+                       "Luminary Labs",
+                       "Momentum Works",
+                       "Catalyst Collective",
+                       "Fusion Horizons"]
 
     var body: some View {
         NavigationView {
@@ -52,15 +63,18 @@ struct Portfolio: View {
                                 .foregroundStyle(themeManager.textColor)
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
-                                    .foregroundStyle(themeManager.textColor)
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
                                             .frame(width: 40,height: 40)
                                     })
                                     .onTapGesture {
-                                        let newBusiness = BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle")
-                                        context.insert(newBusiness)
+                                        if let user = users.first {
+                                            let newBusiness = BusinessDataModel(businessName: "\(randomNames[randomNumber(in: 0...9)])", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle", owners: [user])
+                                            
+                                            user.businesses.append(newBusiness)
+                                        }
                                         
                                         do {
                                             try context.save()
@@ -72,17 +86,18 @@ struct Portfolio: View {
                             }
                             .font(.system(size: 25))
                         }
-                        .frame(width: screenWidth-30, height: 60)
+                        .frame(width: screenWidth-20, height: 60)
                         
                         HStack {
                             ForEach(0..<4) { i in
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
+                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
-                                                .foregroundStyle(themeManager.mainColor)
+                                                .foregroundStyle(themeManager.textColor)
                                         }
                                         .onTapGesture {
                                             selectedScreen = buttonImages[i]
@@ -103,12 +118,11 @@ struct Portfolio: View {
                         .foregroundStyle(themeManager.textColor)
                         .frame(width: screenWidth - 30, height: 100)
                     }
-                    .frame(width: screenWidth-30, height: 160)
+                    .frame(width: screenWidth-20, height: 160)
                     
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.textColor)
-                        .overlay {
+                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))                        .overlay {
                             if selectedScreen == "person" {
                                 MyStats()
                             }

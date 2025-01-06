@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SlotMachine: View {
     @EnvironmentObject var themeManager: ThemeManager
+    @Environment(\.modelContext) var context
+    @Query var users: [UserDataModel]
+    @Query var mgSessions: [MiniGameSessionModel]
     
     @Binding var isGameActive : Bool
     
@@ -23,8 +27,6 @@ struct SlotMachine: View {
     @State var gameCounter = 0
     @State var winCounter = 0
     
-    
-    
     var body: some View {
         VStack (spacing: 25){
             
@@ -34,7 +36,6 @@ struct SlotMachine: View {
                     .foregroundStyle(themeManager.textColor)
                 
                 if hasRolled && winningImages.isEmpty == false {
-                    // Logic Check
                     if winningImages[0] == winningImages[1] && winningImages[0] == winningImages[2]{
                         Text("+ $\((selectedAmount*(calculateReward(for: winningImages)))+selectedAmount, specifier: "%.f")")
                             .onAppear {
@@ -44,6 +45,15 @@ struct SlotMachine: View {
                                 print("\(winCounter) / \(gameCounter)")
                                 print("\(calculateReward(for: winningImages))")
                                 isGameActive = false
+                                
+                                let newSession = MiniGameSessionModel(
+                                    sessionDate: Date(),
+                                    sessionWin: true,
+                                    sessionScore: 0,
+                                    sessionValue: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount),
+                                    sessionGame: .Slots)
+                                
+                                makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
                             }
                     }
                     else {
@@ -52,6 +62,15 @@ struct SlotMachine: View {
                                 gameCounter += 1
                                 print("\(winCounter) / \(gameCounter)")
                                 isGameActive = false
+                                
+                                let newSession = MiniGameSessionModel(
+                                    sessionDate: Date(),
+                                    sessionWin: false,
+                                    sessionScore: 0,
+                                    sessionValue: 0,
+                                    sessionGame: .Slots)
+                                
+                                makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
                             }
                     }
                 }
@@ -61,7 +80,7 @@ struct SlotMachine: View {
             }
             
             RoundedRectangle(cornerRadius: 10)
-                .frame(width: screenWidth-30, height: 200)
+                .frame(width: screenWidth-20, height: 200)
                 .foregroundStyle(themeManager.textColor)
                 .overlay {
                     HStack {
@@ -88,12 +107,12 @@ struct SlotMachine: View {
                     )
                     .tint(getColor(themeManager.secondaryColor))
                 }
-                .frame(width: screenWidth-30, height: 100)
+                .frame(width: screenWidth-20, height: 100)
             }
             else {
                 Text("\(selectedAmount, specifier: "%.f")")
                     .font(.largeTitle)
-                    .frame(width: screenWidth-30, height: 100)
+                    .frame(width: screenWidth-20, height: 100)
             }
             
             if hasRolled == false {
@@ -104,6 +123,7 @@ struct SlotMachine: View {
                     rolled.toggle()
                     hasRolled = true
                     isGameActive = true
+                    
                 }
                 .frame(width: 100, height: 50)
                 .foregroundStyle(themeManager.mainColor)
@@ -128,6 +148,21 @@ struct SlotMachine: View {
         .onAppear {
             hasRolled = false
 //            runSimulation()
+        }
+    }
+    func makeSession(_ sessionDate: Date, _ sessionWin: Bool,_ sessionValue: Int){
+        print("Ran Function")
+        let newSession = MiniGameSessionModel(sessionDate: sessionDate, sessionWin: sessionWin, sessionScore: 0, sessionValue: sessionValue, sessionGame: .Slots)
+        
+        if let user = users.first {
+            user.miniGameSessions.append(newSession)
+        }
+        
+        do {
+            try context.save()
+            print("Ran Function, Saved MiniGame(SLOTS) Session")
+        } catch {
+            print("Error: Couldnt save new mini game session")
         }
     }
     

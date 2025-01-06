@@ -41,13 +41,13 @@ struct AdminTests: View {
                         }
                     
                     RoundedRectangle(cornerRadius: 5)
-                        .frame(width: 180, height: 40)
+                        .frame(width: 220, height: 40)
                         .overlay {
-                            Text("Add NetWorth")
+                            Text("Delete: \(selectedBusiness?.businessName ?? "None")")
                                 .foregroundStyle(themeManager.mainColor)
                         }
                         .onTapGesture {
-                            addNetWorth()
+                            context.delete(selectedBusiness!)
                         }
                 }
                 VStack (alignment: .leading){
@@ -67,17 +67,14 @@ struct AdminTests: View {
                     ScrollView (.horizontal){
                         HStack {
                             RoundedRectangle(cornerRadius: 5)
-                                .frame(width: 40, height: 40)
-                                .overlay {
-                                    Image(systemName: "flag")
-                                        .foregroundStyle(getColor("blue"))
-                                }
+                                .frame(width: 120, height: 40)
+                                .foregroundStyle(.teal)
                             
                             ForEach(businesses, id: \.self) { b in
                                 RoundedRectangle(cornerRadius: 5)
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 120, height: 40)
                                     .overlay {
-                                        Image(systemName: "\(b.businessIcon)")
+                                        Text("\(b.businessName)")
                                             .foregroundStyle(getColor("\(b.businessTheme)"))
                                     }
                                     .onTapGesture {
@@ -224,17 +221,17 @@ struct AdminTests: View {
                         }
                         
                         HStack {
-                            Text("Leaderboard Position: \(selectedBusiness?.leaderboardPosition ?? 10)")
+                            Text("Add Quick Session: ")
                             Spacer()
-                            Image(systemName: "plus.circle")
-                                .font(.system(size: 30))
-                                .onTapGesture {
-                                    selectedBusiness?.leaderboardPosition += 1
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 120, height: 40)
+                                .foregroundStyle(Color.indigo)
+                                .overlay {
+                                    Text("Add Session")
+                                        .font(.system(size: 15))
                                 }
-                            Image(systemName: "minus.circle")
-                                .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.leaderboardPosition -= 1
+                                    addSession()
                                 }
                         }
                     }
@@ -252,7 +249,14 @@ struct AdminTests: View {
                 Spacer()
             }
             .foregroundStyle(themeManager.textColor)
-            .frame(width: screenWidth-30, alignment: .leading)
+            .frame(width: screenWidth-20, alignment: .leading)
+        }
+    }
+    
+    private func addSession() {
+        if users.first != nil {
+            let newMockSession = SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "Monday 17 Dec 2024", sessionEnd: "Monday 17 Dec 2024", businessId: selectedBusiness!.id, totalCashEarned: 56000, totalCostIncurred: 10000, totalXPEarned: 1, totalStudyTime: 3600, XPBUsed: false, CBUsed: false, CRUsed: false)
+            selectedBusiness?.sessionHistory.append(newMockSession)
         }
     }
     
@@ -261,7 +265,6 @@ struct AdminTests: View {
         users.first?.netWorth += 10000
     }
     
-    // Functions
     private func resetUserStats() {
         print("Reset User Stats")
         users.first?.netWorth = 0

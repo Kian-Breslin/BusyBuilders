@@ -26,6 +26,7 @@ import SwiftUI
 class ThemeManager: ObservableObject {
     @AppStorage("isDarkMode") var isDarkMode: Bool = true
     @AppStorage("secondaryColor") var secondaryColor: String = "red"
+    @AppStorage("mainDark") var mainDark: String = "dark"
 
     var mainColor: Color {
         isDarkMode ? getColor("black") : getColor("white")
@@ -102,6 +103,8 @@ func getColor(_ name: String) -> Color {
         return Color(red: 60 / 255, green: 60 / 255, blue: 60 / 255)
     case "white":
         return Color(red: 221 / 255, green: 220 / 255, blue: 216 / 255)
+    case "dark":
+        return Color(red: 85/255, green: 85/255, blue: 85/255)
     // Add other colors as needed
     default:
         return Color.gray // Fallback if no color matches
@@ -152,6 +155,13 @@ extension Color {
     }
 }
 
+public func convertSecondsToTime(_ seconds: Int) -> [Int] {
+    let hours = seconds / 3600
+    let minutes = (seconds % 3600) / 60
+    let remainingSeconds = seconds % 60
+    return [hours, minutes, remainingSeconds]
+}
+
 public func timeFormattedSec(_ totalSeconds: Int) -> String {
     let minutes = totalSeconds / 60
     let seconds = totalSeconds % 60
@@ -183,7 +193,7 @@ public func getDateComponents(from date: Date) -> [String] {
     let day = dateFormatter.string(from: date)
     
     // Full Month Name (November)
-    dateFormatter.dateFormat = "MMM"
+    dateFormatter.dateFormat = "MMMM"
     let month = dateFormatter.string(from: date)
     
     // Full Year (2024)
@@ -234,7 +244,7 @@ public func timeFormattedWithText(_ totalSeconds: Int) -> String {
     let hours = totalSeconds / 3600
     let minutes = (totalSeconds % 3600) / 60
     let seconds = totalSeconds % 60
-    return String(format: "%02d hrs %02d mins %02d secs", hours, minutes, seconds)
+    return String(format: "%02d h %02d m %02d s", hours, minutes, seconds)
 }
 
 public func formatFullDateTime(date: Date) -> String {
@@ -258,7 +268,7 @@ public func randomNumber(in range: ClosedRange<Int>) -> Int {
     return Int.random(in: range)
 }
 
-public func getPrestige(_ level: Double) -> String {
+public func getPrestige(_ level: Int) -> String {
     switch level {
     case 0..<21: // 0 - 10 hours (0 - 4 days)
         return "Start-Up" // ~0 - 4 days
@@ -281,6 +291,7 @@ public func getPrestige(_ level: Double) -> String {
     default:
         return "N/A"
     }}
+
 public func getLevelFromSec(_ sec: Int) -> Int {
     
     let min = sec / 60
@@ -294,5 +305,172 @@ func timeComponents(from seconds: Int) -> [Int] {
     let minutes = (seconds % 3600) / 60
     let secs = seconds % 60
     return [hours, minutes, secs]
+}
+
+func isToday(date: Date) -> Bool {
+    let calendar = Calendar.current
+    return calendar.isDateInToday(date)
+}
+
+func isWithinLast7Days(date: Date) -> Bool {
+    let calendar = Calendar.current
+    let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: Date())!
+    return date >= sevenDaysAgo
+}
+
+func isWithinLast30Days(date: Date) -> Bool {
+    let calendar = Calendar.current
+    let thirtyDaysAgo = calendar.date(byAdding: .day, value: -30, to: Date())!
+    return date >= thirtyDaysAgo
+}
+
+func calculateEarningsForPeriods(sessions: [SessionDataModel], miniGameSessions: [MiniGameSessionModel], flashcardSessions: [FlashcardSessionDataModel]) -> [Int] {
+    // Initialize variables for today's, last 7 days', and last 30 days' earnings
+    var todayEarnings = 0
+    var last7DaysEarnings = 0
+    var last30DaysEarnings = 0
+
+    // Helper function to calculate earnings for SessionDataModel
+    func calculateEarningsForSessionData(sessions: [SessionDataModel]) -> Int {
+        return sessions.reduce(0) { $0 + ($1.totalCashEarned - $1.totalCostIncurred) }
+    }
+    
+    // Helper function to calculate earnings for MiniGameSessionModel
+    func calculateEarningsForMiniGameSessions(sessions: [MiniGameSessionModel]) -> Int {
+        return sessions.reduce(0) { $0 + $1.sessionValue }
+    }
+    
+    // Helper function to calculate earnings for FlashcardSessionDataModel
+    func calculateEarningsForFlashcardSessions(sessions: [FlashcardSessionDataModel]) -> Int {
+        return sessions.reduce(0) { $0 + $1.sessionValue }
+    }
+
+    // Filter and calculate earnings for SessionDataModel (Sessions)
+    let todaySessions = sessions.filter { isToday(date: $0.sessionDate) }
+    let last7DaysSessions = sessions.filter { isWithinLast7Days(date: $0.sessionDate) }
+    let last30DaysSessions = sessions.filter { isWithinLast30Days(date: $0.sessionDate) }
+
+    // Filter and calculate earnings for MiniGameSessionModel (Mini Game Sessions)
+    let todayMiniGameSessions = miniGameSessions.filter { isToday(date: $0.sessionDate) }
+    let last7DaysMiniGameSessions = miniGameSessions.filter { isWithinLast7Days(date: $0.sessionDate) }
+    let last30DaysMiniGameSessions = miniGameSessions.filter { isWithinLast30Days(date: $0.sessionDate) }
+
+    // Filter and calculate earnings for FlashcardSessionDataModel (Flashcard Sessions)
+    let todayFlashcardSessions = flashcardSessions.filter { isToday(date: $0.sessionDate) }
+    let last7DaysFlashcardSessions = flashcardSessions.filter { isWithinLast7Days(date: $0.sessionDate) }
+    let last30DaysFlashcardSessions = flashcardSessions.filter { isWithinLast30Days(date: $0.sessionDate) }
+
+    // Calculate earnings for Today
+    todayEarnings = calculateEarningsForSessionData(sessions: todaySessions) +
+                    calculateEarningsForMiniGameSessions(sessions: todayMiniGameSessions) +
+                    calculateEarningsForFlashcardSessions(sessions: todayFlashcardSessions)
+    
+    // Calculate earnings for Last 7 Days
+    last7DaysEarnings = calculateEarningsForSessionData(sessions: last7DaysSessions) +
+                        calculateEarningsForMiniGameSessions(sessions: last7DaysMiniGameSessions) +
+                        calculateEarningsForFlashcardSessions(sessions: last7DaysFlashcardSessions)
+
+    // Calculate earnings for Last 30 Days
+    last30DaysEarnings = calculateEarningsForSessionData(sessions: last30DaysSessions) +
+                         calculateEarningsForMiniGameSessions(sessions: last30DaysMiniGameSessions) +
+                         calculateEarningsForFlashcardSessions(sessions: last30DaysFlashcardSessions)
+
+    // Return earnings for Today, Last 7 Days, and Last 30 Days
+    return [todayEarnings, last7DaysEarnings, last30DaysEarnings]
+}
+
+func getWeeklyIncomeBreakdown(businesses: [BusinessDataModel], miniGameSessions: [MiniGameSessionModel], flashcardSessions: [FlashcardSessionDataModel]) -> [[Int]] {
+    // Helper function to get the start of the week (Monday)
+    func startOfWeek(for date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
+        return calendar.date(from: components) ?? date
+    }
+    
+    let calendar = Calendar.current
+    let today = Date()
+    let weekStart = startOfWeek(for: today)
+    
+    // Initialize arrays for daily income breakdown
+    var sessionIncome = [0, 0, 0, 0, 0, 0, 0] // Mon-Sun
+    var miniGameIncome = [0, 0, 0, 0, 0, 0, 0] // Mon-Sun
+    var flashcardIncome = [0, 0, 0, 0, 0, 0, 0] // Mon-Sun
+    
+    // Helper function to get the day of the week (Mon = 0, ..., Sun = 6)
+    func getDayOfWeek(from date: Date) -> Int? {
+        let weekday = calendar.component(.weekday, from: date)
+        return (weekday == 1) ? 6 : weekday - 2 // Adjusting so that Monday = 0, ..., Sunday = 6
+    }
+    
+    // Process session income from businesses
+    for business in businesses {
+        for session in business.sessionHistory {
+            if let dayIndex = getDayOfWeek(from: session.sessionDate),
+               session.sessionDate >= weekStart,
+               session.sessionDate <= today {
+                sessionIncome[dayIndex] += session.totalCashEarned - session.totalCostIncurred
+            }
+        }
+    }
+    
+    // Process mini-game income
+    for miniGameSession in miniGameSessions {
+        if let dayIndex = getDayOfWeek(from: miniGameSession.sessionDate),
+           miniGameSession.sessionDate >= weekStart,
+           miniGameSession.sessionDate <= today {
+            miniGameIncome[dayIndex] += miniGameSession.sessionValue
+        }
+    }
+    
+    // Process flashcard income
+    for flashcardSession in flashcardSessions {
+        if let dayIndex = getDayOfWeek(from: flashcardSession.sessionDate),
+           flashcardSession.sessionDate >= weekStart,
+           flashcardSession.sessionDate <= today {
+            flashcardIncome[dayIndex] += flashcardSession.sessionValue
+        }
+    }
+    
+    // Combine daily incomes into a breakdown array
+    var weeklyIncomeBreakdown: [[Int]] = []
+    for day in 0..<7 {
+        weeklyIncomeBreakdown.append([
+            sessionIncome[day],
+            miniGameIncome[day],
+            flashcardIncome[day]
+        ])
+    }
+    return weeklyIncomeBreakdown
+}
+
+func calculateTotalStudyTime(for businesses: [BusinessDataModel]) -> Int {
+    var totalTime = 0
+    
+    for business in businesses {
+//        print("Calculating for business: \(business.businessName)")
+        for session in business.sessionHistory {
+//            print("Session time: \(session.totalStudyTime) seconds")
+            totalTime += session.totalStudyTime
+        }
+    }
+    
+//    print("Total calculated time: \(totalTime) seconds")
+    return totalTime
+}
+
+func totalBusinessNetWorth(for user: UserDataModel) -> Int {
+    var totalNetWorth: Int = 0
+    for business in user.businesses {
+        totalNetWorth += business.netWorth
+    }
+    return totalNetWorth
+}
+
+func SessionCount(for user: UserDataModel) -> Int {
+    var totalCount: Int = 0
+    for business in user.businesses {
+        totalCount += business.sessionHistory.count
+    }
+    return totalCount
 }
 
