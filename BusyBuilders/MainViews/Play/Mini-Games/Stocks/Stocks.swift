@@ -68,7 +68,7 @@ struct gameOverScreen: View {
                 
                 Button("Dismiss"){
                     dismiss()
-                    user.netWorth += Int(stockPrice * Double(stocksBought))
+                    user.availableBalance += Int(stockPrice * Double(stocksBought))
                     user.miniGameSessions.append(MiniGameSessionModel(sessionDate: Date(), sessionWin: stockPrice < business.currentStockPrice ? false : true, sessionScore: 0, sessionValue: Int(stockPrice * Double(stocksBought)), sessionGame: .Stocks))
                 }
             }
@@ -175,13 +175,13 @@ struct businessInfoSection: View {
                     }
                     .onTapGesture {
                         if let user = users.first {
-                            let userNetWorth = user.netWorth
+                            let userAvailableBalance = user.availableBalance
                             if selectedBusiness.name != "" {
-                                if userNetWorth >= stocksBought * Int(selectedBusiness.currentStockPrice){
-                                    print("Net Worth: $\(userNetWorth)")
+                                if userAvailableBalance >= stocksBought * Int(selectedBusiness.currentStockPrice){
+                                    print("Net Worth: $\(userAvailableBalance)")
                                     print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
                                     print("User Has Enough Cash to buy... Starting Session")
-                                    user.netWorth -= stocksBought * Int(selectedBusiness.currentStockPrice)
+                                    user.availableBalance -= stocksBought * Int(selectedBusiness.currentStockPrice)
                                     startSession.toggle()
                                 } else {
                                     print("User does not have enough cash to buy.... Cannot Start Session")

@@ -30,9 +30,10 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var businessLevel: Int // Current level of the business
     var businessPrestige: String
     var streak : Int
+    var creationDate : Date
 
     // Initializer
-    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, cashPerMin: Int = 1000, netWorth: Int = 0, costPerMin: Int = 300, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0) {
+    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, cashPerMin: Int = 1000, netWorth: Int = 0, costPerMin: Int = 300, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0, creationDate: Date = Date()) {
         self.id = id
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -53,5 +54,6 @@ class BusinessDataModel : ObservableObject, Identifiable {
         self.businessLevel = businessLevel
         self.businessPrestige = businessPrestige
         self.streak = streak
+        self.creationDate = creationDate
     }
 }

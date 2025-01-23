@@ -29,7 +29,7 @@ struct HigherOrLowerConfig: View {
                     
                     Slider(
                         value: $sliderValue,
-                        in: 0...Double(user.netWorth == 0 ? 1000 : user.netWorth),
+                        in: 0...Double(user.availableBalance == 0 ? 1000 : user.availableBalance),
                         step: step
                     )
                     .padding(.horizontal)
@@ -50,7 +50,7 @@ struct HigherOrLowerConfig: View {
             else {
                 Text("No User Found")
                     .onTapGesture {
-                        let mockUser = UserDataModel(username: "Kian_17", name: "Kian", email: "kianbreslin517@gmail.com", netWorth: 10000)
+                        let mockUser = UserDataModel(username: "Kian_17", name: "Kian", email: "kianbreslin517@gmail.com", availableBalance: 10000)
                         context.insert(mockUser)
                     }
             }

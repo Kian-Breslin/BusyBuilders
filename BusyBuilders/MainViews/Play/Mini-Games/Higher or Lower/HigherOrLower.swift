@@ -140,7 +140,7 @@ struct HigherOrLower: View {
                                 makeSession(sessionDate, sessionWin, sessionScore, sessionValue)
                                 
                                 if let user = users.first {
-                                    user.netWorth += getAmount(currentCardShowing, inputAmount)
+                                    user.availableBalance += getAmount(currentCardShowing, inputAmount)
                                     user.level += getLevel(currentCardShowing)
                                 }
                             }
@@ -166,7 +166,7 @@ struct HigherOrLower: View {
                             makeSession(sessionDate, sessionWin, sessionScore, sessionValue)
                             
                             if let user = users.first {
-                                user.netWorth += getAmount(currentCardShowing, inputAmount)
+                                user.availableBalance += getAmount(currentCardShowing, inputAmount)
                                 user.level += getLevel(currentCardShowing)
                             }
                             

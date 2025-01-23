@@ -22,7 +22,7 @@ struct SlotMachine: View {
     @State var winningImages : [String] = []
     @State var offsetValue = -205
     
-    @State var totalNetWorth = 100000.0
+    @State var totalAvailableBalance = 100000.0
     @State var selectedAmount = 0.0
     @State var gameCounter = 0
     @State var winCounter = 0
@@ -31,7 +31,7 @@ struct SlotMachine: View {
         VStack (spacing: 25){
             
             HStack {
-                Text("$\(totalNetWorth, specifier: "%.f")")
+                Text("$\(totalAvailableBalance, specifier: "%.f")")
                     .font(.largeTitle)
                     .foregroundStyle(themeManager.textColor)
                 
@@ -102,7 +102,7 @@ struct SlotMachine: View {
                     
                     Slider(
                         value: $selectedAmount,
-                        in: 0...totalNetWorth,
+                        in: 0...totalAvailableBalance,
                         step: 500
                     )
                     .tint(getColor(themeManager.secondaryColor))
@@ -117,7 +117,7 @@ struct SlotMachine: View {
             
             if hasRolled == false {
                 Button("Roll") {
-                    totalNetWorth = totalNetWorth - selectedAmount
+                    totalAvailableBalance = totalAvailableBalance - selectedAmount
                     offsetValue = 205
                     winningImages.removeAll()
                     rolled.toggle()
@@ -228,8 +228,8 @@ struct SlotMachine: View {
     
     func newSum(_ multiplier: Int) {
         let reward = (selectedAmount * Double(multiplier)) + selectedAmount
-        totalNetWorth += reward
-        print("Multiplier: \(multiplier), Bet: \(selectedAmount), Reward: \(reward), Total Net Worth: \(totalNetWorth)")
+        totalAvailableBalance += reward
+        print("Multiplier: \(multiplier), Bet: \(selectedAmount), Reward: \(reward), Total Net Worth: \(totalAvailableBalance)")
     }
 }
 

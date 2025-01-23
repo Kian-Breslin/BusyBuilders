@@ -43,7 +43,7 @@ struct Settings: View {
                         Spacer()
 
                         Text("Settings")
-                            .font(.system(size: 40))
+                            .font(.system(size: 30))
 
                         Spacer()
 
@@ -85,7 +85,7 @@ struct Settings: View {
                         HStack {
                             Text("Color Mode: ")
                             Spacer()
-                            ForEach(0..<7) { i in
+                            ForEach(0..<5) { i in
                                 RoundedRectangle(cornerRadius: 5)
                                     .frame(width: 30, height: 30)
                                     .foregroundStyle(getColor(colorsArray[i]))

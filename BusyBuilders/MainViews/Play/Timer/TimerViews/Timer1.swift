@@ -132,10 +132,10 @@ struct Timer1: View {
                                         .offset(y: -50) // Adjust length and placement
                                         .rotationEffect(.degrees(Double((timeRemaining/60)*6)))
                                     
-                                    SectorShapeClock(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: Double((timeRemaining/60)*6)))
-                                        .fill(Color.white.opacity(0.2))
-                                        .frame(width: 200)
-                                        .rotationEffect(.degrees(-90)) // For 1 o'clock position
+//                                    SectorShapeClock(startAngle: Angle(degrees: 0), endAngle: Angle(degrees: Double((timeRemaining/60)*6)))
+//                                        .fill(Color.white.opacity(0.2))
+//                                        .frame(width: 200)
+//                                        .rotationEffect(.degrees(-90)) // For 1 o'clock position
                                 }
                             }
                             .animation(.linear, value: timeRemaining)

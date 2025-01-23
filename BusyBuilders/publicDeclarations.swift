@@ -119,6 +119,11 @@ func createUserFromUsername(_ username : String) -> UserDataModel {
     return UserDataModel(username: username, name: name, email: email)
 }
 
+func createBankAccountNumber() -> String {
+    let accountNumber = String((100_000...999_999).randomElement()!)
+    return accountNumber
+}
+
 extension Color {
     func inverted() -> Color {
         let uiColor = UIColor(self) // Convert SwiftUI Color to UIColor
@@ -185,6 +190,18 @@ func getDayOfMonth(from date: Date) -> Int? {
     return nil
 }
 
+public func transactionTime(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    
+    dateFormatter.dateFormat = "EEEE"
+    let day = dateFormatter.string(from: date)
+    
+    dateFormatter.dateFormat = "HH:MM"
+    let time = dateFormatter.string(from: date)
+    
+    return "\(day), \(time)"
+}
+
 public func getDateComponents(from date: Date) -> [String] {
     let dateFormatter = DateFormatter()
     
@@ -220,6 +237,12 @@ public func getDayMonthYear(from date: Date) -> String? {
 public func getDateMonthYear(from date: Date) -> String? {
     let formatter = DateFormatter()
     formatter.dateFormat = "d MMMM yyyy"
+    return formatter.string(from: date)
+}
+
+public func getDateFormat(from date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd/MM/YY"
     return formatter.string(from: date)
 }
 

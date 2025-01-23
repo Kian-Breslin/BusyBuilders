@@ -39,7 +39,7 @@ struct TimerView: View {
                     }
                 }
                 
-                TimeSelect(moveFiveMins: $selectedTime)
+//                TimeSelect(moveFiveMins: $selectedTime)
                 
                 VStack(alignment: .leading, spacing: 2){
                     Text("Chose Upgrades")

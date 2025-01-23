@@ -109,8 +109,8 @@ struct OnboardingUserInfo: View {
                 }
                 .onTapGesture {
                     
-                    let newUser = UserDataModel(username: newUserUsername, name: newUserName, email: newUserEmail, password: newUserPassword, created: Date())
-                    
+                    let newUser = UserDataModel(username: newUserUsername, name: newUserName, email: newUserEmail, password: newUserPassword,created: Date())
+                    newUser.bankAccount = BankAccountModel(owner: newUser, accountNumber: createBankAccountNumber(), balance: 0, savingsBalance: 0)
                     context.insert(newUser)
                     
                     do {

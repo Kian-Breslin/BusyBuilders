@@ -17,6 +17,8 @@ public class UserDataModel: Identifiable, ObservableObject {
     var businesses: [BusinessDataModel] // List of businesses owned by the user
     var availableBalance: Int
     var netWorth: Int
+    var bank : BankDataModel?
+    var bankAccount: BankAccountModel?
     var level: Int
     var created: Date
     var flashcards: [DeckModel]
@@ -34,6 +36,8 @@ public class UserDataModel: Identifiable, ObservableObject {
          password: String = "",
          availableBalance: Int = 0,
          netWorth: Int = 0,
+         bank: BankDataModel? = nil,
+         bankAccount: BankAccountModel? = nil,
          level: Int = 0,
          created: Date = Date.now,
          flashcards: [DeckModel] = [],
@@ -48,6 +52,8 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.businesses = []
         self.availableBalance = availableBalance
         self.netWorth = netWorth
+        self.bank = bank
+        self.bankAccount = bankAccount
         self.level = level
         self.created = created
         self.inventory = [

@@ -20,17 +20,17 @@ struct NavigationBar: View {
         ZStack (alignment: .top){
             Rectangle()
                 .frame(width: screenWidth, height: 75)
-                .foregroundStyle(themeManager.textColor)
+                .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
             
             HStack (alignment: .top ,spacing: 15){
                 ForEach(0 ..< 5) { i in
                     ZStack {
                         if selectedView == i {
                             Image(systemName: "\(iconListSelected[i])")
-                                .foregroundStyle(themeManager.mainColor)
+                                .foregroundStyle(!themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
                         } else {
                             Image(systemName: "\(iconListNotSelected[i])")
-                                .foregroundStyle(themeManager.mainColor)
+                                .foregroundStyle(!themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
                         }
                         Text("\(iconListName[i])")
                             .font(.system(size: 10))

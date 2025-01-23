@@ -44,6 +44,9 @@ struct DashboardHomeView: View {
 }
 
 #Preview {
-    DashboardHomeView()
-        .environmentObject(ThemeManager())
+    ZStack {
+        getColor(ThemeManager().mainDark).ignoresSafeArea()
+        DashboardHomeView()
+            .environmentObject(ThemeManager())
+    }
 }

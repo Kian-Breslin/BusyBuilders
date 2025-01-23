@@ -36,7 +36,7 @@ struct OverviewChartWidget: View {
                         x: .value("Day", item.day),
                         y: .value("Sessions", item.sessionValue)
                     )
-                    
+                    .foregroundStyle(getColor("\(themeManager.secondaryColor)"))
                     
                     BarMark(
                         x: .value("Day", item.day),

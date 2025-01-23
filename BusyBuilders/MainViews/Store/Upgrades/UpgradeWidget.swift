@@ -53,10 +53,13 @@ struct UpgradeWidget: View {
                         .onTapGesture {
                             print("\(Upgrade.upgradeName)")
                             if let user = users.first {
-                                if user.netWorth >= Upgrade.cost {
+                                if user.availableBalance >= Upgrade.cost {
                                     user.inventory[Upgrade.upgradeName]! += 1
-                                    user.netWorth -= Upgrade.cost
+                                    user.availableBalance -= Upgrade.cost
                                     print("Bought : \(Upgrade.upgradeName)")
+                                    let newTransacion = TransactionDataModel(image: "wrench.and.screwdriver", name: Upgrade.upgradeName, amount: Upgrade.cost, transactionDescription: "", createdAt: Date(), income: false)
+                                    user.bankAccount?.transactions.append(newTransacion)
+                                    print("Added \(Upgrade.upgradeName) transaction to bank.")
                                 }
                                 else {
                                     print("No no monies")

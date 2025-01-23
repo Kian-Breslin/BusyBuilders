@@ -15,7 +15,7 @@ struct Portfolio: View {
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
     
-    @State var selectedScreen = "building"
+    @State var selectedScreen = "person"
     
     @State var searchForUser = ""
     @State var selectedBusinessToDelete : BusinessDataModel?
@@ -63,7 +63,7 @@ struct Portfolio: View {
                                 .foregroundStyle(themeManager.textColor)
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
-                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
@@ -93,7 +93,7 @@ struct Portfolio: View {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
-                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
+                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
@@ -122,7 +122,8 @@ struct Portfolio: View {
                     
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))                        .overlay {
+                        .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
+                        .overlay {
                             if selectedScreen == "person" {
                                 MyStats()
                             }

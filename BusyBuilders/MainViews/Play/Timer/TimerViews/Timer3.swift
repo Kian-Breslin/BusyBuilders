@@ -126,7 +126,7 @@ struct Timer3: View {
                             print(totalXPCalculated)
                             
                             if let user = users.first {
-                                user.netWorth += (totalIncomeCalculated - totalCostCalculated)
+//                                user.availableBalance += (totalIncomeCalculated - totalCostCalculated)
                                 user.level += totalXPCalculated
                                 print("\(user.level)")
                             }

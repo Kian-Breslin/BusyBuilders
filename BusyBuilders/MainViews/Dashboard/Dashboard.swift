@@ -55,7 +55,7 @@ struct Dashboard: View {
                                 }
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
-                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
@@ -74,7 +74,7 @@ struct Dashboard: View {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
-                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
+                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
@@ -103,7 +103,7 @@ struct Dashboard: View {
 
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : Color(red: 0.8, green: 0.8, blue: 0.8))
+                        .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
                         .overlay {
                             if selectedScreen == buttonImages[0] {
                                 ScrollView (showsIndicators: false){
@@ -120,13 +120,12 @@ struct Dashboard: View {
                                 .padding(.top, 10)
                             }
                             else if selectedScreen == buttonImages[2] {
-                                ScrollView (showsIndicators: false){
-                                    DashboardBankView()
-                                }
-                                .padding(.bottom, 45)
-                                .padding(.top, 10)
+                                DashboardBankView()
+                                    .padding(.bottom, 45)
+                                    .padding(.top, 10)
                             }
                         }
+                        
                 }
             }
             .foregroundStyle(themeManager.textColor)
