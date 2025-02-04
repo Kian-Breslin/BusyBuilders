@@ -19,6 +19,7 @@ struct Play: View {
     
     @Binding var isTimerActive : Bool
     @Binding var isTaskActive : Bool
+    @Binding var isSettingsShowing : Bool
     
     // Modifiers
     @State var isCashBoosterActive = false
@@ -65,8 +66,7 @@ struct Play: View {
                                             .frame(width: 40,height: 40)
                                     })
                                     .onTapGesture {
-                                        
-                                        
+                                        isSettingsShowing.toggle()
                                     }
                             }
                             .font(.system(size: 25))
@@ -112,7 +112,7 @@ struct Play: View {
                         .overlay {
                             if selectedScreen == "stopwatch" {
 //                                TimerConfig(isTimerActive: $isTimerActive)
-                                TimerConfig_V2()
+                                TimerConfig_V2(isTimerActive: $isTimerActive)
                                     .padding(.top, 10)
                             }
                             else if selectedScreen == "clipboard" {
@@ -131,7 +131,7 @@ struct Play: View {
 }
 
 #Preview {
-    Play(isTimerActive: .constant(false), isTaskActive: .constant(false))
+    Play(isTimerActive: .constant(false), isTaskActive: .constant(false), isSettingsShowing: .constant(false))
         .modelContainer(for: UserDataModel.self)
         .environmentObject(ThemeManager())
 }

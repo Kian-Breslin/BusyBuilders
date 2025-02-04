@@ -57,9 +57,6 @@ struct UpgradeWidget: View {
                                     user.inventory[Upgrade.upgradeName]! += 1
                                     user.availableBalance -= Upgrade.cost
                                     print("Bought : \(Upgrade.upgradeName)")
-                                    let newTransacion = TransactionDataModel(image: "wrench.and.screwdriver", name: Upgrade.upgradeName, amount: Upgrade.cost, transactionDescription: "", createdAt: Date(), income: false)
-                                    user.bankAccount?.transactions.append(newTransacion)
-                                    print("Added \(Upgrade.upgradeName) transaction to bank.")
                                 }
                                 else {
                                     print("No no monies")

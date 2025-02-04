@@ -13,6 +13,7 @@ struct HigherOrLower: View {
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     @Query var mgSessions: [MiniGameSessionModel]
+    @Environment(\.dismiss) var dismiss
     
     @Binding var isTaskActive : Bool
     
@@ -31,6 +32,9 @@ struct HigherOrLower: View {
     @State var sessionScore: Int = 0
     @State var sessionValue: Int = 0
     
+    // Dismiss Everything
+    @State var dismissEverything = false
+    
     var body: some View {
         ZStack {
             themeManager.mainColor.ignoresSafeArea()
@@ -38,12 +42,15 @@ struct HigherOrLower: View {
             VStack (spacing: 50){
                 HStack {
                     Text("Higher or Lower")
-//                    Text("\(chosenNums)")
+                    Text("\(chosenNums)")
                         .font(.largeTitle)
                     Spacer()
                     
                     Image(systemName: "info.circle")
                         .font(.title2)
+                        .onTapGesture {
+                            dismiss()
+                        }
                 }
                 
                 HStack (spacing: 10){
@@ -129,20 +136,30 @@ struct HigherOrLower: View {
                     else {
                         Text("Congratulations You Won!")
                             .onAppear {
+                                if let user = users.first {
+                                    user.availableBalance += Int(inputAmount)
+                                    user.level += getLevel(currentCardShowing)
+                                    
+                                    let newTransaction = TransactionDataModel(amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
+                                    
+                                    user.transactions.append(newTransaction)
+                                    
+                                    do {
+                                        try context.save()
+                                    } catch {
+                                        print("Error when savings Higher or Lower Payout")
+                                    }
+                                }
+                                
                                 gameOver = true
                                 isTaskActive.toggle()
                                 
                                 sessionDate = Date()
                                 sessionWin = true
                                 sessionScore = 4
-                                sessionValue = Int(inputAmount * 10)
+                                sessionValue = Int(inputAmount)
                                 
                                 makeSession(sessionDate, sessionWin, sessionScore, sessionValue)
-                                
-                                if let user = users.first {
-                                    user.availableBalance += getAmount(currentCardShowing, inputAmount)
-                                    user.level += getLevel(currentCardShowing)
-                                }
                             }
                     }
                 }
@@ -161,13 +178,23 @@ struct HigherOrLower: View {
                             sessionDate = Date()
                             sessionWin = false
                             sessionScore = currentCardShowing
-                            sessionValue = getAmount(currentCardShowing, inputAmount)
+                            sessionValue = Int(inputAmount)
                             
                             makeSession(sessionDate, sessionWin, sessionScore, sessionValue)
                             
                             if let user = users.first {
-                                user.availableBalance += getAmount(currentCardShowing, inputAmount)
+                                user.availableBalance += Int(inputAmount)
                                 user.level += getLevel(currentCardShowing)
+                                
+                                let newTransaction = TransactionDataModel(amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
+                                
+                                user.transactions.append(newTransaction)
+                                
+                                do {
+                                    try context.save()
+                                } catch {
+                                    print("Error when savings Higher or Lower Payout")
+                                }
                             }
                             
                         }
@@ -194,13 +221,19 @@ struct HigherOrLower: View {
             .frame(width: screenWidth-20)
             .foregroundStyle(themeManager.textColor)
         }
+        .onChange(of: dismissEverything, initial: false, { oldValue, newValue in
+            if newValue == true {
+                dismiss()
+            }
+        })
         .onAppear {
             isTaskActive.toggle()
+            higherOrLowerConfig.toggle()
         }
         .sheet(isPresented: $higherOrLowerConfig) {
-            HigherOrLowerConfig(isTaskActive: $isTaskActive, sliderValue: $inputAmount)
+            HigherOrLowerConfig(dismissEverything: $dismissEverything, isTaskActive: $isTaskActive, sliderValue: $inputAmount)
                 .presentationDetents([.fraction(0.3)])
-                .interactiveDismissDisabled(true)
+//                .interactiveDismissDisabled(true)
         }
         .sheet(isPresented: $winner) {
             Text("Congratulations! You Won $\(inputAmount)")

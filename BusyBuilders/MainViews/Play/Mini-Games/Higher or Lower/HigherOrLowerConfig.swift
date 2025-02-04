@@ -13,6 +13,7 @@ struct HigherOrLowerConfig: View {
     @Environment(\.dismiss) var dismiss
     @Query var users : [UserDataModel]
     @Environment(\.modelContext) var context
+    @Binding var dismissEverything : Bool
     
     @Binding var isTaskActive : Bool
     @Binding var sliderValue : Double
@@ -23,6 +24,15 @@ struct HigherOrLowerConfig: View {
             themeManager.mainColor.ignoresSafeArea()
             if let user = users.first {
                 VStack {
+                    HStack {
+                        Spacer()
+                        Text("X")
+                    }
+                    .frame(width: screenWidth-20, height: 50)
+                    .onTapGesture {
+                        dismiss()
+                        dismissEverything = true
+                    }
                     HStack {
                         Text("Selected Amount: $\(sliderValue, specifier: "%.f")")
                     }
@@ -44,6 +54,19 @@ struct HigherOrLowerConfig: View {
                         .onTapGesture {
                             isTaskActive = true
                             dismiss()
+                            
+                            if let user = users.first {
+                                
+                                user.availableBalance -= Int(sliderValue)
+                                
+                                let newTransaction = TransactionDataModel(amount: Int(sliderValue), transactionDescription: "Higher or Lower", createdAt: Date(), income: false)
+                                user.transactions.append(newTransaction)
+                                do {
+                                    try context.save()
+                                } catch {
+                                    print("Error when saving Higher or Lower transaction")
+                                }
+                            }
                         }
                 }
             }
@@ -60,7 +83,7 @@ struct HigherOrLowerConfig: View {
 }
 
 #Preview {
-    HigherOrLowerConfig(isTaskActive: .constant(true), sliderValue: .constant(1))
+    HigherOrLowerConfig(dismissEverything: .constant(false), isTaskActive: .constant(true), sliderValue: .constant(1))
         .environmentObject(ThemeManager())
         .modelContainer(for: [UserDataModel.self], inMemory: true)
 }

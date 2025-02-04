@@ -18,6 +18,8 @@ struct TimerConfig_V2: View {
     @State var shortBreakTime = 5.0
     @State var longBreakTime = 20.0
     
+    @Binding var isTimerActive : Bool
+    
     var body: some View {
         ZStack {
             getColor(themeManager.mainDark)
@@ -117,6 +119,9 @@ struct TimerConfig_V2: View {
                                 .font(.system(size: 15))
                                 .bold()
                         }
+                        .onTapGesture {
+                            isTimerActive.toggle()
+                        }
                     Spacer()
                 }
                 .padding(.bottom, 80)
@@ -125,6 +130,13 @@ struct TimerConfig_V2: View {
         }
         .foregroundStyle(themeManager.textColor)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .fullScreenCover(isPresented: $isTimerActive) {
+            if selectedBusiness.businessName != "" {
+                Timer3(selectedBusiness: selectedBusiness, setTime: 3600, isXPBoosterActive: false, isCashBoosterActive: false, isCostReductionActive: false, isTimerActive: $isTimerActive)
+            } else {
+                Text("Hello")
+            }
+        }
     }
 }
 
@@ -189,7 +201,7 @@ struct businessCard: View {
             .frame(width: screenWidth, height: 160)
             .foregroundStyle(ThemeManager().mainColor)
             
-            TimerConfig_V2()
+            TimerConfig_V2(isTimerActive: .constant(false))
                 .environmentObject(ThemeManager())
             
             Spacer()

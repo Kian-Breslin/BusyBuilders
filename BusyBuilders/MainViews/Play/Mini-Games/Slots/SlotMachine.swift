@@ -28,126 +28,153 @@ struct SlotMachine: View {
     @State var winCounter = 0
     
     var body: some View {
-        VStack (spacing: 25){
-            
-            HStack {
-                Text("$\(totalAvailableBalance, specifier: "%.f")")
-                    .font(.largeTitle)
-                    .foregroundStyle(themeManager.textColor)
+        if let user = users.first {
+            VStack (spacing: 25){
                 
-                if hasRolled && winningImages.isEmpty == false {
-                    if winningImages[0] == winningImages[1] && winningImages[0] == winningImages[2]{
-                        Text("+ $\((selectedAmount*(calculateReward(for: winningImages)))+selectedAmount, specifier: "%.f")")
-                            .onAppear {
-                                newSum(Int(calculateReward(for: winningImages)))
-                                gameCounter += 1
-                                winCounter += 1
-                                print("\(winCounter) / \(gameCounter)")
-                                print("\(calculateReward(for: winningImages))")
-                                isGameActive = false
-                                
-                                let newSession = MiniGameSessionModel(
-                                    sessionDate: Date(),
-                                    sessionWin: true,
-                                    sessionScore: 0,
-                                    sessionValue: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount),
-                                    sessionGame: .Slots)
-                                
-                                makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
-                            }
+                HStack {
+                    Text("$\(user.availableBalance, specifier: "%.f")")
+                        .font(.largeTitle)
+                        .foregroundStyle(themeManager.textColor)
+                    
+                    if hasRolled && winningImages.isEmpty == false {
+                        if winningImages[0] == winningImages[1] && winningImages[0] == winningImages[2]{
+                            Text("+ $\((selectedAmount*(calculateReward(for: winningImages)))+selectedAmount, specifier: "%.f")")
+                                .onAppear {
+//                                    newSum(Int(calculateReward(for: winningImages)))
+                                    gameCounter += 1
+                                    winCounter += 1
+                                    print("\(winCounter) / \(gameCounter)")
+                                    print("\(calculateReward(for: winningImages))")
+                                    isGameActive = false
+                                    
+                                    let newSession = MiniGameSessionModel(
+                                        sessionDate: Date(),
+                                        sessionWin: true,
+                                        sessionScore: 0,
+                                        sessionValue: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount),
+                                        sessionGame: .Slots)
+                                    
+                                    makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
+                                    
+                                    if let user = users.first {
+                                        user.availableBalance += Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount)
+                                        
+                                        print(Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount))
+                                        
+                                        let newTransaction = TransactionDataModel(amount: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount), transactionDescription: "Slot Machine Winnings", createdAt: Date(), income: true)
+                                        
+                                        user.transactions.append(newTransaction)
+                                    }
+                                }
+                        }
+                        else {
+                            Text("- $\(selectedAmount, specifier: "%.f")")
+                                .onAppear {
+                                    gameCounter += 1
+                                    print("\(winCounter) / \(gameCounter)")
+                                    isGameActive = false
+                                    
+                                    let newSession = MiniGameSessionModel(
+                                        sessionDate: Date(),
+                                        sessionWin: false,
+                                        sessionScore: 0,
+                                        sessionValue: 0,
+                                        sessionGame: .Slots)
+                                    
+                                    makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
+                                }
+                        }
                     }
                     else {
-                        Text("- $\(selectedAmount, specifier: "%.f")")
-                            .onAppear {
-                                gameCounter += 1
-                                print("\(winCounter) / \(gameCounter)")
-                                isGameActive = false
-                                
-                                let newSession = MiniGameSessionModel(
-                                    sessionDate: Date(),
-                                    sessionWin: false,
-                                    sessionScore: 0,
-                                    sessionValue: 0,
-                                    sessionGame: .Slots)
-                                
-                                makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
-                            }
+                        Text("$\(selectedAmount, specifier: "%.f")")
                     }
+                }
+
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: screenWidth-20, height: 200)
+                    .foregroundStyle(themeManager.textColor)
+                    .overlay {
+                        HStack {
+                            slotTest1(rolled: $rolled, winningImages: $winningImages, offsetValue: $offsetValue)
+                                .animation(.easeOut(duration: 1), value: rolled)
+                            
+                            slotTest1(rolled: $rolled, winningImages: $winningImages, offsetValue: $offsetValue)
+                                .animation(.easeOut(duration: 1.5), value: rolled)
+                            
+                            slotTest1(rolled: $rolled, winningImages: $winningImages, offsetValue: $offsetValue)
+                                .animation(.easeOut(duration: 2), value: rolled)
+                        }
+                    }
+                    .clipped()
+                
+                if hasRolled == false {
+                    VStack(alignment: .leading, spacing: 15){
+                        Text("Select an amount: $\(selectedAmount, specifier: "%.f")")
+                        
+                        if let user = users.first {
+                            if user.availableBalance > 0 {
+                                Slider(
+                                    value: $selectedAmount,
+                                    in: 0...Double(user.availableBalance),
+                                    step: 100
+                                )
+                                .tint(getColor(themeManager.secondaryColor))
+                            } else {
+                                Text("NOT ENOUGH CASH")
+                            }
+                        }
+                    }
+                    .frame(width: screenWidth-20, height: 100)
                 }
                 else {
-                    Text("$\(selectedAmount, specifier: "%.f")")
+                    Text("\(selectedAmount, specifier: "%.f")")
+                        .font(.largeTitle)
+                        .frame(width: screenWidth-20, height: 100)
                 }
-            }
-            
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: screenWidth-20, height: 200)
-                .foregroundStyle(themeManager.textColor)
-                .overlay {
-                    HStack {
-                        slotTest1(rolled: $rolled, winningImages: $winningImages, offsetValue: $offsetValue)
-                            .animation(.easeOut(duration: 1), value: rolled)
+                
+                if hasRolled == false {
+                    Button("Roll") {
+                        user.availableBalance = user.availableBalance - Int(selectedAmount)
+                        offsetValue = 205
+                        winningImages.removeAll()
+                        rolled.toggle()
+                        hasRolled = true
+                        isGameActive = true
                         
-                        slotTest1(rolled: $rolled, winningImages: $winningImages, offsetValue: $offsetValue)
-                            .animation(.easeOut(duration: 1.5), value: rolled)
+                        if let user = users.first {
+                            let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", amount: Int(selectedAmount), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
+                            
+                            user.transactions.append(newTransactionMoneyOut)
+                            
+                            print("Took Money and Added Transaction")
+                        }
                         
-                        slotTest1(rolled: $rolled, winningImages: $winningImages, offsetValue: $offsetValue)
-                            .animation(.easeOut(duration: 2), value: rolled)
                     }
+                    .frame(width: 100, height: 50)
+                    .foregroundStyle(themeManager.mainColor)
+                    .background(themeManager.textColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .font(.title)
                 }
-                .clipped()
-            
-            if hasRolled == false {
-                VStack(alignment: .leading, spacing: 15){
-                    Text("Select an amount: $\(selectedAmount, specifier: "%.f")")
-                    
-                    Slider(
-                        value: $selectedAmount,
-                        in: 0...totalAvailableBalance,
-                        step: 500
-                    )
-                    .tint(getColor(themeManager.secondaryColor))
+                else {
+                    Button("Try Again") {
+                        offsetValue = -205
+                        hasRolled = false
+                        isGameActive = true
+                    }
+                    .frame(width: 100, height: 50)
+                    .foregroundStyle(themeManager.mainColor)
+                    .background(themeManager.textColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .font(.title3)
                 }
-                .frame(width: screenWidth-20, height: 100)
             }
-            else {
-                Text("\(selectedAmount, specifier: "%.f")")
-                    .font(.largeTitle)
-                    .frame(width: screenWidth-20, height: 100)
+            .animation(.linear, value: hasRolled)
+            .onAppear {
+                hasRolled = false
+    //            runSimulation()
             }
-            
-            if hasRolled == false {
-                Button("Roll") {
-                    totalAvailableBalance = totalAvailableBalance - selectedAmount
-                    offsetValue = 205
-                    winningImages.removeAll()
-                    rolled.toggle()
-                    hasRolled = true
-                    isGameActive = true
-                    
-                }
-                .frame(width: 100, height: 50)
-                .foregroundStyle(themeManager.mainColor)
-                .background(themeManager.textColor)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .font(.title)
-            }
-            else {
-                Button("Try Again") {
-                    offsetValue = -205
-                    hasRolled = false
-                    isGameActive = true
-                }
-                .frame(width: 100, height: 50)
-                .foregroundStyle(themeManager.mainColor)
-                .background(themeManager.textColor)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .font(.title3)
-            }
-        }
-        .animation(.linear, value: hasRolled)
-        .onAppear {
-            hasRolled = false
-//            runSimulation()
         }
     }
     func makeSession(_ sessionDate: Date, _ sessionWin: Bool,_ sessionValue: Int){

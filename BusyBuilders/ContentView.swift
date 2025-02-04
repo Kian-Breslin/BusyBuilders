@@ -31,11 +31,11 @@ struct ContentView: View {
                     Communities()
                 } else if selectedView == 2 {
 //                    StartTask(isTimerActive: $isTaskActive)
-                    Play(isTimerActive: $isTaskActive, isTaskActive: $isNavShowing)
+                    Play(isTimerActive: $isTaskActive, isTaskActive: $isNavShowing, isSettingsShowing: $isSettingsShowing)
                 } else if selectedView == 3 {
-                    Store()
+                    Store(isSettingsShowing: $isSettingsShowing)
                 } else if selectedView == 4 {
-                    Portfolio()
+                    Portfolio(isSettingsShowing: $isSettingsShowing)
                 }
                 
                 VStack {

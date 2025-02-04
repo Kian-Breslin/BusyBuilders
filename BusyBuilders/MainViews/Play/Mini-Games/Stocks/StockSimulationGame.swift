@@ -7,14 +7,18 @@
 
 
 import SwiftUI
+import SwiftData
 import Charts
 
 struct StockSimulationGame: View {
     @EnvironmentObject var themeManager: ThemeManager
+    @Query var users : [UserDataModel]
+    @Environment(\.modelContext) var context
     @Binding var isGameOver : Bool
     @Binding var price : Double
     @State var stockPrice: [Double] = [100.0]
     @State var currentWeek = 0
+    @State var stocksBought : Int
     
     var body: some View {
         VStack {
@@ -64,6 +68,16 @@ struct StockSimulationGame: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             
                             Button("Cash Out") {
+                                
+                                if let user = users.first {
+                                    let newTransaction = TransactionDataModel(amount: Int(price) * stocksBought, transactionDescription: "Stocks Investment Payout", createdAt: Date(), income: true)
+                                    user.transactions.append(newTransaction)
+                                    do {
+                                        try context.save()
+                                    } catch {
+                                        print("Error: Couldnt save new Stocks transaction for mini-game")
+                                    }
+                                }
                                 print("Cashed Out")
                                 isGameOver = true
                             }
@@ -115,6 +129,6 @@ struct LineGraphView: View {
 }
 
 #Preview {
-    StockSimulationGame(isGameOver: .constant(false), price: .constant(100.0))
+    StockSimulationGame(isGameOver: .constant(false), price: .constant(100.0), stocksBought: 0)
         .environmentObject(ThemeManager())
 }

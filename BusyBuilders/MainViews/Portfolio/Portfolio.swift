@@ -15,6 +15,7 @@ struct Portfolio: View {
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
     
+    @Binding var isSettingsShowing : Bool
     @State var selectedScreen = "person"
     
     @State var searchForUser = ""
@@ -70,20 +71,8 @@ struct Portfolio: View {
                                             .frame(width: 40,height: 40)
                                     })
                                     .onTapGesture {
-                                        if let user = users.first {
-                                            let newBusiness = BusinessDataModel(businessName: "\(randomNames[randomNumber(in: 0...9)])", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle", owners: [user])
-                                            
-                                            user.businesses.append(newBusiness)
-                                        }
-                                        
-                                        do {
-                                            try context.save()
-                                        } catch {
-                                            print("Couldnt create quick business")
-                                        }
-                                        
-                                    }
-                            }
+                                        isSettingsShowing.toggle()
+                                    }                            }
                             .font(.system(size: 25))
                         }
                         .frame(width: screenWidth-20, height: 60)
@@ -146,7 +135,7 @@ struct Portfolio: View {
 }
 
 #Preview {
-    Portfolio()
+    Portfolio(isSettingsShowing: .constant(false))
         .environmentObject(UserManager())
         .environmentObject(ThemeManager())
 }

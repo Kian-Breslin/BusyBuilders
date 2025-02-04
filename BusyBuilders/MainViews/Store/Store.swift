@@ -14,6 +14,7 @@ struct Store: View {
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel]
+    @Binding var isSettingsShowing : Bool
     
     
     let upgrades = availableUpgrades
@@ -57,7 +58,7 @@ struct Store: View {
                                         .frame(width: 40,height: 40)
                                 })
                                 .onTapGesture {
-                                    
+                                    isSettingsShowing.toggle()
                                 }
                         }
                         .font(.system(size: 25))
@@ -132,7 +133,7 @@ struct Store: View {
 
 
 #Preview {
-    Store()
+    Store(isSettingsShowing: .constant(false))
         .environmentObject(ThemeManager())
         .environmentObject(UserManager())
 }

@@ -120,7 +120,7 @@ struct Dashboard: View {
                                 .padding(.top, 10)
                             }
                             else if selectedScreen == buttonImages[2] {
-                                DashboardBankView()
+                                TransactionDisplay()
                                     .padding(.bottom, 45)
                                     .padding(.top, 10)
                             }

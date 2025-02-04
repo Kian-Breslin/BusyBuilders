@@ -126,14 +126,18 @@ struct Timer3: View {
                             print(totalXPCalculated)
                             
                             if let user = users.first {
-//                                user.availableBalance += (totalIncomeCalculated - totalCostCalculated)
+                                user.availableBalance += (totalIncomeCalculated - totalCostCalculated)
                                 user.level += totalXPCalculated
                                 print("\(user.level)")
+                                
+                                let newTransaction = TransactionDataModel(amount: (totalIncomeCalculated - totalCostCalculated), transactionDescription: "Session Income", createdAt: Date(), income: true)
+                                
+                                user.transactions.append(newTransaction)
                             }
                             else {
                                 print("No USer Found ????")
                             }
-                            selectedBusiness.netWorth += (totalIncomeCalculated - totalCostCalculated)
+//                            selectedBusiness.netWorth += (totalIncomeCalculated - totalCostCalculated)
                             selectedBusiness.businessLevel += totalXPCalculated
                             selectedBusiness.time += timeElapsed
                             

@@ -234,6 +234,12 @@ public func getDayMonthYear(from date: Date) -> String? {
     return formatter.string(from: date)
 }
 
+public func getDateFull(from date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "d MMMM yyyy, HH:MM" // Format for "Monday, 9 September 2024"
+    return formatter.string(from: date)
+}
+
 public func getDateMonthYear(from date: Date) -> String? {
     let formatter = DateFormatter()
     formatter.dateFormat = "d MMMM yyyy"

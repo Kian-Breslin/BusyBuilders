@@ -262,7 +262,7 @@ struct AdminTests: View {
     
     private func addNetWorth() {
         print("Add $10,000")
-        users.first?.netWorth += 10000
+        users.first?.availableBalance += 10000
     }
     
     private func resetUserStats() {

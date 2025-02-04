@@ -10,13 +10,14 @@ import SwiftData
 
 struct Stocks: View {
     @EnvironmentObject var themeManager : ThemeManager
-    
+    @Environment(\.dismiss) private var dismiss
     @Binding var isTaskActive : Bool
     @State var isGameOver = false
     @State var showBusiness = true
     @State var selectedBusiness : mockBusinesses
     @State var stocksBought = 0
     @State var stockPrice = 0.0
+    @State var dismissEverything = false
     
     var body: some View {
         ZStack {
@@ -40,8 +41,13 @@ struct Stocks: View {
             
         }
         .foregroundStyle(themeManager.textColor)
+        .onChange(of: dismissEverything, initial: false, { oldValue, newValue in
+            if newValue == true {
+                dismiss()
+            }
+        })
         .sheet(isPresented: $showBusiness) {
-            pickBusinessView(selectedBusiness: $selectedBusiness, startSession: $showBusiness, stockPrice: $stockPrice, stocksBought: $stocksBought)
+            pickBusinessView(dismissEverything: $dismissEverything, selectedBusiness: $selectedBusiness, startSession: $showBusiness, stockPrice: $stockPrice, stocksBought: $stocksBought)
                 .presentationDetents([.fraction(0.5)])
                 .interactiveDismissDisabled()
         }
@@ -77,6 +83,8 @@ struct gameOverScreen: View {
 }
 
 struct pickBusinessView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var dismissEverything : Bool
     @EnvironmentObject var themeManager : ThemeManager
     @Binding var selectedBusiness : mockBusinesses
     @Binding var startSession : Bool
@@ -90,6 +98,15 @@ struct pickBusinessView: View {
             themeManager.mainColor.opacity(0.8)
                 .ignoresSafeArea()
             VStack (alignment: .leading){
+                HStack {
+                    Spacer()
+                    Text("X")
+                }
+                .frame(width: screenWidth-20, height: 50)
+                .onTapGesture {
+                    dismiss()
+                    dismissEverything = true
+                }
                 
                 Text("Please Select a Business :")
                 
@@ -113,6 +130,7 @@ struct pickBusinessView: View {
 struct businessInfoSection: View {
     @EnvironmentObject var themeManager : ThemeManager
     @Query var users : [UserDataModel]
+    @Environment(\.modelContext) var context
     
     @Binding var selectedBusiness : mockBusinesses
     @Binding var startSession : Bool
@@ -182,6 +200,15 @@ struct businessInfoSection: View {
                                     print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
                                     print("User Has Enough Cash to buy... Starting Session")
                                     user.availableBalance -= stocksBought * Int(selectedBusiness.currentStockPrice)
+                                    
+                                    let newTransaction = TransactionDataModel(amount: stocksBought * Int(selectedBusiness.currentStockPrice), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
+                                    user.transactions.append(newTransaction)
+                                    do {
+                                        try context.save()
+                                    } catch {
+                                        print("Error: Couldnt save new Stocks transaction for mini-game")
+                                    }
+                                    
                                     startSession.toggle()
                                 } else {
                                     print("User does not have enough cash to buy.... Cannot Start Session")
@@ -253,10 +280,7 @@ struct StockSimulationView: View {
                 .font(.system(size: 25))
                 Spacer()
                 
-                StockSimulationGame(isGameOver: $isGameOver, price: $stockPrice, stockPrice: [stockPrice])
-                    .onAppear {
-                        
-                    }
+                StockSimulationGame(isGameOver: $isGameOver, price: $stockPrice, stockPrice: [stockPrice], stocksBought: stocksBought)
                 
                 Spacer()
             }
