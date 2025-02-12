@@ -70,19 +70,21 @@ struct AdminTests: View {
                                 .frame(width: 120, height: 40)
                                 .foregroundStyle(.teal)
                             
-                            ForEach(businesses, id: \.self) { b in
-                                RoundedRectangle(cornerRadius: 5)
-                                    .frame(width: 120, height: 40)
-                                    .overlay {
-                                        Text("\(b.businessName)")
-                                            .foregroundStyle(getColor("\(b.businessTheme)"))
-                                    }
-                                    .onTapGesture {
-                                        selectedBusiness = b
-                                    }
-                                    .onLongPressGesture {
-                                        resetBusinessStats(b)
-                                    }
+                            if let user = users.first {
+                                ForEach(user.businesses, id: \.self) { b in
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .frame(width: 120, height: 40)
+                                        .overlay {
+                                            Text("\(b.businessName)")
+                                                .foregroundStyle(getColor("\(b.businessTheme)"))
+                                        }
+                                        .onTapGesture {
+                                            selectedBusiness = b
+                                        }
+                                        .onLongPressGesture {
+                                            resetBusinessStats(b)
+                                        }
+                                }
                             }
                         }
                     }
@@ -98,12 +100,12 @@ struct AdminTests: View {
                             Image(systemName: "plus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.netWorth += 100
+                                    selectedBusiness?.netWorth += 1000
                                 }
                             Image(systemName: "minus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.netWorth -= 100
+                                    selectedBusiness?.netWorth -= 1000
                                 }
                         }
                         

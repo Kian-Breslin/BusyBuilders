@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BusinessNavigationDestination: View {
     @EnvironmentObject var themeManager: ThemeManager
+    @Environment(\.modelContext) var context
+    @Environment(\.dismiss) var dismiss
+    @Query var users : [UserDataModel]
     @State var business : BusinessDataModel
+    
+    @State var isSellingBusiness = false
     var body: some View {
         ZStack {
             getColor("\(business.businessTheme)")
@@ -55,27 +61,79 @@ struct BusinessNavigationDestination: View {
                     }
                     .frame(width: screenWidth-20, alignment: .leading)
                     
-                    HStack (spacing: 10){
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: (screenWidth-30)/2, height: (screenWidth-30)/2)
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: (screenWidth-30)/2, height: (screenWidth-30)/2)
                     }
-                    
-                    
-                    
-                    
-                    
-                    
-//                    NavigationLink(destination: BusinessSessionsView(currentBusiness: business)){
-//                            Text("List of Sessions")
-//                        }
-                    }
-                    .padding(.bottom, 55)
                     .padding(.top, 5)
+                
+                Spacer()
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 150, height: 50)
+                    .foregroundStyle(themeManager.textColor)
+                    .overlay {
+                        Text("Sell Business")
+                            .bold()
+                            .foregroundStyle(themeManager.mainColor)
+                    }
+                    .padding(.bottom, 65)
+                    .onTapGesture {
+                        isSellingBusiness.toggle()
+                    }
                 }
             }
             .foregroundStyle(themeManager.textColor)
+            .sheet(isPresented: $isSellingBusiness) {
+                VStack (alignment: .leading){
+                    Text("Confrimation")
+                        .bold()
+                        .font(.system(size: 30))
+                        .padding(.top, 10)
+                    Text("Are you sure you want to ") + Text("sell ").bold().foregroundStyle(.red).font(.system(size: 20)) + Text("\(business.businessName)?")
+                    Text("Current Net Worth: ") + Text("$\(business.netWorth)").bold()
+                    Text("This cannot be undone!")
+                    
+                    HStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: (screenWidth-30)/2, height: 50)
+                            .foregroundStyle(getColor("Green"))
+                            .onTapGesture {
+                                if let user = users.first {
+                                    user.businesses.removeAll{$0.businessName == business.businessName}
+                                    user.availableBalance += business.netWorth
+                                    let newTransaction = TransactionDataModel(amount: business.netWorth, transactionDescription: "Sold \(business.businessName)", createdAt: Date(), income: true)
+                                    user.transactions.append(newTransaction)
+                                    print("Sold \(business.businessName) for $\(business.netWorth)")
+                                    do {
+                                        try context.save()
+                                    } catch {
+                                        print("Coudlnt sell Business")
+                                    }
+                                } else {
+                                    print("\(business.businessName) sold for $\(business.netWorth)")
+                                }
+                                isSellingBusiness.toggle()
+                                dismiss()
+                            }
+                            .overlay {
+                                Text("Confirm").bold()
+                            }
+                        
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: (screenWidth-30)/2, height: 50)
+                            .foregroundStyle(getColor("red"))
+                            .onTapGesture {
+                                isSellingBusiness.toggle()
+                            }
+                            .overlay {
+                                Text("Go Back").bold()
+                            }
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.top, 20)
+                    
+                    Spacer()
+                }
+                .frame(width: screenWidth-20, alignment: .leading)
+                .presentationDetents([.fraction(0.25)])
+            }
     }
 }
 
