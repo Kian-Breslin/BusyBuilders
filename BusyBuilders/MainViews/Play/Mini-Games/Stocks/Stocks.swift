@@ -201,7 +201,7 @@ struct businessInfoSection: View {
                                     print("User Has Enough Cash to buy... Starting Session")
                                     user.availableBalance -= stocksBought * Int(selectedBusiness.currentStockPrice)
                                     
-                                    let newTransaction = TransactionDataModel(amount: stocksBought * Int(selectedBusiness.currentStockPrice), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
+                                    let newTransaction = TransactionDataModel(category: "Minigame", amount: stocksBought * Int(selectedBusiness.currentStockPrice), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
                                     user.transactions.append(newTransaction)
                                     do {
                                         try context.save()

@@ -13,15 +13,17 @@ class TransactionDataModel: Identifiable {
     var id: UUID
     var image: String
     var name: String
+    var category: String
     var amount: Int
     var transactionDescription: String
     var createdAt: Date
     var income: Bool
     
-    init(id: UUID = UUID(), image: String = "circle", name: String = "", amount: Int, transactionDescription: String, createdAt: Date, income: Bool) {
+    init(id: UUID = UUID(), image: String = "circle", name: String = "", category: String = "" , amount: Int, transactionDescription: String, createdAt: Date, income: Bool) {
         self.id = id
         self.image = image
         self.name = name
+        self.category = category
         self.amount = amount
         self.transactionDescription = transactionDescription
         self.createdAt = createdAt

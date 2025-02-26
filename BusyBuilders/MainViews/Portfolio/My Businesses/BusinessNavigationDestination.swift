@@ -16,6 +16,10 @@ struct BusinessNavigationDestination: View {
     @State var business : BusinessDataModel
     
     @State var isSellingBusiness = false
+    @State var isWithdrawingMoney = false
+    @State var isAddingMoney = false
+    @State var isShowingUpgrades = false
+    
     var body: some View {
         ZStack {
             getColor("\(business.businessTheme)")
@@ -58,6 +62,49 @@ struct BusinessNavigationDestination: View {
                             Text("\(timeFormattedWithText(business.time))")
                                 .font(.system(size: 35))
                         }
+                        Group {
+                            Text("Withdraw / Add Money")
+                            HStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 150, height: 50)
+                                    .foregroundStyle(themeManager.textColor)
+                                    .overlay {
+                                        Text("Withdraw")
+                                            .foregroundStyle(themeManager.mainColor)
+                                            .bold()
+                                    }
+                                    .onTapGesture {
+                                        isWithdrawingMoney.toggle()
+                                    }
+                                
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 150, height: 50)
+                                    .foregroundStyle(themeManager.textColor)
+                                    .overlay {
+                                        Text("Add")
+                                            .foregroundStyle(themeManager.mainColor)
+                                            .bold()
+                                    }
+                                    .onTapGesture {
+                                        isAddingMoney.toggle()
+                                    }
+                            }
+                        }
+                        
+                        Group {
+                            Text("Upgrades")
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 150, height: 50)
+                                .foregroundStyle(themeManager.textColor)
+                                .overlay {
+                                    Text("Upgrades")
+                                        .foregroundStyle(themeManager.mainColor)
+                                        .bold()
+                                }
+                                .onTapGesture {
+                                    isShowingUpgrades.toggle()
+                                }
+                        }
                     }
                     .frame(width: screenWidth-20, alignment: .leading)
                     
@@ -98,7 +145,7 @@ struct BusinessNavigationDestination: View {
                                 if let user = users.first {
                                     user.businesses.removeAll{$0.businessName == business.businessName}
                                     user.availableBalance += business.netWorth
-                                    let newTransaction = TransactionDataModel(amount: business.netWorth, transactionDescription: "Sold \(business.businessName)", createdAt: Date(), income: true)
+                                    let newTransaction = TransactionDataModel(category: "Other", amount: business.netWorth, transactionDescription: "Sold \(business.businessName)", createdAt: Date(), income: true)
                                     user.transactions.append(newTransaction)
                                     print("Sold \(business.businessName) for $\(business.netWorth)")
                                     do {
@@ -133,6 +180,17 @@ struct BusinessNavigationDestination: View {
                 }
                 .frame(width: screenWidth-20, alignment: .leading)
                 .presentationDetents([.fraction(0.25)])
+            }
+            .sheet(isPresented: $isWithdrawingMoney) {
+                WithdrawMoneyFromBusiness(user: users.first ?? UserDataModel(username: "Keano517", name: "Kian Breslin", email: "Kianbreslin517@gmail.com"), business: business, isWithdrawingMoney: $isWithdrawingMoney)
+                    .presentationDetents([.fraction(0.3)])
+            }
+            .sheet(isPresented: $isAddingMoney) {
+                AddMoneyToBusiness(user: users.first ?? UserDataModel(username: "Keano517", name: "Kian Breslin", email: "Kianbreslin517@gmail.com"), business: business, isWithdrawingMoney: $isAddingMoney)
+                    .presentationDetents([.fraction(0.3)])
+            }
+            .fullScreenCover(isPresented: $isShowingUpgrades) {
+                BusinessUpgrades(business: business)
             }
     }
 }

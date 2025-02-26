@@ -30,10 +30,24 @@ struct UserNetWorthWidget: View {
                             .font(.system(size: 35))
                             .padding(.horizontal, 10)
                     }
-                    
                 }
                 .frame(width: (screenWidth-20)/2, alignment: .leading)
                 .foregroundStyle(themeManager.textColor)
+            }
+            .onAppear {
+                print("Calculating total user net worth on dashboard")
+                if let user = users.first {
+                    print("Before Calculations: $\(user.netWorth)")
+                    // Get user balance
+                    let userBalance = user.availableBalance
+                    // Get total businesses net worth
+                    let businessBalance = totalBusinessNetWorth(for: user)
+                    // Get investments
+                    let investments = 0
+                    // Calculate new Net Worth
+                    user.netWorth = userBalance + businessBalance + investments
+                    print("After Calculations: $\(user.netWorth)")
+                }
             }
     }
 }

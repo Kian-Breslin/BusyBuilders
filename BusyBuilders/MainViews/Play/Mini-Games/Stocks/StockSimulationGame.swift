@@ -70,7 +70,7 @@ struct StockSimulationGame: View {
                             Button("Cash Out") {
                                 
                                 if let user = users.first {
-                                    let newTransaction = TransactionDataModel(amount: Int(price) * stocksBought, transactionDescription: "Stocks Investment Payout", createdAt: Date(), income: true)
+                                    let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(price) * stocksBought, transactionDescription: "Stocks Investment Payout", createdAt: Date(), income: true)
                                     user.transactions.append(newTransaction)
                                     do {
                                         try context.save()

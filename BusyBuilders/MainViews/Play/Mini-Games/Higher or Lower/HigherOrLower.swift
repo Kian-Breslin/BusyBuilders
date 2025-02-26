@@ -140,7 +140,7 @@ struct HigherOrLower: View {
                                     user.availableBalance += Int(inputAmount)
                                     user.level += getLevel(currentCardShowing)
                                     
-                                    let newTransaction = TransactionDataModel(amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
+                                    let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
                                     
                                     user.transactions.append(newTransaction)
                                     
@@ -186,7 +186,7 @@ struct HigherOrLower: View {
                                 user.availableBalance += Int(inputAmount)
                                 user.level += getLevel(currentCardShowing)
                                 
-                                let newTransaction = TransactionDataModel(amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
+                                let newTransaction = TransactionDataModel(category: "Minigame",amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
                                 
                                 user.transactions.append(newTransaction)
                                 

@@ -13,18 +13,43 @@ struct TransactionDisplay: View {
     @Query var users : [UserDataModel]
     @Environment(\.modelContext) var context
     
+    @State var option = "Session Income"
+    let options = ["Session Income", "Minigame", "Withdraws", "Other"]
+    
+    @State var incomeOrExpense : Bool?
+    let incomeOrExpenseOptions = ["Income", "Expensese"]
+    
     var body: some View {
         VStack {
+            Picker("Income or Expense", selection: $incomeOrExpense) {
+                Text("Income").tag(true as Bool?)
+                Text("Expenses").tag(false as Bool?)
+                Text("All").tag(nil as Bool?)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            
+            Picker("Category:", selection: $option){
+                ForEach(options, id: \.self){ opt in
+                    Text("\(opt)")
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+
             ScrollView {
                 if let user = users.first {
                     VStack {
-                        ForEach(user.transactions) { i in
-                            transactionCard(transaction: i)
+                        ForEach(user.transactions.filter { ($0.category == option) && (incomeOrExpense == nil || $0.income == incomeOrExpense) }) { transaction in
+                            transactionCard(transaction: transaction)
                         }
                     }
+                } else {
+                    Text("No transactions found")
+                        .bold()
+                        .font(.system(size: 50))
                 }
             }
         }
+        .frame(width: screenWidth-20)
         .onAppear {
             print(users.first?.transactions.count ?? 10101010)
         }
@@ -71,6 +96,7 @@ struct transactionCard: View {
             .foregroundStyle(ThemeManager().mainColor)
         TransactionDisplay()
             .environmentObject(ThemeManager())
+            .padding(.top, 10)
     }
     .ignoresSafeArea()
 }

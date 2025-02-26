@@ -61,7 +61,7 @@ struct SlotMachine: View {
                                         
                                         print(Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount))
                                         
-                                        let newTransaction = TransactionDataModel(amount: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount), transactionDescription: "Slot Machine Winnings", createdAt: Date(), income: true)
+                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount), transactionDescription: "Slot Machine Winnings", createdAt: Date(), income: true)
                                         
                                         user.transactions.append(newTransaction)
                                     }
@@ -143,7 +143,7 @@ struct SlotMachine: View {
                         isGameActive = true
                         
                         if let user = users.first {
-                            let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", amount: Int(selectedAmount), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
+                            let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", category: "Minigame", amount: Int(selectedAmount), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
                             
                             user.transactions.append(newTransactionMoneyOut)
                             

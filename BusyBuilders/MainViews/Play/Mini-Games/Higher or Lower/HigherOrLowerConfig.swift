@@ -59,7 +59,7 @@ struct HigherOrLowerConfig: View {
                                 
                                 user.availableBalance -= Int(sliderValue)
                                 
-                                let newTransaction = TransactionDataModel(amount: Int(sliderValue), transactionDescription: "Higher or Lower", createdAt: Date(), income: false)
+                                let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(sliderValue), transactionDescription: "Higher or Lower", createdAt: Date(), income: false)
                                 user.transactions.append(newTransaction)
                                 do {
                                     try context.save()

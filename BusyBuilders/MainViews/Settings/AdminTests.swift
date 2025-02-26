@@ -115,12 +115,12 @@ struct AdminTests: View {
                             Image(systemName: "plus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.cashPerMin += 100
+                                    selectedBusiness?.cashPerMin += 1000
                                 }
                             Image(systemName: "minus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.cashPerMin -= 100
+                                    selectedBusiness?.cashPerMin -= 1000
                                 }
                         }
                         
