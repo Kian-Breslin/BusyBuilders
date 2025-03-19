@@ -625,3 +625,140 @@ let allBusinessUpgrades: [BusinessUpgradeModel] = [
                          upgradeDescription: "Reduces all upgrade costs by 20%.")
 ]
 
+struct Triangle: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        // Start from the bottom-left corner of the rectangle
+        path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        
+        // Draw line to the top-center of the rectangle
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+        
+        // Draw line to the bottom-right corner of the rectangle
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        
+        // Close the path (back to the bottom-left corner)
+        path.closeSubpath()
+        
+        return path
+    }
+}
+
+struct IrregularRectangle: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        // Starting point at the top-left corner
+        path.move(to: CGPoint(x: rect.minX + 120, y: rect.minY)) // Start slightly inside for the curved effect
+        
+        // Top line (match Dynamic Island width, e.g., 320)
+        path.addLine(to: CGPoint(x: rect.maxX - 120, y: rect.minY)) // End the top line slightly inside
+        
+        // Right line
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        
+        // Bottom line
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        
+        // Close the path back to the starting point
+        path.closeSubpath()
+        
+        return path
+    }
+}
+import AVFoundation
+
+class AudioManager: ObservableObject {
+    var audioPlayer: AVAudioPlayer?
+    
+    // Play sound method
+    func playSound(named soundName: String) {
+        if let soundURL = Bundle.main.url(forResource: soundName, withExtension: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.numberOfLoops = -1  // Set looping before playing
+                audioPlayer?.play()
+            } catch {
+                print("Error playing sound: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+//https://script.google.com/macros/s/AKfycbzEx5Nk_A9wlMLVp66YepvFOsKfTk-QI0luOfcXgSHGuTnNFktdSN9ONIMlSdZoQMI3nw/exec
+
+struct Code: Codable {
+    let code: String
+    let used: Bool
+}
+
+import SwiftUI
+
+func fetchCodes() {
+    guard let url = URL(string: "https://script.googleusercontent.com/macros/echo?user_content_key=PiU3eaU9Tc3DwH6sAUZ4KsS3Nmi79LTMRqAFV-9bPwMA_2Amg0ZbkBm0dJz-TCn0EjyKtI8JPEUkj-0JvptbWmBEXEWwzAMqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnAY9Ptq-UmQWjKt6X2EN2DceMPnJ8IRAnLiwRiGcny8NK8aznCPnrzRK1zjx41Ex3-GgVcmjiWdZYnSfWncwkunXzrmbI4YLYdz9Jw9Md8uu&lib=MSiDQvAZ-zD7-JRHkuE1vt2C3QdPFZkf3") else { return }
+
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        // Check for errors
+        if let error = error {
+            print("Error: \(error)")
+            return
+        }
+        
+        // Check if we got data
+        guard let data = data else {
+            print("No data received")
+            return
+        }
+        
+        do {
+            // Decode the JSON response
+            let codes = try JSONDecoder().decode([Code].self, from: data)
+            
+            // Print all the codes
+            for code in codes {
+                print("Code: \(code.code)")
+            }
+        } catch {
+            print("Failed to decode data: \(error)")
+        }
+    }
+    
+    task.resume()
+}
+
+func redeemCode(code: String, email: String) {
+    guard let url = URL(string: "https://script.google.com/macros/s/AKfycbzEx5Nk_A9wlMLVp66YepvFOsKfTk-QI0luOfcXgSHGuTnNFktdSN9ONIMlSdZoQMI3nw/exec") else { return }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    let body: [String: Any] = ["code": code, "email": email]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+    } catch {
+        print("Error encoding data: \(error)")
+        return
+    }
+    
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Request failed: \(error)")
+            return
+        }
+        
+        guard let data = data else {
+            print("No data received")
+            return
+        }
+        
+        do {
+            let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            print("Response:", jsonResponse ?? "Invalid response")
+        } catch {
+            print("Failed to decode response: \(error)")
+        }
+    }.resume()
+}

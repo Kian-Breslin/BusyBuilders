@@ -28,7 +28,8 @@ struct ContentView: View {
                 if (selectedView == 0) {
                     Dashboard(dashboardSelection: $selectedView, isSettingsShowing: $isSettingsShowing)
                 } else if selectedView == 1 {
-                    Communities()
+//                    Communities()
+                    Light()
                 } else if selectedView == 2 {
 //                    StartTask(isTimerActive: $isTaskActive)
                     Play(isTimerActive: $isTaskActive, isTaskActive: $isNavShowing, isSettingsShowing: $isSettingsShowing)

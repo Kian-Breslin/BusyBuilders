@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DashboardHomeView: View {
     @EnvironmentObject var themeManager: ThemeManager
+
     var body: some View {
         
         VStack (spacing: 5) {
@@ -24,12 +26,12 @@ struct DashboardHomeView: View {
 
                 VStack (spacing: 5){
                     HStack (spacing: 5){
+                        BabyModularWidget(numberDisplay: 0)
                         BabyModularWidget(numberDisplay: 1)
-                        BabyModularWidget(numberDisplay: 2)
                     }
                     HStack (spacing: 5){
+                        BabyModularWidget(numberDisplay: 2)
                         BabyModularWidget(numberDisplay: 3)
-                        BabyModularWidget(numberDisplay: 4)
                     }
                 }
             }

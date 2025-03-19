@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct Timer3: View {
     @EnvironmentObject var themeManager: ThemeManager
@@ -35,13 +36,13 @@ struct Timer3: View {
     @State var isTimeCounting = false
     let currentDate = getDateComponents(from: Date())
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @StateObject private var audioManager = AudioManager()
     
     
     
     var body: some View {
         ZStack {
-            themeManager.mainColor
-                .ignoresSafeArea()
+            RainTimer()
             
             VStack (spacing: 50){
                 RoundedRectangle(cornerRadius: 25)
@@ -107,8 +108,12 @@ struct Timer3: View {
                     RoundedRectangle(cornerRadius: 15)
                         .frame(width: 120, height: 40)
                         .overlay {
-                            Text("Pause")
+                            Text(isTimeCounting ? "Pause" : "Play")
                                 .foregroundStyle(themeManager.textColor)
+                        }
+                        .onTapGesture {
+                            isTimeCounting.toggle()
+                            audioManager.audioPlayer?.pause()
                         }
                     RoundedRectangle(cornerRadius: 15)
                         .frame(width: 120, height: 40)
@@ -165,10 +170,10 @@ struct Timer3: View {
         .onAppear {
             timeStarted = formatFullDateTime(date: Date())
             isTimeCounting.toggle()
+            audioManager.playSound(named: "CalmingRainSound")
         }
         .onReceive(timer) { time in
             guard isTimeCounting else {return}
-            
             timeElapsed += 1
         }
         .onChange(of: scenePhase){
