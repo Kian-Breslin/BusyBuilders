@@ -16,15 +16,19 @@ public class UserDataModel: Identifiable, ObservableObject {
     var password: String
     var businesses: [BusinessDataModel] // List of businesses owned by the user
     var availableBalance: Int
-    var netWorth: Int
     var level: Int
     var created: Date
     var flashcards: [DeckModel]
     var transactions: [TransactionDataModel]
     var miniGameSessions: [MiniGameSessionModel]
     var flashcardSessions: [FlashcardSessionDataModel]
-    
     var inventory: [String : Int] = [:]
+    var stocks: [companyStocks] = []
+    var netWorth: Int {
+        let businessWorth = businesses.reduce(0) {$0 + $1.netWorth}
+        let stocksWorth = stocks.reduce(0) { $0 + ($1.amount * $1.company.stockPrice) }
+        return businessWorth + availableBalance
+    }
     
     // Initialize the UserDataModel with default values
     init(id: UUID = UUID(),
@@ -33,13 +37,13 @@ public class UserDataModel: Identifiable, ObservableObject {
          email: String,
          password: String = "",
          availableBalance: Int = 0,
-         netWorth: Int = 0,
          level: Int = 0,
          created: Date = Date.now,
          flashcards: [DeckModel] = [],
          transactions: [TransactionDataModel] = [],
          miniGameSessions: [MiniGameSessionModel] = [],
-         flashcardSessions: [FlashcardSessionDataModel] = []) {
+         flashcardSessions: [FlashcardSessionDataModel] = [],
+         stocks: [companyStocks] = []) {
         self.id = id
         self.username = username
         self.name = name
@@ -47,7 +51,6 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.password = password
         self.businesses = []
         self.availableBalance = availableBalance
-        self.netWorth = netWorth
         self.level = level
         self.created = created
         self.inventory = [
@@ -56,6 +59,7 @@ public class UserDataModel: Identifiable, ObservableObject {
             "Cost Reduction" : 0,
             "Break Booster" : 0
         ]
+        self.stocks = stocks
         self.flashcards = flashcards
         self.transactions = transactions
         self.miniGameSessions = miniGameSessions

@@ -21,7 +21,7 @@ struct MyStats: View {
         if let user = users.first {
             VStack (alignment: .leading){
                 
-                miniModules(isTime: false, title: "Total Net Worth", textDetail: "$\(user.availableBalance)")
+                miniModules(isTime: false, title: "Total Available Balance", textDetail: "$\(user.availableBalance)")
                 VStack (alignment: .leading){
                     Text("Total Time Studied")
                         .opacity(0.5)

@@ -26,7 +26,7 @@ struct MyBusinesses: View {
             if let user = users.first {
                 VStack {
                     ForEach(user.businesses){ b in
-                        NavigationLink(destination : BusinessNavigationDestination(business: b)){
+                        NavigationLink(destination : myBusinessesList(business: b)){
                             BusinessListItem(business: b)
                                 .onLongPressGesture(minimumDuration: 0.5) {
                                     selectedBusinessToDelete = b

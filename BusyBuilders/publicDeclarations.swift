@@ -105,7 +105,8 @@ func getColor(_ name: String) -> Color {
         return Color(red: 221 / 255, green: 220 / 255, blue: 216 / 255)
     case "dark":
         return Color(red: 85/255, green: 85/255, blue: 85/255)
-    // Add other colors as needed
+    case "light":
+        return Color(red: 220, green: 200, blue: 200)
     default:
         return Color.gray // Fallback if no color matches
     }
@@ -686,14 +687,10 @@ class AudioManager: ObservableObject {
     }
 }
 
-//https://script.google.com/macros/s/AKfycbzEx5Nk_A9wlMLVp66YepvFOsKfTk-QI0luOfcXgSHGuTnNFktdSN9ONIMlSdZoQMI3nw/exec
-
 struct Code: Codable {
     let code: String
     let used: Bool
 }
-
-import SwiftUI
 
 func fetchCodes() {
     guard let url = URL(string: "https://script.googleusercontent.com/macros/echo?user_content_key=PiU3eaU9Tc3DwH6sAUZ4KsS3Nmi79LTMRqAFV-9bPwMA_2Amg0ZbkBm0dJz-TCn0EjyKtI8JPEUkj-0JvptbWmBEXEWwzAMqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnAY9Ptq-UmQWjKt6X2EN2DceMPnJ8IRAnLiwRiGcny8NK8aznCPnrzRK1zjx41Ex3-GgVcmjiWdZYnSfWncwkunXzrmbI4YLYdz9Jw9Md8uu&lib=MSiDQvAZ-zD7-JRHkuE1vt2C3QdPFZkf3") else { return }
@@ -759,6 +756,62 @@ func redeemCode(code: String, email: String) {
             print("Response:", jsonResponse ?? "Invalid response")
         } catch {
             print("Failed to decode response: \(error)")
+        }
+    }.resume()
+}
+
+func exchangeAuthorizationCodeForToken(code: String, completion: @escaping (String?, String?) -> Void) {
+    // Your OAuth2 client credentials
+    let clientId = "405865461365-ai7hpaqcffg7ipemju741nk6iaomphuk.apps.googleusercontent.com"
+    let clientSecret = "YOUR_CLIENT_SECRET"  // You should use your client secret
+    let redirectUri = "busybuilder://oauth2callback"  // The same redirect URI used during authorization
+    
+    // Google OAuth Token Endpoint
+    let tokenUrl = URL(string: "https://oauth2.googleapis.com/token")!
+    
+    var request = URLRequest(url: tokenUrl)
+    request.httpMethod = "POST"
+    
+    // Set up body parameters
+    let bodyParameters = [
+        "code": code,
+        "client_id": clientId,
+        "client_secret": clientSecret,
+        "redirect_uri": redirectUri,
+        "grant_type": "authorization_code"
+    ]
+    
+    // Format the body as `application/x-www-form-urlencoded`
+    let bodyData = bodyParameters.map { "\($0.key)=\($0.value)" }.joined(separator: "&").data(using: .utf8)
+    request.httpBody = bodyData
+    
+    // Set the content type header
+    request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+    
+    // Create the URLSession and send the request
+    let session = URLSession.shared
+    session.dataTask(with: request) { (data, response, error) in
+        if let error = error {
+            print("Error: \(error.localizedDescription)")
+            completion(nil, nil)
+            return
+        }
+        
+        // Parse the response
+        if let data = data {
+            do {
+                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                
+                // Extract access token and refresh token from the response
+                let accessToken = jsonResponse?["access_token"] as? String
+                let refreshToken = jsonResponse?["refresh_token"] as? String
+                
+                // Call the completion handler with the tokens
+                completion(accessToken, refreshToken)
+            } catch {
+                print("Error parsing response: \(error)")
+                completion(nil, nil)
+            }
         }
     }.resume()
 }

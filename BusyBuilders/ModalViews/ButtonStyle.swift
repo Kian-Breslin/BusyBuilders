@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct ButtonStyle: View {
+    var text : String
+    var action : () -> Void
+    var sizex : Double
+    var sizey : Double
+    var color : Color
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button("\(text)"){
+            action()
+        }
+        .frame(width: sizex, height: sizey)
+        .foregroundStyle(.white)
+        .background(color)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 
 #Preview {
-    ButtonStyle()
+    ButtonStyle(text: "Placeholder", action: {print("Hello World!")}, sizex: 100, sizey: 50, color: .red)
 }

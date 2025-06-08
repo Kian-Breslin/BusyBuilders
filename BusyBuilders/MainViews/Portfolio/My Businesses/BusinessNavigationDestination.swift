@@ -189,9 +189,9 @@ struct BusinessNavigationDestination: View {
                 AddMoneyToBusiness(user: users.first ?? UserDataModel(username: "Keano517", name: "Kian Breslin", email: "Kianbreslin517@gmail.com"), business: business, isWithdrawingMoney: $isAddingMoney)
                     .presentationDetents([.fraction(0.3)])
             }
-            .fullScreenCover(isPresented: $isShowingUpgrades) {
-                BusinessUpgrades(business: business)
-            }
+//            .fullScreenCover(isPresented: $isShowingUpgrades) {
+//                
+//            }
     }
 }
 

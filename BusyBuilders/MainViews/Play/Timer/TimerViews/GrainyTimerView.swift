@@ -8,8 +8,24 @@
 import SwiftUI
 
 struct GrainyTimerView: View {
+    @StateObject private var timerManager = TimerManager()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Image("GrainTextureBB")
+                .resizable()
+                .opacity(0.6)
+                .frame(width: screenWidth, height: screenHeight)
+                .ignoresSafeArea()
+            
+            VStack {
+                Text("Time: \(timerManager.timeElapsed)")
+    //                .onAppear {
+    //                    timerManager.start()
+    //                }
+                
+            }
+        }
     }
 }
 

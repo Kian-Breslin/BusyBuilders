@@ -108,10 +108,8 @@ struct OnboardingUserInfo: View {
                     load.toggle()
                 }
                 .onTapGesture {
-                    
                     let newUser = UserDataModel(username: newUserUsername, name: newUserName, email: newUserEmail, password: newUserPassword,created: Date())
                     context.insert(newUser)
-                    
                     do {
                         try context.save()
                         currentScreen += 1

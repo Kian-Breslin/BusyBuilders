@@ -13,99 +13,58 @@ struct InvestmentView: View {
     
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
-    @Query var businesses: [BusinessDataModel]
-    @Binding var isSettingsShowing : Bool
-    
-    @State private var selectedScreen = "buidling"
-    let buttonImages: [String] = ["building", "chart.pie", "gift", "tag"]
-    let buttonText: [String] = ["Companies", "Investments", "Packs", "Specials"]
+    @Query var companies: [CompanyDataModel]
     
     var body: some View {
-        ZStack {
-            themeManager.mainColor
-                .ignoresSafeArea()
-            
-            VStack {
+        VStack (spacing: 15){
+            Text("List of Companies")
+            ScrollView {
                 VStack {
-                    // Top Header
-                    HStack {
-                        Text("Investments")
-                            .font(.system(size: 35))
-                            .fontWeight(.bold)
-                        Spacer()
-                        HStack (spacing: 15){
-                            ZStack {
-                                Image(systemName: "bell.fill")
-                                Image(systemName: "2.circle.fill")
-                                    .font(.system(size: 15))
-                                    .offset(x: 10, y: -10)
-                                    .onTapGesture {
-                                        
-                                    }
-                            }
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 40, height: 40)
-                                .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
-                                .overlay(content: {
-                                    Image("userImage-2")
-                                        .resizable()
-                                        .frame(width: 40,height: 40)
-                                })
-                                .onTapGesture {
-                                    isSettingsShowing.toggle()
-                                }
-                        }
-                        .font(.system(size: 25))
-                    }
-                    .frame(width: screenWidth-20, height: 60)
-                    .foregroundStyle(themeManager.textColor)
-                    
-                    HStack {
-                        ForEach(0..<4){ i in
-                            VStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 60, height: 60)
-                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
-                                    .overlay {
-                                        Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
-                                            .font(.system(size: 30))
-                                            .foregroundStyle(themeManager.textColor)
-                                        
-                                    }
-                                    .onTapGesture {
-                                        selectedScreen = buttonImages[i]
-                                    }
-                                Text(buttonText[i])
-                                    .font(.system(size: 10))
-                                    .scaledToFit()
-                            }
-                            .frame(width: 60, height: 80)
-                            
-                            if i < 3 {
-                                Spacer()
-                            }
+                    ForEach(companies){ comp in
+                        NavigationLink(destination: CompanyView(company: comp).navigationBarBackButtonHidden(true)){
+                            CompanyScrollItem(color: themeManager.textColor, company: comp)
                         }
                     }
-                    .font(.system(size: 12))
-                    .foregroundStyle(themeManager.textColor)
-                    .frame(width: screenWidth-20, height: 100)
                 }
-                .frame(width: screenWidth-20, height: 160)
-                
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: screenWidth)
-                    .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("light"))
-                    .overlay {
-                        if selectedScreen == "building" {
-                            
-                        }
-                    }
             }
+            .padding(.bottom, 50)
         }
+        .foregroundStyle(themeManager.textColor)
+    }
+}
+
+struct CompanyScrollItem: View {
+    let color : Color
+    let company : CompanyDataModel
+    var body: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: screenWidth-20, height: 60)
+            .foregroundStyle(color)
+            .overlay {
+                HStack {
+                    Image(systemName: company.icon)
+                    Text(company.name)
+                    Spacer()
+                    Text("$\(company.stockPrice)")
+                    Text("50%")
+                        .font(.system(size: 15))
+                }
+                .padding(.horizontal)
+                .font(.system(size: 25))
+                .foregroundStyle(ThemeManager().mainColor)
+            }
     }
 }
 
 #Preview {
-    InvestmentView(isSettingsShowing: .constant(false))
-        .environmentObject(ThemeManager())
+    ZStack {
+        ThemeManager().mainColor.ignoresSafeArea()
+        
+        VStack {
+            Rectangle().frame(width: .infinity, height: 160)
+                .foregroundStyle(ThemeManager().mainColor)
+            InvestmentView()
+                .environmentObject(ThemeManager())
+        }
+    }
 }

@@ -100,7 +100,7 @@ struct Timer3: View {
                 }
                 .frame(alignment: .center)
                 
-                Text("$\((selectedBusiness.cashPerMin/60) * timeElapsed)")
+                Text("$\(Int((Double(selectedBusiness.cashPerMin) / 60.0) * Double(timeElapsed)))")
                     .font(.system(size: 60))
                 
                 
@@ -124,10 +124,10 @@ struct Timer3: View {
                         .onTapGesture {
                             isTimeCounting.toggle()
                             
-                            let calculations = calculateEarnings(timeElapsed, selectedBusiness, isXPBoosterActive, isCashBoosterActive, isCostReductionActive)
-                            let totalIncomeCalculated = calculations[2]
-                            let totalCostCalculated = calculations[1]
-                            let totalXPCalculated = calculations[0]
+                            let calculations = calculateEarnings(timeElapsed, selectedBusiness)
+                            let totalIncomeCalculated = calculations["totalIncome"] as? Int ?? 0
+                            let totalCostCalculated = calculations["totalCost"] as? Int ?? 0
+                            let totalXPCalculated = calculations["totalXP"] as? Int ?? 0
                             print(totalXPCalculated)
                             
                             if let user = users.first {
@@ -170,7 +170,7 @@ struct Timer3: View {
         .onAppear {
             timeStarted = formatFullDateTime(date: Date())
             isTimeCounting.toggle()
-            audioManager.playSound(named: "CalmingRainSound")
+//            audioManager.playSound(named: "CalmingRainSound")
         }
         .onReceive(timer) { time in
             guard isTimeCounting else {return}
@@ -185,7 +185,8 @@ struct Timer3: View {
         }
         .sheet(isPresented: $showEnd) {
             showSessionStats(selectedBusiness: selectedBusiness, timeElapsed: timeElapsed, isTimerActive: $isTimerActive)
-            .presentationDetents([.fraction(0.50)])
+            .presentationDetents([.fraction(0.55)])
+            .interactiveDismissDisabled()
         }
     }
 }
@@ -194,62 +195,158 @@ struct showSessionStats: View {
     @State var selectedBusiness : BusinessDataModel
     @State var timeElapsed : Int
     @Binding var isTimerActive : Bool
+    @State private var earnings: [String: Any] = [:]
+    @State private var elapsedTime = 0
+    let statsTimer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     
     var body: some View {
         ZStack {
             ThemeManager().mainColor.ignoresSafeArea()
-            VStack {
+            VStack (alignment: .leading, spacing: 10){
+                let income = earnings["totalIncome"] as? Int ?? 0
+                let cost = earnings["totalCost"] as? Int ?? 0
+                let total = income - cost
+                
                 Text("\(selectedBusiness.businessName)")
+                    .font(.system(size: 30))
                 
-                Text("$\(selectedBusiness.netWorth)")
-                Text("\(selectedBusiness.businessLevel)")
+                HStack {
+                    Text("Net Worth: $\(selectedBusiness.netWorth)")
+                    Spacer()
+                    Text("Business Level: \(selectedBusiness.businessLevel)")
+                }
                 
-                Text("XP: \(calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[0])")
-                Text("Cost: $\(calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[1])")
-                Text("Income: $\(calculateEarnings(timeElapsed, selectedBusiness, false, false, false)[2])")
+                HStack {
+                    let incomeMultiplier = earnings["incomeMultiplier"] as? Double ?? 1.0
+                    let incomeBoostText = incomeMultiplier == 1.0 ? "0%" : "\(Int((incomeMultiplier - 1) * 100))%"
+                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Income Boost: ", boxInfo: "\(incomeBoostText)")
+                        .opacity(elapsedTime >= 1 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                    let costMultiplier = earnings["costMultiplier"] as? Double ?? 1.0
+                    let costReductionText = "\(Int(costMultiplier * 100))%"
+                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Cost Reduction: ", boxInfo: "\(costReductionText)")
+                        .opacity(elapsedTime >= 2 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                }
                 
                 
+                HStack {
+                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Experience :", boxInfo: "\(earnings["totalXP"] as? Int ?? 0)")
+                        .opacity(elapsedTime >= 3 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+
+                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Income :", boxInfo: "$\(earnings["totalIncome"] as? Int ?? 0)")
+                        .opacity(elapsedTime >= 4 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                }
+                HStack {
+                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Cost :", boxInfo: "$\(earnings["totalCost"] as? Int ?? 0)")
+                        .opacity(elapsedTime >= 5 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Total Income: ", boxInfo: "$\(total)")
+                        .opacity(elapsedTime >= 6 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                }
                 
-                Button("Done") {
-                    isTimerActive.toggle()
+
+                
+                
+                HStack {
+                    Spacer()
+                    Button("Done") {
+                        isTimerActive.toggle()
+                    }
+                    .disabled(elapsedTime <= 7)
+                    .frame(width: 120, height: 50)
+                    .background(getColor(ThemeManager().secondaryColor))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .font(.system(size: 25))
+                    .opacity(elapsedTime >= 7 ? 1 : 0.5)
+                    
+                    Spacer()
                 }
             }
             .foregroundStyle(ThemeManager().textColor)
+            .frame(width: screenWidth-20)
+        }
+        .onAppear {
+            earnings = calculateEarnings(timeElapsed, selectedBusiness)
+        }
+        .onReceive(statsTimer) { _ in
+            if elapsedTime < 10 {
+                elapsedTime += 1
+            }
         }
     }
 }
 
- func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel, _ XPA: Bool, _ CBA: Bool, _ CRA: Bool) -> [Int] {
+func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel) -> [String: Any] {
     let cashPerMin = business.cashPerMin
     let costPerMin = business.costPerMin
 
-    // Convert timeElapsed to minutes
     let timeElapsedInMinutes = Double(timeElapsed) / 60
 
-    // Base calculations
-    var totalIncome = Double(cashPerMin) * timeElapsedInMinutes
-    var totalCost = Double(costPerMin) * timeElapsedInMinutes
-    var totalXP = timeElapsedInMinutes
+    // Department levels
+    let FLevel = business.departmentLevels["Finance"] ?? 0
+    let OLevel = business.departmentLevels["Operations"] ?? 0
+    let HLevel = business.departmentLevels["HR"] ?? 0
+    let RLevel = business.departmentLevels["R&D"] ?? 0
+    let MLevel = business.departmentLevels["Marketing"] ?? 0
     
-    print("Total XP: \(Int(totalXP.rounded()))")
+    func getDiscount(num: Int) -> Int {
+        return min((num / 10), 10)
+    }
+    
+    // Department multipliers
+    let financeDiscount = getDiscount(num: FLevel)
+    let hrDiscount = getDiscount(num: HLevel)
+    let combinedCostMultiplier = Double(financeDiscount + hrDiscount) / 100.0
 
-    // Apply upgrades
-    if CBA {
-        totalIncome *= 1.5 // 50% more income
-    }
-    if CRA {
-        totalCost *= 0.5 // 50% less cost
-    }
-    if XPA {
-        totalXP *= 1.5 // 50% more XP
-    }
+    let incomeMultiplier = 1.0 + Double(OLevel) * 0.02
+    let xpMultiplier = 1.0 + Double(RLevel) * 0.01 + Double(MLevel) * 0.015
+
+    // Apply multipliers
+    let totalIncome = Double(cashPerMin) * timeElapsedInMinutes * incomeMultiplier
+    let totalCost = Double(costPerMin) * timeElapsedInMinutes * (1 - combinedCostMultiplier)
+    let totalXP = timeElapsedInMinutes * xpMultiplier
 
     return [
-        Int(totalXP.rounded()), // Round to nearest Int for XP
-        Int(totalCost.rounded()), // Round to nearest Int for cost
-        Int(totalIncome.rounded()) // Round to nearest Int for income
+        "totalXP": Int(totalXP.rounded()),
+        "totalCost": Int(totalCost.rounded()),
+        "totalIncome": Int(totalIncome.rounded()),
+        "xpMultiplier": xpMultiplier,
+        "costMultiplier": combinedCostMultiplier,
+        "incomeMultiplier": incomeMultiplier
     ]
 }
+
+struct littleInfoBox: View {
+    let boxWidth : Int
+    let boxHeight : Int
+    let boxColor : Color
+    let boxTitle : String
+    let boxInfo : String
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .frame(width: CGFloat(boxWidth), height: CGFloat(boxHeight))
+            .foregroundStyle(boxColor)
+            .overlay {
+                VStack (alignment: .leading, spacing: 10){
+                    Text(boxTitle)
+                    Text(boxInfo)
+                }
+                .font(.system(size: 25))
+                .padding(5)
+                .frame(width: CGFloat(boxWidth), alignment: .leading)
+            }
+    }
+}
+
+#Preview {
+    showSessionStats(selectedBusiness: BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle", netWorth: 300000), timeElapsed: 3600, isTimerActive: .constant(false))
+}
+
 
 #Preview {
     Timer3(selectedBusiness: BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle"), setTime: 0, isXPBoosterActive: false, isCashBoosterActive: false, isCostReductionActive: false, isTimerActive: .constant(false))

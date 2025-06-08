@@ -64,7 +64,7 @@ struct Portfolio: View {
                                 .foregroundStyle(themeManager.textColor)
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
-                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
                                     .overlay(content: {
                                         Image("userImage-2")
                                             .resizable()
@@ -82,7 +82,7 @@ struct Portfolio: View {
                                 VStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 60, height: 60)
-                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
+                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
                                         .overlay {
                                             Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                                 .font(.system(size: 30))
@@ -111,7 +111,7 @@ struct Portfolio: View {
                     
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
+                        .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("light"))
                         .overlay {
                             if selectedScreen == "person" {
                                 MyStats()
@@ -123,9 +123,8 @@ struct Portfolio: View {
                                 Text("My City")
                                     .foregroundStyle(.black)
                             }
-                            else if selectedScreen == "chart.line.flattrend.xyaxis" {
-                                Text("Investments")
-                                    .foregroundStyle(.black)
+                            else if selectedScreen == "banknote" {
+                                InvestmentView()
                             }
                         }
                     }

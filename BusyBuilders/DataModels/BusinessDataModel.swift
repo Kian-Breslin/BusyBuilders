@@ -28,13 +28,14 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var leaderboardPosition: Int // Position in leaderboard
     var insuranceLevel: Int // Level of insurance
     var securityLevel: Int // Level of security
+    var departmentLevels: [String: Int]
     var businessLevel: Int // Current level of the business
     var businessPrestige: String
     var streak : Int
     var creationDate : Date
 
     // Initializer
-    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, cashPerMin: Int = 1000, netWorth: Int = 0, costPerMin: Int = 300, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], upgrades: [BusinessUpgradeModel] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0, creationDate: Date = Date()) {
+    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, cashPerMin: Int = 1000, netWorth: Int = 0, costPerMin: Int = 300, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], upgrades: [BusinessUpgradeModel] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, departmentLevel: [String: Int] = [:], businessLevel: Int = 0, businessPrestige: String = "Start-Up", streak : Int = 0, creationDate: Date = Date()) {
         self.id = id
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -53,9 +54,23 @@ class BusinessDataModel : ObservableObject, Identifiable {
         self.leaderboardPosition = leaderboardPosition
         self.insuranceLevel = insuranceLevel
         self.securityLevel = securityLevel
+        self.departmentLevels = [
+            "Finance": 0,
+            "Operations": 0,
+            "Marketing": 0,
+            "HR": 0,
+            "R&D": 0
+        ]
         self.businessLevel = businessLevel
         self.businessPrestige = businessPrestige
         self.streak = streak
         self.creationDate = creationDate
+    }
+}
+
+extension BusinessDataModel {
+    func upgradeDept(dept: String) {
+        let currentLevel = departmentLevels[dept] ?? 0
+        departmentLevels[dept] = currentLevel + 1
     }
 }

@@ -6,13 +6,36 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BusinessMoreInfo: View {
+    @Query var users : [UserDataModel]
+    let business : BusinessDataModel
+    @State var isWithdraw = false
+    @State var isAdding = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Button("Withdraw"){
+                isWithdraw.toggle()
+            }
+            
+            Button("Add"){
+                isAdding.toggle()
+            }
+        }
+        .sheet(isPresented: $isWithdraw) {
+            if let user = users.first {
+                WithdrawMoneyFromBusiness(user: user, business: business, isWithdrawingMoney: $isWithdraw)
+            }
+        }
+        .sheet(isPresented: $isAdding) {
+            if let user = users.first {
+                AddMoneyToBusiness(user: user, business: business, isWithdrawingMoney: $isAdding)
+            }
+        }
     }
 }
 
 #Preview {
-    BusinessMoreInfo()
+    BusinessMoreInfo(business: BusinessDataModel(businessName: "Test", businessTheme: "", businessType: "", businessIcon: ""))
 }

@@ -21,113 +21,110 @@ struct TimerConfig_V2: View {
     @Binding var isTimerActive : Bool
     
     var body: some View {
-        ZStack {
-            getColor(themeManager.mainDark)
             
-            VStack (alignment: .leading){
-                Text("Timer")
-                    .font(.system(size: 30, weight: .bold))
-                    .foregroundStyle(getColor(themeManager.secondaryColor))
-                    .padding(.vertical, 10)
+        VStack (alignment: .leading){
+            Text("Timer")
+                .font(.system(size: 30, weight: .bold))
+                .foregroundStyle(getColor(themeManager.secondaryColor))
+                .padding(.vertical, 10)
+            
+            VStack (alignment: .leading, spacing: 0){
+                Text("Businesses")
+                    .bold()
+                    .font(.system(size: 15))
                 
-                VStack (alignment: .leading, spacing: 0){
-                    Text("Businesses")
-                        .bold()
-                        .font(.system(size: 15))
-                    
-                    ScrollView(.horizontal, showsIndicators: false){
-                        HStack {
-                            if let user = users.first {
-                                ForEach(user.businesses) { business in
-                                    businessCard(business: business, selectedBusiness: $selectedBusiness)
-                                        .padding(.vertical, 5)
-                                }
+                ScrollView(.horizontal, showsIndicators: false){
+                    HStack {
+                        if let user = users.first {
+                            ForEach(user.businesses) { business in
+                                businessCard(business: business, selectedBusiness: $selectedBusiness)
+                                    .padding(.vertical, 5)
                             }
                         }
-                        .padding(.horizontal, 5)
                     }
-                    .frame(width: screenWidth-20, alignment: .leading)
+                    .padding(.horizontal, 5)
                 }
-                
-                VStack (alignment: .leading, spacing: 5){
-                    Text("Sessions: \(sessionCounts, specifier: "%.f")")
-                        .bold()
-                        .font(.system(size: 15))
-                    
-                    Slider(value: $sessionCounts, in: 0...8, step: 1){
-                        Text("Sessions")
-                    }
-                    .tint(getColor(themeManager.secondaryColor))
-                }
-                
-                VStack (alignment: .leading, spacing: 5){
-                    Text("Short Break: \(shortBreakTime, specifier: "%.f") mins")
-                        .bold()
-                        .font(.system(size: 15))
-                    
-                    Slider(value: $shortBreakTime, in: 0...10, step: 1)
-                        .tint(getColor(themeManager.secondaryColor))
-                }
-                
-                VStack (alignment: .leading, spacing: 5){
-                    Text("Long Break: \(longBreakTime, specifier: "%.f") mins")
-                        .bold()
-                        .font(.system(size: 15))
-                    
-                    Slider(value: $longBreakTime, in: 10...30, step: 1)
-                        .tint(getColor(themeManager.secondaryColor))
-                }
-                
-                VStack(alignment: .leading, spacing: 5){
-                    Text("Upgrades")
-                        .bold()
-                        .font(.system(size: 15))
-                    
-                    HStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: ((screenWidth-40)/3), height: 50)
-                            .foregroundStyle(themeManager.mainColor)
-                            .overlay {
-                                Text("Cash Boost")
-                            }
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: ((screenWidth-40)/3), height: 50)
-                            .foregroundStyle(themeManager.mainColor)
-                            .overlay {
-                                Text("Cost Reduction")
-                            }
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: ((screenWidth-40)/3), height: 50)
-                            .foregroundStyle(themeManager.mainColor)
-                            .overlay {
-                                Text("XP Boost")
-                            }
-                    }
-                    .font(.system(size: 12))
+                .frame(width: screenWidth-20, alignment: .leading)
+            }
+            
+            VStack (alignment: .leading, spacing: 5){
+                Text("Sessions: \(sessionCounts, specifier: "%.f")")
                     .bold()
+                    .font(.system(size: 15))
+                
+                Slider(value: $sessionCounts, in: 0...8, step: 1){
+                    Text("Sessions")
                 }
-                Spacer()
+                .tint(getColor(themeManager.secondaryColor))
+            }
+            
+            VStack (alignment: .leading, spacing: 5){
+                Text("Short Break: \(shortBreakTime, specifier: "%.f") mins")
+                    .bold()
+                    .font(.system(size: 15))
+                
+                Slider(value: $shortBreakTime, in: 0...10, step: 1)
+                    .tint(getColor(themeManager.secondaryColor))
+            }
+            
+            VStack (alignment: .leading, spacing: 5){
+                Text("Long Break: \(longBreakTime, specifier: "%.f") mins")
+                    .bold()
+                    .font(.system(size: 15))
+                
+                Slider(value: $longBreakTime, in: 10...30, step: 1)
+                    .tint(getColor(themeManager.secondaryColor))
+            }
+            
+            VStack(alignment: .leading, spacing: 5){
+                Text("Upgrades")
+                    .bold()
+                    .font(.system(size: 15))
+                
                 HStack {
-                    Spacer()
                     RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 150, height: 50)
+                        .frame(width: ((screenWidth-40)/3), height: 50)
                         .foregroundStyle(themeManager.mainColor)
                         .overlay {
-                            Text("Start Session")
-                                .font(.system(size: 15))
-                                .bold()
+                            Text("Cash Boost")
                         }
-                        .onTapGesture {
-                            isTimerActive.toggle()
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: ((screenWidth-40)/3), height: 50)
+                        .foregroundStyle(themeManager.mainColor)
+                        .overlay {
+                            Text("Cost Reduction")
                         }
-                    Spacer()
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: ((screenWidth-40)/3), height: 50)
+                        .foregroundStyle(themeManager.mainColor)
+                        .overlay {
+                            Text("XP Boost")
+                        }
                 }
-                .padding(.bottom, 80)
+                .font(.system(size: 12))
+                .bold()
             }
-            .frame(width: screenWidth-20, alignment: .leading)
+            Spacer()
+            HStack {
+                Spacer()
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 150, height: 50)
+                    .foregroundStyle(themeManager.mainColor)
+                    .overlay {
+                        Text("Start Session")
+                            .font(.system(size: 15))
+                            .bold()
+                    }
+                    .onTapGesture {
+                        isTimerActive.toggle()
+                    }
+                Spacer()
+            }
+            .padding(.bottom, 80)
         }
+        .frame(width: screenWidth-20, alignment: .leading)
         .foregroundStyle(themeManager.textColor)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .fullScreenCover(isPresented: $isTimerActive) {

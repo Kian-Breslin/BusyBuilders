@@ -24,7 +24,6 @@ struct Store: View {
     
     let buttonImages: [String] = ["wrench.and.screwdriver", "paintbrush", "gift", "tag"]
     let buttonText: [String] = ["Upgrades", "Cosmetics", "Packs", "Specials"]
-    let iconSelectionArray: [String] = ["banknote", "star", "bag.badge.minus", "mug"]
     
     var body: some View {
         ZStack {
@@ -51,7 +50,7 @@ struct Store: View {
                             }
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 40)
-                                .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
+                                .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
                                 .overlay(content: {
                                     Image("userImage-2")
                                         .resizable()
@@ -71,7 +70,7 @@ struct Store: View {
                             VStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 60, height: 60)
-                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("white"))
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
                                     .overlay {
                                         Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
                                             .font(.system(size: 30))
@@ -100,7 +99,7 @@ struct Store: View {
                 
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: screenWidth)
-                    .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("white"))
+                    .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("light"))
                     .overlay {
                         if selectedScreen == "wrench.and.screwdriver" {
                             VStack (alignment: .leading){
