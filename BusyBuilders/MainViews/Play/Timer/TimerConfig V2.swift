@@ -129,7 +129,7 @@ struct TimerConfig_V2: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .fullScreenCover(isPresented: $isTimerActive) {
             if selectedBusiness.businessName != "" {
-                Timer3(selectedBusiness: selectedBusiness, setTime: 3600, isXPBoosterActive: false, isCashBoosterActive: false, isCostReductionActive: false, isTimerActive: $isTimerActive)
+                Timer3(selectedBusiness: selectedBusiness, setTime: 3600, isTimerActive: $isTimerActive)
             } else {
                 Text("Hello")
             }

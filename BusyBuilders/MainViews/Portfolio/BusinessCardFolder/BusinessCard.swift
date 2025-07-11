@@ -46,7 +46,6 @@ struct BusinessCard: View {
         businessIcon: "macbook",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
         time: 9360,
-        cashPerMin: 3000,
         netWorth: 6000,
         investors: [
             UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
@@ -73,7 +72,6 @@ struct BusinessCard: View {
             ],
         insuranceLevel: 10,
         securityLevel: 14,
-        businessLevel: 7200,
         businessPrestige: "Growing Business"))
     .environmentObject(ThemeManager())
 }

@@ -44,14 +44,17 @@ struct historyItem: View {
                             .font(.system(size: 20))
                             .bold()
                     }
-                    Text("Income: $\(session.totalCashEarned)")
-                        .font(.system(size: 25))
+                    Text("Cash: $\(session.totalCashEarned)")
+                        .font(.system(size: 20))
+                        .foregroundStyle(.green)
+                    Text("Products: $\(session.productRevenue)")
+                        .font(.system(size: 20))
                         .foregroundStyle(.green)
                     Text("Costs: $\(session.totalCostIncurred)")
-                        .font(.system(size: 25))
+                        .font(.system(size: 20))
                         .foregroundStyle(getColor("red"))
-                    Text("Total: $\(session.totalCashEarned - session.totalCostIncurred)")
-                        .font(.system(size: 25))
+                    Text("Total: $\((session.totalCashEarned + session.productRevenue) - session.totalCostIncurred)")
+                        .font(.system(size: 20))
                 }
                 .foregroundStyle(ThemeManager().textColor)
                 .font(.system(size: 18))
@@ -65,7 +68,7 @@ struct historyItem: View {
         Rectangle()
             .frame(width: screenWidth, height: 230)
         
-        BusinessHistory(business: BusinessDataModel(businessName: "Fake Name", businessTheme: "red", businessType: "Eco-friendly", businessIcon: "triangle", owners: [], time: 4000, cashPerMin: 2000, netWorth: 3000000, costPerMin: 500, investment: 0, investors: [], badges: [], upgrades: [], sessionHistory: [SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: "01/01/25", sessionEnd: "01/01/25", businessId: UUID(), totalCashEarned: 10000, totalCostIncurred: 1000, totalXPEarned: 7200, totalStudyTime: 7200),SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: "01/01/25", sessionEnd: "01/01/25", businessId: UUID(), totalCashEarned: 20000, totalCostIncurred: 1000, totalXPEarned: 7200, totalStudyTime: 17200),SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: "01/01/25", sessionEnd: "01/01/25", businessId: UUID(), totalCashEarned: 15000, totalCostIncurred: 1000, totalXPEarned: 7200, totalStudyTime: 7200)], leaderboardPosition: 2, insuranceLevel: 2, securityLevel: 2, businessLevel: 2, businessPrestige: "", streak: 2, creationDate: Date.now))
+        BusinessHistory(business: BusinessDataModel(businessName: "Fake Name", businessTheme: "red", businessType: "Eco-friendly", businessIcon: "triangle", owners: [], time: 4000, netWorth: 3000000, investment: 0, investors: [], badges: [], upgrades: [], sessionHistory: [SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: "01/01/25", sessionEnd: "01/01/25", businessId: UUID(), totalCashEarned: 10000, totalCostIncurred: 1000, totalXPEarned: 7200, totalStudyTime: 7200),SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: "01/01/25", sessionEnd: "01/01/25", businessId: UUID(), totalCashEarned: 20000, totalCostIncurred: 1000, totalXPEarned: 7200, totalStudyTime: 17200),SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: "01/01/25", sessionEnd: "01/01/25", businessId: UUID(), totalCashEarned: 15000, totalCostIncurred: 1000, totalXPEarned: 7200, totalStudyTime: 7200)], leaderboardPosition: 2, insuranceLevel: 2, securityLevel: 2, businessPrestige: "", streak: 2, creationDate: Date.now))
             .environmentObject(ThemeManager())
         
         Spacer()

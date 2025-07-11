@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct myBusinessesList: View {
-    
+    @Environment(\.dismiss) var dismiss
     let business : BusinessDataModel
     @Environment(\.modelContext) var context
     @EnvironmentObject var themeManager: ThemeManager
@@ -21,6 +21,7 @@ struct myBusinessesList: View {
         ("Stats", 50),
         ("Upgrades", 70),
         ("History", 60),
+        ("Products", 70),
         ("More Info", 85)
     ]
     
@@ -31,6 +32,9 @@ struct myBusinessesList: View {
             VStack (spacing: 15){
                 HStack (spacing: 15){
                     Image(systemName: "arrow.left")
+                        .onTapGesture {
+                            dismiss()
+                        }
                     Spacer()
                     Image(systemName: "square.and.arrow.up")
                     Image(systemName: "pin")
@@ -42,7 +46,7 @@ struct myBusinessesList: View {
                         .resizable()
                         .frame(width: 150, height: 100)
                     
-                    Text("Business Name")
+                    Text("\(business.businessName)")
                         .font(.system(size: 25))
                 }
                 
@@ -74,6 +78,9 @@ struct myBusinessesList: View {
                 else if selectedScreen == "History" {
                     BusinessHistory(business: business)
                 }
+                else if selectedScreen == "Products"{
+                    BusinessProducts(business: business)
+                }
                 else if selectedScreen == "More Info" {
                     BusinessMoreInfo(business: business)
                 }
@@ -81,6 +88,7 @@ struct myBusinessesList: View {
             }
             .foregroundStyle(themeManager.textColor)
             .frame(width: screenWidth-20)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

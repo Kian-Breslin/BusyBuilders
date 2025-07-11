@@ -333,6 +333,6 @@ struct Timer1: View {
 }
 
 #Preview {
-    Timer1(currentView: .constant(0), selectedBusiness: .constant(BusinessDataModel(businessName: "Kians Coffee Shop", businessTheme: "blue", businessType: "Eco", businessIcon: "circle", cashPerMin: 1000)), timeRemaining: .constant(1800), timeElapsed: .constant(0), isTimerActive: .constant(false), timeStarted: .constant(formatFullDateTime(date: Date())), totalCashEarned: .constant(0.0), cashBoosterActive: false, costReductionActive: false, XPBoosterActive: false)
+    Timer1(currentView: .constant(0), selectedBusiness: .constant(BusinessDataModel(businessName: "Kians Coffee Shop", businessTheme: "blue", businessType: "Eco", businessIcon: "circle")), timeRemaining: .constant(1800), timeElapsed: .constant(0), isTimerActive: .constant(false), timeStarted: .constant(formatFullDateTime(date: Date())), totalCashEarned: .constant(0.0), cashBoosterActive: false, costReductionActive: false, XPBoosterActive: false)
         .environmentObject(ThemeManager())
 }

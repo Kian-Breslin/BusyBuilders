@@ -19,10 +19,13 @@ struct HigherOrLowerConfig: View {
     @Binding var sliderValue : Double
     let step = 100.0
     
+    @State var showAlert = false
+    @State var showMoneyAlert = false
+    
     var body: some View {
         ZStack {
             themeManager.mainColor.ignoresSafeArea()
-            if let user = users.first {
+            if users.first != nil {
                 VStack {
                     HStack {
                         Spacer()
@@ -39,7 +42,7 @@ struct HigherOrLowerConfig: View {
                     
                     Slider(
                         value: $sliderValue,
-                        in: 0...Double(user.availableBalance == 0 ? 1000 : user.availableBalance),
+                        in: 0...Double(10000),
                         step: step
                     )
                     .padding(.horizontal)
@@ -57,14 +60,26 @@ struct HigherOrLowerConfig: View {
                             
                             if let user = users.first {
                                 
-                                user.availableBalance -= Int(sliderValue)
-                                
-                                let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(sliderValue), transactionDescription: "Higher or Lower", createdAt: Date(), income: false)
-                                user.transactions.append(newTransaction)
-                                do {
-                                    try context.save()
-                                } catch {
-                                    print("Error when saving Higher or Lower transaction")
+                                if user.tokens > 0 {
+                                    if user.availableBalance >= Int(sliderValue) {
+                                        user.availableBalance -= Int(sliderValue)
+                                        
+                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(sliderValue), transactionDescription: "Higher or Lower", createdAt: Date(), income: false)
+                                        user.transactions.append(newTransaction)
+                                        user.tokens -= 1
+                                        do {
+                                            try context.save()
+                                        } catch {
+                                            print("Error when saving Higher or Lower transaction")
+                                        }
+                                    }
+                                    else {
+                                        print("User doesnt have enough money")
+                                        showMoneyAlert.toggle()
+                                    }
+                                }
+                                else {
+                                    showAlert.toggle()
                                 }
                             }
                         }
@@ -79,6 +94,22 @@ struct HigherOrLowerConfig: View {
             }
         }
         .foregroundStyle(themeManager.textColor)
+        .alert("Not Enough Tokens", isPresented: $showAlert) {
+            Button("OK", role: .cancel) {
+                dismiss()
+                dismissEverything = true
+            }
+        } message: {
+            Text("You need at least 1 token to play this minigame.")
+        }
+        .alert("Not Enough Money", isPresented: $showMoneyAlert) {
+            Button("OK", role: .cancel) {
+                dismiss()
+                dismissEverything = true
+            }
+        } message: {
+            Text("You dont have enough Money. Do a session to earn more!")
+        }
     }
 }
 

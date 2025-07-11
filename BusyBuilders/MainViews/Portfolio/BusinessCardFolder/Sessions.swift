@@ -52,7 +52,6 @@ struct Sessions: View {
         businessType: "Economic",
         businessIcon: "triangle",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
-        cashPerMin: 3000,
         netWorth: 6000,
         investors: [],
         badges: ["10 Days Streak", "$1000 Earned", "First Upgrade"],
@@ -70,7 +69,6 @@ struct Sessions: View {
                  sessionEnd: formatFullDateTime(date: Date()),
                  businessId: UUID(), totalCashEarned: 5436)
             ],
-        businessLevel: 7200,
         businessPrestige: "Growing Business"))
     .environmentObject(ThemeManager())
 }

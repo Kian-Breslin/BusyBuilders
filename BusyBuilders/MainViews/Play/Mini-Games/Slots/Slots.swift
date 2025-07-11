@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Slots: View {
     @EnvironmentObject var themeManager: ThemeManager
+    @Environment(\.dismiss) var dismiss
     
     @Binding var isTaskActive : Bool
     
@@ -25,6 +26,12 @@ struct Slots: View {
             
             VStack (spacing: 100){
                 HStack {
+                    Image(systemName: "arrow.left")
+                        .font(.title2)
+                        .onTapGesture {
+                            dismiss()
+                        }
+                    
                     Text("Slots")
                         .font(.largeTitle)
                     

@@ -19,7 +19,7 @@ struct Settings: View {
     
 
     let emailAddress = "Kianbreslin517@gmail.com"
-    var colorsArray: [String] = ["Red", "Blue", "Green", "Pink", "Purple", "Black", "White"]
+    var colorsArray: [String] = ["Red", "Blue", "Green", "Pink", "Cream", "Black", "White"]
     var currencyArray: [String] = ["$", "£", "€"]
     @State var isOn = false
     @State var isColorSelected = 0

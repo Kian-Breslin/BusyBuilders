@@ -120,6 +120,9 @@ struct Store: View {
                             .foregroundStyle(themeManager.textColor)
                             .font(.system(size: 25))
                         }
+                        else if selectedScreen == "paintbrush" {
+                            TokenView()
+                        }
                     }
             }
         }

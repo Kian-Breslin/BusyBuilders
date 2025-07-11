@@ -22,13 +22,15 @@ class SessionDataModel: Identifiable {
     var totalXPEarned : Int
     var totalStudyTime: Int
     
+    var productRevenue: Int
+    
     // Upgrades Used
     var XPBUsed : Bool
     var CBUsed : Bool
     var CRUsed : Bool
     
 
-    init(id: UUID, sessionDate: Date, sessionStart: String, sessionEnd: String, businessId: UUID, totalCashEarned: Int = 0, totalCostIncurred: Int = 0, totalXPEarned: Int = 0, totalStudyTime: Int = 0, XPBUsed: Bool = false, CBUsed: Bool = false, CRUsed: Bool = false) {
+    init(id: UUID, sessionDate: Date, sessionStart: String, sessionEnd: String, businessId: UUID, totalCashEarned: Int = 0, totalCostIncurred: Int = 0, totalXPEarned: Int = 0, totalStudyTime: Int = 0, XPBUsed: Bool = false, CBUsed: Bool = false, CRUsed: Bool = false, productRevenue: Int = 0) {
         self.id = UUID()
         self.sessionDate = sessionDate
         self.sessionStart = sessionStart
@@ -41,5 +43,6 @@ class SessionDataModel: Identifiable {
         self.XPBUsed = XPBUsed
         self.CBUsed = CBUsed
         self.CRUsed = CRUsed
+        self.productRevenue = productRevenue
     }
 }

@@ -137,6 +137,11 @@ struct businessInfoSection: View {
     
     @Binding var stocksBought : Int
     
+    
+    @State var noMoneyAlert = false
+    @State var noBusinessSelectedAlert = false
+    @State var noTokenAlert = false
+    
     var body: some View {
         VStack (alignment: .leading){
             HStack {
@@ -165,7 +170,9 @@ struct businessInfoSection: View {
                                     .font(.system(size: 30))
                             }
                             .onTapGesture {
-                                stocksBought -= 1
+                                if stocksBought > 0{
+                                    stocksBought -= 1
+                                }
                             }
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 55, height: 40)
@@ -175,7 +182,9 @@ struct businessInfoSection: View {
                                     .font(.system(size: 30))
                             }
                             .onTapGesture {
-                                stocksBought += 1
+                                if stocksBought <= 9{
+                                    stocksBought += 1
+                                }
                             }
                     }
                     Spacer()
@@ -194,34 +203,56 @@ struct businessInfoSection: View {
                     .onTapGesture {
                         if let user = users.first {
                             let userAvailableBalance = user.availableBalance
-                            if selectedBusiness.name != "" {
-                                if userAvailableBalance >= stocksBought * Int(selectedBusiness.currentStockPrice){
-                                    print("Net Worth: $\(userAvailableBalance)")
-                                    print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
-                                    print("User Has Enough Cash to buy... Starting Session")
-                                    user.availableBalance -= stocksBought * Int(selectedBusiness.currentStockPrice)
-                                    
-                                    let newTransaction = TransactionDataModel(category: "Minigame", amount: stocksBought * Int(selectedBusiness.currentStockPrice), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
-                                    user.transactions.append(newTransaction)
-                                    do {
-                                        try context.save()
-                                    } catch {
-                                        print("Error: Couldnt save new Stocks transaction for mini-game")
+                            if user.tokens > 0 {
+                                if selectedBusiness.name != "" {
+                                    if userAvailableBalance >= stocksBought * Int(selectedBusiness.currentStockPrice){
+                                        print("Net Worth: $\(userAvailableBalance)")
+                                        print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
+                                        print("User Has Enough Cash to buy... Starting Session")
+                                        user.availableBalance -= stocksBought * Int(selectedBusiness.currentStockPrice)
+                                        user.tokens -= 1
+                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: stocksBought * Int(selectedBusiness.currentStockPrice), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
+                                        user.transactions.append(newTransaction)
+                                        do {
+                                            try context.save()
+                                        } catch {
+                                            print("Error: Couldnt save new Stocks transaction for mini-game")
+                                        }
+                                        
+                                        startSession.toggle()
+                                    } else {
+                                        print("User does not have enough cash to buy.... Cannot Start Session")
+                                        noMoneyAlert.toggle()
                                     }
-                                    
-                                    startSession.toggle()
-                                } else {
-                                    print("User does not have enough cash to buy.... Cannot Start Session")
+                                }
+                                else {
+                                    print("No Business Selected")
+                                    noBusinessSelectedAlert.toggle()
                                 }
                             }
                             else {
-                                print("No Business Selected")
+                                noTokenAlert.toggle()
                             }
                         }
                     }
                 Spacer()
             }
             .padding(.top, 20)
+        }
+        .alert("Not Enough Tokens", isPresented: $noTokenAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("You dont have enough Tokens. Do a session to earn more or buy one from the store!")
+        }
+        .alert("Not Enough Money", isPresented: $noMoneyAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("You dont have enough Money. Do a session to earn more!")
+        }
+        .alert("No Business Selected", isPresented: $noBusinessSelectedAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("You have not selected a business. Select one to Play!")
         }
     }
 }

@@ -11,6 +11,7 @@ import SwiftData
 struct SlotMachine: View {
     @EnvironmentObject var themeManager: ThemeManager
     @Environment(\.modelContext) var context
+    @Environment(\.dismiss) var dismiss
     @Query var users: [UserDataModel]
     @Query var mgSessions: [MiniGameSessionModel]
     
@@ -26,6 +27,9 @@ struct SlotMachine: View {
     @State var selectedAmount = 0.0
     @State var gameCounter = 0
     @State var winCounter = 0
+    
+    @State var showAlert = false
+    @State var showMoneyAlert = false
     
     var body: some View {
         if let user = users.first {
@@ -116,7 +120,7 @@ struct SlotMachine: View {
                             if user.availableBalance > 0 {
                                 Slider(
                                     value: $selectedAmount,
-                                    in: 0...Double(user.availableBalance),
+                                    in: 0...Double(10000),
                                     step: 100
                                 )
                                 .tint(getColor(themeManager.secondaryColor))
@@ -135,19 +139,29 @@ struct SlotMachine: View {
                 
                 if hasRolled == false {
                     Button("Roll") {
-                        user.availableBalance = user.availableBalance - Int(selectedAmount)
-                        offsetValue = 205
-                        winningImages.removeAll()
-                        rolled.toggle()
-                        hasRolled = true
-                        isGameActive = true
-                        
-                        if let user = users.first {
-                            let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", category: "Minigame", amount: Int(selectedAmount), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
-                            
-                            user.transactions.append(newTransactionMoneyOut)
-                            
-                            print("Took Money and Added Transaction")
+                        if user.tokens > 0 {
+                            if user.availableBalance > Int(selectedAmount) {
+                                user.availableBalance = user.availableBalance - Int(selectedAmount)
+                                offsetValue = 205
+                                winningImages.removeAll()
+                                rolled.toggle()
+                                hasRolled = true
+                                isGameActive = true
+                                
+                                if let user = users.first {
+                                    let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", category: "Minigame", amount: Int(selectedAmount), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
+                                    
+                                    user.transactions.append(newTransactionMoneyOut)
+                                    user.tokens -= 1
+                                    
+                                    print("Took Money and Added Transaction")
+                                }
+                            }
+                            else {
+                                showMoneyAlert.toggle()
+                            }
+                        } else {
+                            showAlert.toggle()
                         }
                         
                     }
@@ -174,6 +188,16 @@ struct SlotMachine: View {
             .onAppear {
                 hasRolled = false
     //            runSimulation()
+            }
+            .alert("Not Enough Tokens", isPresented: $showAlert) {
+                Button("OK", role: .cancel) {dismiss()}
+            } message: {
+                Text("You need at least 1 token to play this minigame.")
+            }
+            .alert("Not Enough Money", isPresented: $showMoneyAlert) {
+                Button("OK", role: .cancel) {dismiss()}
+            } message: {
+                Text("You dont have enough Money. Do a session to earn more!")
             }
         }
     }

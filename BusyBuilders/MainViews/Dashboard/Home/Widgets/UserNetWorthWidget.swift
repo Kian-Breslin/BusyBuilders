@@ -39,13 +39,13 @@ struct UserNetWorthWidget: View {
                 if let user = users.first {
                     print("Before Calculations: $\(user.netWorth)")
                     // Get user balance
-                    let userBalance = user.availableBalance
+//                    let userBalance = user.availableBalance
                     // Get total businesses net worth
-                    let businessBalance = totalBusinessNetWorth(for: user)
+//                    let businessBalance = totalBusinessNetWorth(for: user)
                     // Get investments
-                    let investments = 0
+//                    let investments = 0
                     // Calculate new Net Worth
-                    user.netWorth = userBalance + businessBalance + investments
+                    
                     print("After Calculations: $\(user.netWorth)")
                 }
             }

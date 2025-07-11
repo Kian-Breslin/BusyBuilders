@@ -27,8 +27,9 @@ public class UserDataModel: Identifiable, ObservableObject {
     var netWorth: Int {
         let businessWorth = businesses.reduce(0) {$0 + $1.netWorth}
         let stocksWorth = stocks.reduce(0) { $0 + ($1.amount * $1.company.stockPrice) }
-        return businessWorth + availableBalance
+        return businessWorth + availableBalance + stocksWorth
     }
+    var tokens : Int = 0
     
     // Initialize the UserDataModel with default values
     init(id: UUID = UUID(),

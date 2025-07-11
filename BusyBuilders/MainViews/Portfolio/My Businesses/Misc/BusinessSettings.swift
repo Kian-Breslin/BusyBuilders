@@ -280,7 +280,6 @@ struct BusinessSettings: View {
         businessIcon: "triangle",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com"),UserDataModel(username: "Kim_01", name: "Kimberly", email: "kimberly01leon@gmail.com")],
         time: 9360,
-        cashPerMin: 3000,
         netWorth: 6000,
         investors: [
             UserDataModel(username: "Kimmy_9", name: "Kim", email: "Kim@gmail.com"),
@@ -305,7 +304,6 @@ struct BusinessSettings: View {
                  sessionEnd: formatFullDateTime(date: Date()),
                  businessId: UUID(), totalStudyTime: 3600)
             ],
-        businessLevel: 7200,
         businessPrestige: "Growing Business"))
     .environmentObject(ThemeManager())
 }

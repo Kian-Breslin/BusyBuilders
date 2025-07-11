@@ -22,6 +22,10 @@ struct BusinessMoreInfo: View {
             Button("Add"){
                 isAdding.toggle()
             }
+            
+            Button("Increase Cash / Min"){
+                business.netWorth += 10000
+            }
         }
         .sheet(isPresented: $isWithdraw) {
             if let user = users.first {

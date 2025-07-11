@@ -9,7 +9,20 @@ import SwiftUI
 
 struct ConfirmDeletePopUp: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            VStack {
+                Spacer()
+                
+                Button("Confirm"){
+                    
+                }
+                .frame(width: 250, height: 60)
+                .foregroundStyle(.white)
+                .background(.red)
+                .clipShape(Capsule())
+                .bold()
+            }
+        }
     }
 }
 

@@ -24,11 +24,6 @@ struct Timer3: View {
     @State var setTime : Int
     @State var timeElapsed = 0
     
-    // Upgrades
-    @State var isXPBoosterActive : Bool
-    @State var isCashBoosterActive : Bool
-    @State var isCostReductionActive : Bool
-    
     // Other
     @State var timeStarted = ""
     @State var timeCompleted = ""
@@ -36,13 +31,13 @@ struct Timer3: View {
     @State var isTimeCounting = false
     let currentDate = getDateComponents(from: Date())
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @StateObject private var audioManager = AudioManager()
+//    @StateObject private var audioManager = AudioManager()
     
     
     
     var body: some View {
         ZStack {
-            RainTimer()
+//            RainTimer()
             
             VStack (spacing: 50){
                 RoundedRectangle(cornerRadius: 25)
@@ -113,7 +108,7 @@ struct Timer3: View {
                         }
                         .onTapGesture {
                             isTimeCounting.toggle()
-                            audioManager.audioPlayer?.pause()
+//                            audioManager.audioPlayer?.pause()
                         }
                     RoundedRectangle(cornerRadius: 15)
                         .frame(width: 120, height: 40)
@@ -143,10 +138,10 @@ struct Timer3: View {
                                 print("No USer Found ????")
                             }
                             selectedBusiness.netWorth += (totalIncomeCalculated - totalCostCalculated)
-                            selectedBusiness.businessLevel += totalXPCalculated
+                            
                             selectedBusiness.time += timeElapsed
                             
-                            let newSession = SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "", sessionEnd: "", businessId: selectedBusiness.id, totalCashEarned: totalIncomeCalculated, totalCostIncurred: totalCostCalculated, totalXPEarned: totalXPCalculated, totalStudyTime: timeElapsed)
+                            let newSession = SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "", sessionEnd: "", businessId: selectedBusiness.id, totalCashEarned: totalIncomeCalculated, totalCostIncurred: totalCostCalculated, totalXPEarned: totalXPCalculated, totalStudyTime: timeElapsed, productRevenue: calculations["totalProductsSold"] as? Int ?? 0)
 
                             selectedBusiness.sessionHistory.append(newSession)
                             
@@ -219,32 +214,41 @@ struct showSessionStats: View {
                 HStack {
                     let incomeMultiplier = earnings["incomeMultiplier"] as? Double ?? 1.0
                     let incomeBoostText = incomeMultiplier == 1.0 ? "0%" : "\(Int((incomeMultiplier - 1) * 100))%"
-                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Income Boost: ", boxInfo: "\(incomeBoostText)")
+                    littleInfoBox(boxTitle: "Income Boost: ", boxInfo: "\(incomeBoostText)")
                         .opacity(elapsedTime >= 1 ? 1 : 0)
                         .animation(.easeInOut, value: elapsedTime)
                     let costMultiplier = earnings["costMultiplier"] as? Double ?? 1.0
                     let costReductionText = "\(Int(costMultiplier * 100))%"
-                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Cost Reduction: ", boxInfo: "\(costReductionText)")
+                    littleInfoBox(boxTitle: "Cost Reduction: ", boxInfo: "\(costReductionText)")
                         .opacity(elapsedTime >= 2 ? 1 : 0)
                         .animation(.easeInOut, value: elapsedTime)
                 }
                 
                 
                 HStack {
-                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Experience :", boxInfo: "\(earnings["totalXP"] as? Int ?? 0)")
+                    littleInfoBox(boxTitle: "Experience :", boxInfo: "\(earnings["totalXP"] as? Int ?? 0)")
                         .opacity(elapsedTime >= 3 ? 1 : 0)
                         .animation(.easeInOut, value: elapsedTime)
 
-                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Income :", boxInfo: "$\(earnings["totalIncome"] as? Int ?? 0)")
+                    littleInfoBox(boxTitle: "Income :", boxInfo: "$\(earnings["totalIncome"] as? Int ?? 0)")
                         .opacity(elapsedTime >= 4 ? 1 : 0)
                         .animation(.easeInOut, value: elapsedTime)
                 }
                 HStack {
-                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Cost :", boxInfo: "$\(earnings["totalCost"] as? Int ?? 0)")
+                    littleInfoBox(boxTitle: "Cost :", boxInfo: "$\(earnings["totalCost"] as? Int ?? 0)")
                         .opacity(elapsedTime >= 5 ? 1 : 0)
                         .animation(.easeInOut, value: elapsedTime)
-                    littleInfoBox(boxWidth: (Int(screenWidth)-30)/2, boxHeight: 80, boxColor: getColor(ThemeManager().mainDark), boxTitle: "Total Income: ", boxInfo: "$\(total)")
+                    littleInfoBox(boxTitle: "Total Income: ", boxInfo: "$\(total)")
                         .opacity(elapsedTime >= 6 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                }
+                
+                HStack {
+                    littleInfoBox(boxTitle: "Cost :", boxInfo: "\(selectedBusiness.products.filter({$0.isActive == true}).count)")
+                        .opacity(elapsedTime >= 7 ? 1 : 0)
+                        .animation(.easeInOut, value: elapsedTime)
+                    littleInfoBox(boxTitle: "Products", boxInfo: "$\(earnings["totalProductsSold"] as? Int ?? 0)")
+                        .opacity(elapsedTime >= 8 ? 1 : 0)
                         .animation(.easeInOut, value: elapsedTime)
                 }
                 
@@ -297,6 +301,24 @@ func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel) -> [St
         return min((num / 10), 10)
     }
     
+    func productCalculations() -> Int {
+        var totalAmountSold = 0
+        
+        for product in business.products.filter({($0.isActive == true)}) {
+            let stockAvailable = product.quantity
+            let randomStockSold = Int.random(in: 0..<stockAvailable)
+            print(randomStockSold)
+            
+            product.quantity -= randomStockSold
+            product.soldHistory.append(randomStockSold)
+            totalAmountSold += product.pricePerUnit * randomStockSold
+            product.totalSalesIncome += totalAmountSold
+            print(totalAmountSold)
+        }
+        
+        return totalAmountSold
+    }
+    
     // Department multipliers
     let financeDiscount = getDiscount(num: FLevel)
     let hrDiscount = getDiscount(num: HLevel)
@@ -309,6 +331,7 @@ func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel) -> [St
     let totalIncome = Double(cashPerMin) * timeElapsedInMinutes * incomeMultiplier
     let totalCost = Double(costPerMin) * timeElapsedInMinutes * (1 - combinedCostMultiplier)
     let totalXP = timeElapsedInMinutes * xpMultiplier
+    let totalProductsSold = productCalculations()
 
     return [
         "totalXP": Int(totalXP.rounded()),
@@ -316,14 +339,15 @@ func calculateEarnings(_ timeElapsed: Int, _ business: BusinessDataModel) -> [St
         "totalIncome": Int(totalIncome.rounded()),
         "xpMultiplier": xpMultiplier,
         "costMultiplier": combinedCostMultiplier,
-        "incomeMultiplier": incomeMultiplier
+        "incomeMultiplier": incomeMultiplier,
+        "totalProductsSold": totalProductsSold
     ]
 }
 
 struct littleInfoBox: View {
-    let boxWidth : Int
-    let boxHeight : Int
-    let boxColor : Color
+    let boxWidth = (screenWidth-30)/2
+    let boxHeight = 80
+    let boxColor = getColor(ThemeManager().mainDark)
     let boxTitle : String
     let boxInfo : String
     
@@ -343,13 +367,13 @@ struct littleInfoBox: View {
     }
 }
 
-#Preview {
-    showSessionStats(selectedBusiness: BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle", netWorth: 300000), timeElapsed: 3600, isTimerActive: .constant(false))
-}
+//#Preview {
+//    showSessionStats(selectedBusiness: BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle", netWorth: 300000), timeElapsed: 3600, isTimerActive: .constant(false))
+//}
 
 
 #Preview {
-    Timer3(selectedBusiness: BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle"), setTime: 0, isXPBoosterActive: false, isCashBoosterActive: false, isCostReductionActive: false, isTimerActive: .constant(false))
+    Timer3(selectedBusiness: BusinessDataModel(businessName: "Cozy Coffee", businessTheme: "red", businessType: "Eco-Friendly", businessIcon: "triangle"), setTime: 0, isTimerActive: .constant(false))
         .environmentObject(ThemeManager())
         .modelContainer(for: UserDataModel.self)
 }

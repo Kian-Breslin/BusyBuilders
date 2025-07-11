@@ -41,11 +41,19 @@ struct HigherOrLower: View {
             
             VStack (spacing: 50){
                 HStack {
-                    Text("Higher or Lower")
-                    Text("\(chosenNums)")
-                        .font(.largeTitle)
-                    Spacer()
                     
+                    Image(systemName: "arrow.left")
+                        .font(.title2)
+                        .onTapGesture {
+                            dismiss()
+                        }
+                    Spacer()
+                    VStack {
+                        Text("Higher or Lower")
+                        Text("\(chosenNums)")
+                            .font(.largeTitle)
+                    }
+                    Spacer()
                     Image(systemName: "info.circle")
                         .font(.title2)
                         .onTapGesture {

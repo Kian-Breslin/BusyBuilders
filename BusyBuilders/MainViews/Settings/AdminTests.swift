@@ -115,12 +115,12 @@ struct AdminTests: View {
                             Image(systemName: "plus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.cashPerMin += 1000
+                                    
                                 }
                             Image(systemName: "minus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.cashPerMin -= 1000
+                                    
                                 }
                         }
                         
@@ -130,12 +130,12 @@ struct AdminTests: View {
                             Image(systemName: "plus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.costPerMin += 100
+                                    
                                 }
                             Image(systemName: "minus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.costPerMin -= 100
+                                   
                                 }
                         }
                         
@@ -161,13 +161,12 @@ struct AdminTests: View {
                                 Image(systemName: "plus.circle")
                                     .font(.system(size: 30))
                                     .onTapGesture {
-                                        selectedBusiness?.businessLevel += 3600
+                                        
                                     }
                                 Image(systemName: "minus.circle")
                                     .font(.system(size: 30))
                                     .onTapGesture {
                                         if selectedBusiness?.businessLevel ?? 0 > 3600 {
-                                            selectedBusiness?.businessLevel -= 3600
                                         }
                                     }
                             }
@@ -269,7 +268,6 @@ struct AdminTests: View {
     
     private func resetUserStats() {
         print("Reset User Stats")
-        users.first?.netWorth = 0
         users.first?.availableBalance = 0
         users.first?.inventory = [
             "Cash Booster" : 0,
@@ -281,9 +279,6 @@ struct AdminTests: View {
     
     private func resetBusinessStats(_ business : BusinessDataModel) {
         business.netWorth = 0
-        business.businessLevel = 0
-        business.cashPerMin = 1000
-        business.costPerMin = 500
         business.streak = 0
         business.sessionHistory = []
         business.securityLevel = 0
@@ -304,7 +299,6 @@ struct AdminTests: View {
             businessType: "Economic",
             businessIcon: "triangle",
             owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
-            cashPerMin: 3000,
             netWorth: 6000,
             investors: [
                 UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
@@ -326,7 +320,6 @@ struct AdminTests: View {
                      sessionEnd: formatFullDateTime(date: Date()),
                      businessId: UUID(), totalStudyTime: 3600)
                 ],
-            businessLevel: 7200,
             businessPrestige: "Growing Business")
         
         context.insert(newBusiness)
