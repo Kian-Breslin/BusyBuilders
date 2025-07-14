@@ -55,17 +55,17 @@ struct SlotMachine: View {
                                         sessionDate: Date(),
                                         sessionWin: true,
                                         sessionScore: 0,
-                                        sessionValue: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount),
+                                        sessionValue: Int(((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount) * 0.85),
                                         sessionGame: .Slots)
                                     
                                     makeSession(newSession.sessionDate, newSession.sessionWin, newSession.sessionValue)
                                     
                                     if let user = users.first {
-                                        user.availableBalance += Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount)
+                                        user.availableBalance += Int(((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount) * 0.85)
                                         
                                         print(Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount))
                                         
-                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: Int((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount), transactionDescription: "Slot Machine Winnings", createdAt: Date(), income: true)
+                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(((selectedAmount * Double(calculateReward(for: winningImages))) + selectedAmount) * 0.85), transactionDescription: "Slot Machine Winnings", createdAt: Date(), income: true)
                                         
                                         user.transactions.append(newTransaction)
                                     }
@@ -141,7 +141,7 @@ struct SlotMachine: View {
                     Button("Roll") {
                         if user.tokens > 0 {
                             if user.availableBalance > Int(selectedAmount) {
-                                user.availableBalance = user.availableBalance - Int(selectedAmount)
+                                user.availableBalance = user.availableBalance - Int(selectedAmount * 0.85)
                                 offsetValue = 205
                                 winningImages.removeAll()
                                 rolled.toggle()
@@ -149,7 +149,7 @@ struct SlotMachine: View {
                                 isGameActive = true
                                 
                                 if let user = users.first {
-                                    let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", category: "Minigame", amount: Int(selectedAmount), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
+                                    let newTransactionMoneyOut = TransactionDataModel(image: "gamecontroller", category: "Minigame", amount: Int(selectedAmount * 0.85), transactionDescription: "Slot Machine", createdAt: Date(), income: false)
                                     
                                     user.transactions.append(newTransactionMoneyOut)
                                     user.tokens -= 1

@@ -11,7 +11,7 @@ import SwiftData
 struct MediumModularWidget: View {
     @EnvironmentObject var themeManager: ThemeManager
     @Query var users : [UserDataModel]
-    @Query var MainSessions: [SessionDataModel]
+    var MainSessions: [SessionDataModel]
     
     @State var selectedViewTime = "Today"
     @State var selectedViewAmount = 31000
@@ -80,7 +80,7 @@ struct MediumModularWidget: View {
 }
 
 #Preview {
-    MediumModularWidget()
+    MediumModularWidget(MainSessions: [])
         .environmentObject(ThemeManager())
         .modelContainer(for: [UserDataModel.self], inMemory: true)
 }

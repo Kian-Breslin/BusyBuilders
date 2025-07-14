@@ -60,7 +60,7 @@ struct ProductView: View {
                         
                         Button("Run Sim"){
                             print("Clicked Button!")
-                            product.SellSimulation()
+//                            product.SellSimulation()
                         }
                         
                         Button("Buy Stock") {
@@ -78,9 +78,9 @@ struct ProductView: View {
                         Text("Sales")
                             .font(.system(size: 30))
                             .bold()
-                        Text("Total Sold: \(product.soldUnits)")
+                        Text("Total Sold: 0")
                         //Put graph here
-                        ChartView(sales: true, product: product)
+//                        ChartView(sales: true, product: product)
                         
                         Divider().background(.white).padding(.vertical, 20)
                         
@@ -89,7 +89,7 @@ struct ProductView: View {
                             .bold()
                         Text("Current: $\(product.pricePerUnit)")
                         //Put graph here
-                        ChartView(sales: false, product: product)
+//                        ChartView(sales: false, product: product)
                         
 
                     }
@@ -117,63 +117,63 @@ struct ProductView: View {
 }
 
 
-struct ChartView: View {
-    var sales = false
-    var product: ProductDataModel
-    var priceData: [(session: Int, unitsSold: Int)] {
-        product.priceHistory.enumerated().map { (index, value) in
-            (session: index + 1, unitsSold: value)
-        }
-    }
-    var salesData: [(session: Int, unitsSold: Int)] {
-        product.soldHistory.enumerated().map { (index, value) in
-            (session: index + 1, unitsSold: value)
-        }
-    }
-
-    var body: some View {
-        ScrollView(.horizontal) {
-            if !priceData.isEmpty {
-                Chart {
-                    ForEach(sales ? salesData : priceData, id: \.session) { dataPoint in
-                        LineMark(
-                            x: .value("Session", dataPoint.session),
-                            y: .value("Price", dataPoint.unitsSold)
-                        )
-                        PointMark(
-                            x: .value("Session", dataPoint.session),
-                            y: .value("Price", dataPoint.unitsSold)
-                        )
-                    }
-                }
-                .chartXAxis {
-                    AxisMarks(position: .bottom) { value in
-                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                            .foregroundStyle(.white.opacity(0.3))
-                        AxisTick()
-                            .foregroundStyle(.white)
-                        AxisValueLabel()
-                            .foregroundStyle(.white)
-                    }
-                }
-                .chartYAxis {
-                    AxisMarks(position: .leading) { value in
-                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                            .foregroundStyle(.white.opacity(0.3))
-                        AxisTick()
-                            .foregroundStyle(.white)
-                        AxisValueLabel()
-                            .foregroundStyle(.white)
-                    }
-                }
-                .foregroundStyle(.white)
-                .frame(width: max(CGFloat(sales ? salesData.count : priceData.count) * 40, screenWidth - 40), height: 200)
-                .padding(.top, 10)
-            }
-        }
-        .scrollIndicators(.hidden)
-    }
-}
+//struct ChartView: View {
+//    var sales = false
+//    var product: ProductDataModel
+//    var priceData: [(session: Int, unitsSold: Int)] {
+//        product.priceHistory.enumerated().map { (index, value) in
+//            (session: index + 1, unitsSold: value)
+//        }
+//    }
+////    var salesData: [(session: Int, unitsSold: Int)] {
+////        product.soldHistory.enumerated().map { (index, value) in
+////            (session: index + 1, unitsSold: value)
+////        }
+////    }
+//
+//    var body: some View {
+//        ScrollView(.horizontal) {
+//            if !priceData.isEmpty {
+//                Chart {
+//                    ForEach(sales ? salesData : priceData, id: \.session) { dataPoint in
+//                        LineMark(
+//                            x: .value("Session", dataPoint.session),
+//                            y: .value("Price", dataPoint.unitsSold)
+//                        )
+//                        PointMark(
+//                            x: .value("Session", dataPoint.session),
+//                            y: .value("Price", dataPoint.unitsSold)
+//                        )
+//                    }
+//                }
+//                .chartXAxis {
+//                    AxisMarks(position: .bottom) { value in
+//                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+//                            .foregroundStyle(.white.opacity(0.3))
+//                        AxisTick()
+//                            .foregroundStyle(.white)
+//                        AxisValueLabel()
+//                            .foregroundStyle(.white)
+//                    }
+//                }
+//                .chartYAxis {
+//                    AxisMarks(position: .leading) { value in
+//                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+//                            .foregroundStyle(.white.opacity(0.3))
+//                        AxisTick()
+//                            .foregroundStyle(.white)
+//                        AxisValueLabel()
+//                            .foregroundStyle(.white)
+//                    }
+//                }
+//                .foregroundStyle(.white)
+//                .frame(width: max(CGFloat(sales ? salesData.count : priceData.count) * 40, screenWidth - 40), height: 200)
+//                .padding(.top, 10)
+//            }
+//        }
+//        .scrollIndicators(.hidden)
+//    }
+//}
 
 struct ChangeProductDetails: View {
     @EnvironmentObject var themeManager: ThemeManager

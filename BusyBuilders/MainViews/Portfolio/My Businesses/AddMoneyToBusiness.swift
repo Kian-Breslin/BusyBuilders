@@ -54,7 +54,6 @@ struct AddMoneyToBusiness: View {
                     Button("Add") {
                         if user.availableBalance >= Int(amount)!{
                             let money = (Double(amount)!)*0.9
-                            business.netWorth += Int(money)
                             user.availableBalance -= Int(amount)!
                             let newTransaction = TransactionDataModel(category: "Other", amount: Int(amount)!, transactionDescription: "Add to \(business.businessName)", createdAt: Date(), income: false)
                             user.transactions.append(newTransaction)
@@ -86,7 +85,6 @@ struct AddMoneyToBusiness: View {
         businessIcon: "triangle",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
         time: 9360,
-        netWorth: 60000,
         investors: [
             UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
             UserDataModel(username: "LilJimmy", name: "Jim", email: "Jim@gmail.com"),
@@ -96,20 +94,7 @@ struct AddMoneyToBusiness: View {
             UserDataModel(username: "LilRimmy", name: "Rim", email: "Rim@gmail.com")
         ],
         badges: ["10 Days Streak", "$1000 Earned", "First Upgrade"],
-        sessionHistory:
-            [SessionDataModel(
-                id: UUID(),
-                sessionDate: Date.now,
-                sessionStart: formatFullDateTime(date: Date()),
-                sessionEnd: formatFullDateTime(date: Date()),
-                businessId: UUID(), totalStudyTime: 3600),
-             SessionDataModel(
-                 id: UUID(),
-                 sessionDate: Date.now,
-                 sessionStart: formatFullDateTime(date: Date()),
-                 sessionEnd: formatFullDateTime(date: Date()),
-                 businessId: UUID(), totalStudyTime: 3600)
-            ],
+        sessionHistory: [],
         businessPrestige: "Growing Business"), isWithdrawingMoney: .constant(false))
         .environmentObject(ThemeManager())
 }

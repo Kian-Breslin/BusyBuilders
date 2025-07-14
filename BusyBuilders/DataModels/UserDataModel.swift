@@ -30,6 +30,7 @@ public class UserDataModel: Identifiable, ObservableObject {
         return businessWorth + availableBalance + stocksWorth
     }
     var tokens : Int = 0
+    var soldBusinesses : [BusinessDataModel] = []
     
     // Initialize the UserDataModel with default values
     init(id: UUID = UUID(),
@@ -65,5 +66,14 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.transactions = transactions
         self.miniGameSessions = miniGameSessions
         self.flashcardSessions = flashcardSessions
+    }
+}
+
+
+extension UserDataModel {
+    func addTransaction(image: String, name: String, category: String, amount: Int, description: String, income: Bool) {
+        
+        let newTransaction = TransactionDataModel(image: image, name: name, category: category, amount: amount, transactionDescription: description, createdAt: Date.now, income: income)
+        self.transactions.append(newTransaction)
     }
 }

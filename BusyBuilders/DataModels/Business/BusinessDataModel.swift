@@ -19,7 +19,7 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var Owners: [UserDataModel] // Assuming it's an array of owner IDs or names
     var time: Int // Keeps track of the Users time spent
     var cashPerMin: Int {
-        let baseRate = 100
+        let baseRate = 1000
 
         // Linear growth with business level (level 1 = $100)
         let businessLevel = self.businessLevel
@@ -32,7 +32,6 @@ class BusinessDataModel : ObservableObject, Identifiable {
         let finalCashPerMin = Double(baseCash) * financeMultiplier
         return Int(finalCashPerMin)
     }
-    var netWorth: Int
     var costPerMin: Int {
         let corpTax = 0.15
         let baseWages = 0.3
@@ -73,8 +72,39 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var creationDate : Date
     var products : [ProductDataModel] = []
 
+    var netWorth: Int {
+        // Products Value - Current Stock
+        var productValue = 0
+        for product in products.filter({ $0.isActive }) {
+            let value = product.quantity * product.pricePerUnit
+            productValue += value
+        }
+    
+        // Departments
+        var departmentValue = 0
+        for (_, level) in departmentLevels {
+            for i in 0...level {
+                if i <= 10 {
+                    departmentValue += 5000
+                } else if i <= 20 {
+                    departmentValue += 10000
+                } else {
+                    departmentValue += 15000
+                }
+            }
+        }
+        
+        // Level
+        let hours = Int(businessLevel / 3600)
+        let levelBonus = hours * 3000
+        
+        let FinalValue = productValue + levelBonus
+        
+        return FinalValue
+    }
+
     // Initializer
-    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, netWorth: Int = 0, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], upgrades: [BusinessUpgradeModel] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, departmentLevel: [String: Int] = [:], businessPrestige: String = "Start-Up", streak : Int = 0, creationDate: Date = Date()) {
+    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, owners: [UserDataModel] = [], time: Int = 0, investment: Int = 0, investors: [UserDataModel] = [], badges: [String] = [], upgrades: [BusinessUpgradeModel] = [], sessionHistory: [SessionDataModel] = [], leaderboardPosition: Int = 0, insuranceLevel: Int = 0, securityLevel: Int = 0, departmentLevel: [String: Int] = [:], businessPrestige: String = "Start-Up", streak : Int = 0, creationDate: Date = Date()) {
         self.id = id
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -82,7 +112,6 @@ class BusinessDataModel : ObservableObject, Identifiable {
         self.businessIcon = businessIcon
         self.Owners = owners
         self.time = time
-        self.netWorth = netWorth
         self.investment = investment
         self.investors = investors
         self.badges = badges
@@ -138,11 +167,21 @@ extension BusinessDataModel {
             priceHistory: [],
             productType: type,
             icon: icon,
-            soldHistory: [],
             business: self
         )
 
         newProduct.traits = traits
         return newProduct
+    }
+}
+
+extension BusinessDataModel {
+    func addSession(time : Int, cashIncome: Int, costOutcome: Int, ProductIncome: Int) {
+        
+        let newSession = SessionDataModel(id: UUID(), sessionDate: Date.now, businessId: self.id, totalCashEarned: 0, totalCostIncurred: 0, totalXPEarned: 0, totalStudyTime: 0, productsSnapshot: [])
+        
+        self.sessionHistory.append(newSession)
+        
+        self.time += time
     }
 }

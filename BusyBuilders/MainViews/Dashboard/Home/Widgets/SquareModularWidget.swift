@@ -12,7 +12,7 @@ struct SquareModularWidget: View {
     
     @EnvironmentObject var themeManager: ThemeManager
     @Query var users : [UserDataModel]
-    @Query var sessions : [SessionDataModel]
+    var sessions : [SessionDataModel]
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
@@ -175,6 +175,6 @@ struct randomCircleDisplay: View {
 }
 
 #Preview {
-    SquareModularWidget()
+    SquareModularWidget(sessions: [])
         .environmentObject(ThemeManager())
 }

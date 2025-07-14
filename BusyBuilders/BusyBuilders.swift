@@ -17,7 +17,7 @@ struct BusyBuilders: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: [UserDataModel.self, BusinessDataModel.self, SessionDataModel.self, DeckModel.self, CompanyDataModel.self])
+                .modelContainer(for: [UserDataModel.self, BusinessDataModel.self, DeckModel.self, CompanyDataModel.self])
                 .environmentObject(UserManager())
                 .environmentObject(ThemeManager())
         }

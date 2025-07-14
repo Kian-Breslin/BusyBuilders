@@ -145,10 +145,10 @@ struct HigherOrLower: View {
                         Text("Congratulations You Won!")
                             .onAppear {
                                 if let user = users.first {
-                                    user.availableBalance += Int(inputAmount)
+                                    user.availableBalance += Int(inputAmount * 0.85)
                                     user.level += getLevel(currentCardShowing)
                                     
-                                    let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
+                                    let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(inputAmount * 0.85), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
                                     
                                     user.transactions.append(newTransaction)
                                     
@@ -165,7 +165,7 @@ struct HigherOrLower: View {
                                 sessionDate = Date()
                                 sessionWin = true
                                 sessionScore = 4
-                                sessionValue = Int(inputAmount)
+                                sessionValue = Int(inputAmount * 0.85)
                                 
                                 makeSession(sessionDate, sessionWin, sessionScore, sessionValue)
                             }
@@ -186,15 +186,15 @@ struct HigherOrLower: View {
                             sessionDate = Date()
                             sessionWin = false
                             sessionScore = currentCardShowing
-                            sessionValue = Int(inputAmount)
+                            sessionValue = Int(inputAmount * 0.85)
                             
                             makeSession(sessionDate, sessionWin, sessionScore, sessionValue)
                             
                             if let user = users.first {
-                                user.availableBalance += Int(inputAmount)
+                                user.availableBalance += Int(inputAmount * 0.85)
                                 user.level += getLevel(currentCardShowing)
                                 
-                                let newTransaction = TransactionDataModel(category: "Minigame",amount: Int(inputAmount), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
+                                let newTransaction = TransactionDataModel(category: "Minigame",amount: Int(inputAmount * 0.85), transactionDescription: "Higher or Lower Payout", createdAt: Date(), income: true)
                                 
                                 user.transactions.append(newTransaction)
                                 

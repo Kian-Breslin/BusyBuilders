@@ -8,6 +8,13 @@
 import SwiftUI
 import SwiftData
 
+let mockBusinessList: [mockBusinesses] = [
+    mockBusinesses(id: UUID(), name: "Playstation", businessLogo: "playstation.logo", industry: "Gaming", currentStockPrice: 100.0, volatilityRating: .low),
+    mockBusinesses(id: UUID(), name: "Xbox", businessLogo: "xbox.logo", industry: "Gaming", currentStockPrice: 500.0, volatilityRating: .medium),
+    mockBusinesses(id: UUID(), name: "Brand", businessLogo: "paintbrush", industry: "Cosmetics", currentStockPrice: 1000, volatilityRating: .high),
+    mockBusinesses(id: UUID(), name: "Sports Brand", businessLogo: "soccerball", industry: "Sports", currentStockPrice: 1500, volatilityRating: .medium)
+]
+
 struct Stocks: View {
     @EnvironmentObject var themeManager : ThemeManager
     @Environment(\.dismiss) private var dismiss
@@ -209,9 +216,9 @@ struct businessInfoSection: View {
                                         print("Net Worth: $\(userAvailableBalance)")
                                         print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
                                         print("User Has Enough Cash to buy... Starting Session")
-                                        user.availableBalance -= stocksBought * Int(selectedBusiness.currentStockPrice)
+                                        user.availableBalance -= Int(stocksBought * Int(selectedBusiness.currentStockPrice) * 0.85)
                                         user.tokens -= 1
-                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: stocksBought * Int(selectedBusiness.currentStockPrice), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
+                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(stocksBought * Int(selectedBusiness.currentStockPrice) * 0.85), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
                                         user.transactions.append(newTransaction)
                                         do {
                                             try context.save()
@@ -259,18 +266,12 @@ struct businessInfoSection: View {
 struct businessListSection: View {
     @EnvironmentObject var themeManager : ThemeManager
     
-    let businesses = [
-        mockBusinesses(id: UUID(), name: "Playstation", businessLogo: "playstation.logo", industry: "Gaming", currentStockPrice: 100.0, volatilityRating: .low),
-        mockBusinesses(id: UUID(), name: "Xbox", businessLogo: "xbox.logo", industry: "Gaming", currentStockPrice: 500.0, volatilityRating: .medium),
-        mockBusinesses(id: UUID(), name: "Brand", businessLogo: "paintbrush", industry: "Cosmetics", currentStockPrice: 1000, volatilityRating: .high),
-        mockBusinesses(id: UUID(), name: "Sports Brand", businessLogo: "soccerball", industry: "Sports", currentStockPrice: 1500, volatilityRating: .medium)
-    ]
     @Binding var selectedBusiness : mockBusinesses
     @Binding var stockPrice : Double
     
     var body: some View {
         HStack {
-            ForEach(businesses) { i in
+            ForEach(mockBusinessList) { i in
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: 80, height: 80)
                     .foregroundStyle(getColor(themeManager.mainDark))
@@ -342,5 +343,3 @@ struct mockBusinesses: Identifiable, Equatable {
     Stocks(isTaskActive: .constant(false), selectedBusiness: mockBusinesses(id: UUID(), name: "Playstation", businessLogo: "playstation.logo", industry: "Gaming", currentStockPrice: 1000.0, volatilityRating: .low))
         .environmentObject(ThemeManager())
 }
-
-

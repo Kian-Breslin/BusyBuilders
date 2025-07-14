@@ -108,7 +108,7 @@ struct TimerConfig: View {
         .frame(width: screenWidth)
         .fullScreenCover(isPresented: $isTimerActive) {
             if selectedBusiness != nil {
-                Timer3(selectedBusiness: selectedBusiness!, setTime: timeSelected, isTimerActive: $isTimerActive)
+//                Timer3(selectedBusiness: selectedBusiness!, setTime: timeSelected, isTimerActive: $isTimerActive)
             } else {
                 Text("Hello")
             }

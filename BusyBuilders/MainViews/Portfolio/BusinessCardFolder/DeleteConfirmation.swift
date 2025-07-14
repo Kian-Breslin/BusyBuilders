@@ -68,27 +68,13 @@ struct DeleteConfirmation: View {
         businessType: "Economic",
         businessIcon: "triangle",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
-        netWorth: 6000,
         investors: [
             UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
             UserDataModel(username: "Jack_00", name: "Kim", email: "KimberlyLeon@gmail.com"),
             UserDataModel(username: "Jay_09", name: "Kim", email: "KimberlyLeon@gmail.com")
         ],
         badges: ["10 Days Streak", "$1000 Earned", "First Upgrade", "", "", "", "", "", "", "",],
-        sessionHistory:
-            [SessionDataModel(
-                id: UUID(),
-                sessionDate: Date.now,
-                sessionStart: formatFullDateTime(date: Date()),
-                sessionEnd: formatFullDateTime(date: Date()),
-                businessId: UUID(), totalStudyTime: 3600),
-             SessionDataModel(
-                 id: UUID(),
-                 sessionDate: Date.now,
-                 sessionStart: formatFullDateTime(date: Date()),
-                 sessionEnd: formatFullDateTime(date: Date()),
-                 businessId: UUID(), totalStudyTime: 3600)
-            ],
+        sessionHistory: [],
         businessPrestige: "Growing Business")
 )), deletingUserIndex: .constant(0)
 , user: .constant("Kian_17"), confirm: .constant(true))

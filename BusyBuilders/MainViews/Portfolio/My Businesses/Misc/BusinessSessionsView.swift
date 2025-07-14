@@ -60,7 +60,7 @@ struct currentBusinessSessionView: View {
 }
 
 #Preview {
-    currentBusinessSessionView(session: SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "", sessionEnd: "", businessId: UUID(), totalCashEarned: 10000, totalCostIncurred: 2000, totalXPEarned: 3600, totalStudyTime: 3600))
+    currentBusinessSessionView(session: SessionDataModel(id: UUID(), sessionDate: Date.now, businessId: UUID(), totalCashEarned: 0, totalCostIncurred: 0, totalXPEarned: 0, totalStudyTime: 0, productsSnapshot: []))
 }
 
 

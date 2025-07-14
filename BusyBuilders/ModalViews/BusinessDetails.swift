@@ -13,7 +13,7 @@ struct BusinessDetails: View {
     @Environment(\.modelContext) var context
     @Query var users: [UserDataModel]
     @Query var businesses: [BusinessDataModel] // Query for businesses
-    @Query var sessionHistory: [SessionDataModel]
+    var sessionHistory: [SessionDataModel]
     
     var business : BusinessDataModel
     
@@ -231,14 +231,14 @@ struct BusinessDetails: View {
                         .animation(.linear, value: heightDropdown)
                         Spacer()
                         // Navigation link to Session History
-                        NavigationLink(destination: SessionHistoryView(sessions: business.sessionHistory)) {
-                            Text("View Session History")
-                                .font(.system(size: 20))
-                                .padding()
-                                .background(getColor(business.businessTheme).suitableTextColor())
-                                .foregroundColor(getColor(business.businessTheme))
-                                .cornerRadius(10)
-                        }
+//                        NavigationLink(destination: SessionHistoryView(sessions: business.sessionHistory)) {
+//                            Text("View Session History")
+//                                .font(.system(size: 20))
+//                                .padding()
+//                                .background(getColor(business.businessTheme).suitableTextColor())
+//                                .foregroundColor(getColor(business.businessTheme))
+//                                .cornerRadius(10)
+//                        }
                         
                         Spacer()
                     }
@@ -251,26 +251,26 @@ struct BusinessDetails: View {
     }
     
     // Session History View
-    struct SessionHistoryView: View {
-        var sessions: [SessionDataModel] // Array of session data
-        
-        var body: some View {
-            List(sessions) { session in
-                VStack(alignment: .leading) {
-                    Text("Session Start: \(session.sessionStart)")
-                    Text("Session End: \(session.sessionEnd)")
-                    Text("Total Study Time: \((timeFormatted(session.totalStudyTime))) seconds")
-                }
-            }
-            .navigationTitle("Session History") // Title for the session history view
-        }
-    }
+//    struct SessionHistoryView: View {
+//        var sessions: [SessionDataModel] // Array of session data
+//        
+//        var body: some View {
+////            List(sessions) { session in
+////                VStack(alignment: .leading) {
+////                    Text("Session Start: \(session.sessionStart)")
+////                    Text("Session End: \(session.sessionEnd)")
+////                    Text("Total Study Time: \((timeFormatted(session.totalStudyTime))) seconds")
+////                }
+////            }
+////            .navigationTitle("Session History") // Title for the session history view
+//        }
+//    }
     
     struct EditBusinessView: View {
         @Environment(\.modelContext) var context
         @Query var users: [UserDataModel]
         @Query var businesses: [BusinessDataModel] // Query for businesses
-        @Query var sessionHistory: [SessionDataModel]
+        var sessionHistory: [SessionDataModel] = []
         
         @Bindable var business : BusinessDataModel
         
@@ -297,8 +297,8 @@ struct BusinessDetails: View {
     }
 }
 
-#Preview {
-    BusinessDetails( business: BusinessDataModel(businessName: "Kims Shop", businessTheme: "Blue", businessType: "Economic", businessIcon: "triangle", netWorth: 250000, sessionHistory: [SessionDataModel(id: UUID(), sessionDate: Date.now, sessionStart: formatFullDateTime(date: Date()), sessionEnd: formatFullDateTime(date: Date()), businessId: UUID(), totalStudyTime: 3600)], businessPrestige: "Growing Business"))
-        .modelContainer(for: UserDataModel.self, inMemory: true)
-        .environmentObject(ThemeManager())
-}
+//#Preview {
+//    BusinessDetails( business: BusinessDataModel(businessName: "Kims Shop", businessTheme: "Blue", businessType: "Economic", businessIcon: "triangle", sessionHistory: [], businessPrestige: "Growing Business"))
+//        .modelContainer(for: UserDataModel.self, inMemory: true)
+//        .environmentObject(ThemeManager())
+//}

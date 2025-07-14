@@ -52,23 +52,9 @@ struct Sessions: View {
         businessType: "Economic",
         businessIcon: "triangle",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
-        netWorth: 6000,
         investors: [],
         badges: ["10 Days Streak", "$1000 Earned", "First Upgrade"],
-        sessionHistory:
-            [SessionDataModel(
-                id: UUID(),
-                sessionDate: Date.now,
-                sessionStart: formatFullDateTime(date: Date()),
-                sessionEnd: formatFullDateTime(date: Date()),
-                businessId: UUID(), totalCashEarned: 3454),
-             SessionDataModel(
-                 id: UUID(),
-                 sessionDate: Date.now,
-                 sessionStart: formatFullDateTime(date: Date()),
-                 sessionEnd: formatFullDateTime(date: Date()),
-                 businessId: UUID(), totalCashEarned: 5436)
-            ],
+        sessionHistory: [],
         businessPrestige: "Growing Business"))
     .environmentObject(ThemeManager())
 }

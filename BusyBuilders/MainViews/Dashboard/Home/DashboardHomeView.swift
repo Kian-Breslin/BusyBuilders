@@ -18,11 +18,11 @@ struct DashboardHomeView: View {
             HStack (spacing: 5){
                 UserNetWorthWidget()
                 
-                MediumModularWidget()
+                MediumModularWidget(MainSessions: [])
             }
             
             HStack (spacing: 5){
-                SquareModularWidget()
+                SquareModularWidget(sessions: [])
 
                 VStack (spacing: 5){
                     HStack (spacing: 5){
@@ -38,7 +38,7 @@ struct DashboardHomeView: View {
             
             RectangleMediumModularWidget()
             
-            OverviewChartWidget()
+//            OverviewChartWidget()
         }
         .foregroundStyle(themeManager.mainColor)
         .frame(width: screenWidth)

@@ -280,7 +280,6 @@ struct BusinessSettings: View {
         businessIcon: "triangle",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com"),UserDataModel(username: "Kim_01", name: "Kimberly", email: "kimberly01leon@gmail.com")],
         time: 9360,
-        netWorth: 6000,
         investors: [
             UserDataModel(username: "Kimmy_9", name: "Kim", email: "Kim@gmail.com"),
             UserDataModel(username: "Jim_00", name: "Jim", email: "Jim@gmail.com"),
@@ -290,20 +289,7 @@ struct BusinessSettings: View {
             UserDataModel(username: "LilYimmy", name: "Yim", email: "Yim@gmail.com")
         ],
         badges: ["10 Days Streak", "$1000 Earned", "First Upgrade"],
-        sessionHistory:
-            [SessionDataModel(
-                id: UUID(),
-                sessionDate: Date.now,
-                sessionStart: formatFullDateTime(date: Date()),
-                sessionEnd: formatFullDateTime(date: Date()),
-                businessId: UUID(), totalStudyTime: 3600),
-             SessionDataModel(
-                 id: UUID(),
-                 sessionDate: Date.now,
-                 sessionStart: formatFullDateTime(date: Date()),
-                 sessionEnd: formatFullDateTime(date: Date()),
-                 businessId: UUID(), totalStudyTime: 3600)
-            ],
+        sessionHistory: [],
         businessPrestige: "Growing Business"))
     .environmentObject(ThemeManager())
 }

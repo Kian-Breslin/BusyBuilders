@@ -100,12 +100,12 @@ struct AdminTests: View {
                             Image(systemName: "plus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.netWorth += 1000
+                                    
                                 }
                             Image(systemName: "minus.circle")
                                 .font(.system(size: 30))
                                 .onTapGesture {
-                                    selectedBusiness?.netWorth -= 1000
+                                    
                                 }
                         }
                         
@@ -256,8 +256,8 @@ struct AdminTests: View {
     
     private func addSession() {
         if users.first != nil {
-            let newMockSession = SessionDataModel(id: UUID(), sessionDate: Date(), sessionStart: "Monday 17 Dec 2024", sessionEnd: "Monday 17 Dec 2024", businessId: selectedBusiness!.id, totalCashEarned: 56000, totalCostIncurred: 10000, totalXPEarned: 1, totalStudyTime: 3600, XPBUsed: false, CBUsed: false, CRUsed: false)
-            selectedBusiness?.sessionHistory.append(newMockSession)
+//            let newMockSession = SessionDataModel(id: UUID(), sessionDate: Date.now, businessId: UUID(), totalCashEarned: 0, totalCostIncurred: 0, totalXPEarned: 0, totalStudyTime: 0, productsSnapshot: [])
+//            selectedBusiness?.sessionHistory.append(newMockSession)
         }
     }
     
@@ -278,7 +278,6 @@ struct AdminTests: View {
     }
     
     private func resetBusinessStats(_ business : BusinessDataModel) {
-        business.netWorth = 0
         business.streak = 0
         business.sessionHistory = []
         business.securityLevel = 0
@@ -299,27 +298,13 @@ struct AdminTests: View {
             businessType: "Economic",
             businessIcon: "triangle",
             owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
-            netWorth: 6000,
             investors: [
                 UserDataModel(username: "Kimberly_01", name: "Kim", email: "KimberlyLeon@gmail.com"),
                 UserDataModel(username: "Jack_00", name: "Jack", email: "JackJake@gmail.com"),
                 UserDataModel(username: "Jay_09", name: "Jay", email: "JayYo@gmail.com")
             ],
             badges: ["10 Days Streak", "$1000 Earned", "First Upgrade", "", "", "", "", "", "", "",],
-            sessionHistory:
-                [SessionDataModel(
-                    id: UUID(),
-                    sessionDate: Date.now,
-                    sessionStart: formatFullDateTime(date: Date()),
-                    sessionEnd: formatFullDateTime(date: Date()),
-                    businessId: UUID(), totalStudyTime: 3600),
-                 SessionDataModel(
-                     id: UUID(),
-                     sessionDate: Date.now,
-                     sessionStart: formatFullDateTime(date: Date()),
-                     sessionEnd: formatFullDateTime(date: Date()),
-                     businessId: UUID(), totalStudyTime: 3600)
-                ],
+            sessionHistory: [],
             businessPrestige: "Growing Business")
         
         context.insert(newBusiness)

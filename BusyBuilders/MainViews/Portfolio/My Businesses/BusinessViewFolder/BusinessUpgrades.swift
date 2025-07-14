@@ -76,7 +76,6 @@ struct upgradeItem: View {
                 if business.netWorth >= calcUpgradePrice(currentLevel: business.departmentLevels[deptName] ?? 0) {
                     business.upgradeDept(dept: deptName)
                     print("Upgraded \(deptName)")
-                    business.netWorth -= calcUpgradePrice(currentLevel: business.departmentLevels[deptName] ?? 0)
                     
                     do {
                         try context.save()

@@ -688,3 +688,34 @@ class AudioManager: ObservableObject {
         }
     }
 }
+
+
+func SessionStop(user: UserDataModel, business: BusinessDataModel, time: Int) {
+    // Get Session Cash Income
+    let cashIn = Double((business.cashPerMin/60) * time)
+    let cashOut = Double((business.costPerMin/60) * time)
+    // Total Cash
+    let BusinessCashIncome = (cashIn - cashOut) * 0.85
+    
+    // Get Product Income
+    var productIncome = 0
+    var products : [ProductSellingSession] = []
+    for product in business.products.filter({ $0.isActive }) {
+        if let productSession = product.sellSimulation() {
+            productIncome += productSession.netIncome
+            products.append(productSession)
+        }
+    }
+    // Add Business Session
+    let newSession = SessionDataModel(id: UUID(), sessionDate: Date.now, businessId: business.id, totalCashEarned: Int(cashIn), totalCostIncurred: Int(cashOut), totalXPEarned: time, totalStudyTime: time, productsSnapshot: products)
+    business.sessionHistory.append(newSession)
+    
+    let TotalIncome = Int(BusinessCashIncome) + productIncome
+    
+    // Add User Transaction
+    let newTransaction = TransactionDataModel(image: "circle", name: "Session Income", category: "Session Income", amount: TotalIncome, transactionDescription: "Session Income for \(business.businessName)", createdAt: Date.now, income: true)
+    user.transactions.append(newTransaction)
+    user.availableBalance += TotalIncome
+    
+    
+}

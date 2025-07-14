@@ -12,7 +12,7 @@ import Charts
 struct OverviewChartWidget: View {
     @EnvironmentObject var themeManager: ThemeManager
     @Query var users : [UserDataModel]
-    @Query var MainSessions : [SessionDataModel]
+    var MainSessions : [SessionDataModel]
     
     // Example Data
     @State var data: [ChartData] = [
@@ -110,6 +110,6 @@ struct ChartData: Identifiable {
 
 
 #Preview {
-    OverviewChartWidget()
+    OverviewChartWidget(MainSessions: [])
         .environmentObject(ThemeManager())
 }

@@ -14,7 +14,7 @@ struct BusinessMoreInfo: View {
     @State var isWithdraw = false
     @State var isAdding = false
     var body: some View {
-        VStack {
+        VStack (spacing: 20){
             Button("Withdraw"){
                 isWithdraw.toggle()
             }
@@ -24,7 +24,25 @@ struct BusinessMoreInfo: View {
             }
             
             Button("Increase Cash / Min"){
-                business.netWorth += 10000
+                
+            }
+            
+            Button("Sell Business") {
+                if let user = users.first {
+                    // Remove from active businesses
+                    user.businesses.removeAll(where: { $0.id == business.id })
+                    // Add Money to User
+                    user.availableBalance += business.netWorth
+                    // Add Transaction
+                    let newTransaction = TransactionDataModel(amount: business.netWorth, transactionDescription: "Sold \(business.businessName)", createdAt: Date.now, income: true)
+                    user.transactions.append(newTransaction)
+
+                    // Add to sold businesses (archive)
+                    user.soldBusinesses.append(business)
+                    
+                    print("Removed \(business.businessName)")
+                    print("Number of sold businesses: \(user.soldBusinesses.count)")
+                }
             }
         }
         .sheet(isPresented: $isWithdraw) {

@@ -46,7 +46,6 @@ struct BusinessCard: View {
         businessIcon: "macbook",
         owners: [UserDataModel(username: "Kian_17", name: "Kian", email: "Kianbreslin@gmail.com")],
         time: 9360,
-        netWorth: 6000,
         investors: [
             UserDataModel(username: "LilKimmy", name: "Kim", email: "Kim@gmail.com"),
             UserDataModel(username: "LilJimmy", name: "Jim", email: "Jim@gmail.com"),
@@ -56,20 +55,7 @@ struct BusinessCard: View {
             UserDataModel(username: "LilRimmy", name: "Rim", email: "Rim@gmail.com")
         ],
         badges: ["10 Days Streak", "$1000 Earned", "First Upgrade"],
-        sessionHistory:
-            [SessionDataModel(
-                id: UUID(),
-                sessionDate: Date.now,
-                sessionStart: formatFullDateTime(date: Date()),
-                sessionEnd: formatFullDateTime(date: Date()),
-                businessId: UUID(), totalStudyTime: 3600),
-             SessionDataModel(
-                 id: UUID(),
-                 sessionDate: Date.now,
-                 sessionStart: formatFullDateTime(date: Date()),
-                 sessionEnd: formatFullDateTime(date: Date()),
-                 businessId: UUID(), totalStudyTime: 3600)
-            ],
+        sessionHistory: [],
         insuranceLevel: 10,
         securityLevel: 14,
         businessPrestige: "Growing Business"))
