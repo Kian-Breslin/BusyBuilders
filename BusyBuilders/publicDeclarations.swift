@@ -262,6 +262,12 @@ public func timeFormattedMins(_ totalSeconds: Int) -> String {
     return String(format: "%02d:%02d", hours, minutes)
 }
 
+func formatTime(seconds: Int) -> String {
+    let minutes = seconds / 60
+    let remainingSeconds = seconds % 60
+    return String(format: "%02d:%02d", minutes, remainingSeconds)
+}
+
 func getBusinessName(business: BusinessDataModel) -> String {
     return business.businessName
 }
@@ -690,10 +696,10 @@ class AudioManager: ObservableObject {
 }
 
 
-func SessionStop(user: UserDataModel, business: BusinessDataModel, time: Int) {
+func SessionStop(user: UserDataModel, business: BusinessDataModel, time: Int) -> SessionDataModel{
     // Get Session Cash Income
-    let cashIn = Double((business.cashPerMin/60) * time)
-    let cashOut = Double((business.costPerMin/60) * time)
+    let cashIn = (Double(business.cashPerMin) / 60.0) * Double(time)
+    let cashOut = (Double(business.costPerMin) / 60.0) * Double(time)
     // Total Cash
     let BusinessCashIncome = (cashIn - cashOut) * 0.85
     
@@ -717,5 +723,5 @@ func SessionStop(user: UserDataModel, business: BusinessDataModel, time: Int) {
     user.transactions.append(newTransaction)
     user.availableBalance += TotalIncome
     
-    
+    return newSession
 }

@@ -209,37 +209,47 @@ struct businessInfoSection: View {
                     }
                     .onTapGesture {
                         if let user = users.first {
-                            let userAvailableBalance = user.availableBalance
-                            if user.tokens > 0 {
-                                if selectedBusiness.name != "" {
-                                    if userAvailableBalance >= stocksBought * Int(selectedBusiness.currentStockPrice){
-                                        print("Net Worth: $\(userAvailableBalance)")
-                                        print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
-                                        print("User Has Enough Cash to buy... Starting Session")
-                                        user.availableBalance -= Int(stocksBought * Int(selectedBusiness.currentStockPrice) * 0.85)
-                                        user.tokens -= 1
-                                        let newTransaction = TransactionDataModel(category: "Minigame", amount: Int(stocksBought * Int(selectedBusiness.currentStockPrice) * 0.85), transactionDescription: "Stocks Investment", createdAt: Date(), income: false)
-                                        user.transactions.append(newTransaction)
-                                        do {
-                                            try context.save()
-                                        } catch {
-                                            print("Error: Couldnt save new Stocks transaction for mini-game")
-                                        }
-                                        
-                                        startSession.toggle()
-                                    } else {
-                                        print("User does not have enough cash to buy.... Cannot Start Session")
-                                        noMoneyAlert.toggle()
-                                    }
-                                }
-                                else {
-                                    print("No Business Selected")
-                                    noBusinessSelectedAlert.toggle()
-                                }
-                            }
-                            else {
+                            guard user.tokens > 0 else {
                                 noTokenAlert.toggle()
+                                return
                             }
+
+                            guard selectedBusiness.name != "" else {
+                                noBusinessSelectedAlert.toggle()
+                                return
+                            }
+
+                            let totalCost = Int(Double(stocksBought) * selectedBusiness.currentStockPrice * 0.85)
+
+                            guard user.availableBalance >= totalCost else {
+                                noMoneyAlert.toggle()
+                                return
+                            }
+
+                            print("Net Worth: $\(user.availableBalance)")
+                            print("Price of Stocks: $\(Double(stocksBought) * selectedBusiness.currentStockPrice)")
+                            print("User Has Enough Cash to buy... Starting Session")
+
+                            user.availableBalance -= totalCost
+                            user.tokens -= 1
+
+                            let newTransaction = TransactionDataModel(
+                                category: "Minigame",
+                                amount: totalCost,
+                                transactionDescription: "Stocks Investment",
+                                createdAt: Date(),
+                                income: false
+                            )
+
+                            user.transactions.append(newTransaction)
+
+                            do {
+                                try context.save()
+                            } catch {
+                                print("Error: Couldn’t save new Stocks transaction for mini-game")
+                            }
+
+                            startSession.toggle()
                         }
                     }
                 Spacer()
@@ -263,65 +273,8 @@ struct businessInfoSection: View {
         }
     }
 }
-struct businessListSection: View {
-    @EnvironmentObject var themeManager : ThemeManager
-    
-    @Binding var selectedBusiness : mockBusinesses
-    @Binding var stockPrice : Double
-    
-    var body: some View {
-        HStack {
-            ForEach(mockBusinessList) { i in
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 80, height: 80)
-                    .foregroundStyle(getColor(themeManager.mainDark))
-                    .overlay {
-                        Image(systemName: "\(i.businessLogo)")
-                            .font(.system(size: 40))
-                            .foregroundStyle(i == selectedBusiness ? Color.red : themeManager.textColor)
-                    }
-                    .onTapGesture {
-                        selectedBusiness = i
-                        stockPrice = selectedBusiness.currentStockPrice
-                    }
-                
-                if i.name != "Sports Brand" {
-                    Spacer()
-                }
-            }
-        }
-    }
-}
-struct StockSimulationView: View {
-    @EnvironmentObject var themeManager : ThemeManager
-    @Binding var isGameOver: Bool
-    @State var business : mockBusinesses
-    @Binding var stocksBought : Int
-    @Binding var stockPrice : Double
-    
-    var body: some View {
-        ZStack {
-            themeManager.mainColor.ignoresSafeArea()
-            VStack (alignment: .leading){
-                VStack (alignment: .leading){
-                    Text("\(business.name)")
-                        .font(.system(size: 35))
-                    Text("Starting Price: $\(business.currentStockPrice, specifier: "%.f")")
-                    Text("Stocks Bought: \(stocksBought)")
-                }
-                .font(.system(size: 25))
-                Spacer()
-                
-                StockSimulationGame(isGameOver: $isGameOver, price: $stockPrice, stockPrice: [stockPrice], stocksBought: stocksBought)
-                
-                Spacer()
-            }
-            .frame(width: screenWidth-20, alignment: .leading)
-            .foregroundStyle(themeManager.textColor)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
+
+
 
 struct mockBusinesses: Identifiable, Equatable {
     var id: UUID

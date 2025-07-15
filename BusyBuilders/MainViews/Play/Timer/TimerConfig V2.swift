@@ -130,7 +130,7 @@ struct TimerConfig_V2: View {
         .fullScreenCover(isPresented: $isTimerActive) {
             if selectedBusiness.businessName != "" {
 //                Timer3(selectedBusiness: selectedBusiness, setTime: 3600, isTimerActive: $isTimerActive)
-                BusinessViewTimer(business: selectedBusiness, isTimerActive: $isTimerActive)
+                BeachViewTimer(business: selectedBusiness, isTimerActive: $isTimerActive)
             } else {
                 Text("Hello")
             }

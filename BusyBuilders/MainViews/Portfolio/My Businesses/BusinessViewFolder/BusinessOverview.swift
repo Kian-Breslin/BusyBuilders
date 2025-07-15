@@ -26,6 +26,10 @@ struct BusinessOverview: View {
                     .font(.system(size: 25))
                 Text("$\(business.cashPerMin)")
                 
+                Text("Cost per Minute:")
+                    .font(.system(size: 25))
+                Text("$\(business.costPerMin)")
+                
                 Text("Business Level:")
                     .font(.system(size: 25))
                 Text("\(business.businessLevel)")
