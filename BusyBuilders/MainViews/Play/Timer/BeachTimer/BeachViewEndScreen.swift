@@ -110,9 +110,10 @@ struct BeachViewEndScreen: View {
                 
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.black, lineWidth: 2)
-                    .frame(width: .infinity, height: 50)
+                    .frame(width: screenWidth-20, height: 50)
                     .overlay {
                         Text("Close")
+                            .frame(minWidth: screenWidth-20, minHeight: 50)
                     }
                     .onTapGesture {
                         dismiss()

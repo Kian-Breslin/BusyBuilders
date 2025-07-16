@@ -14,6 +14,8 @@ struct TimerConfig_V2: View {
     
     @State var selectedBusiness = BusinessDataModel(businessName: "", businessTheme: "", businessType: "", businessIcon: "")
     
+    @State var selectedView = 0
+    
     @State var sessionCounts = 4.0
     @State var shortBreakTime = 5.0
     @State var longBreakTime = 20.0
@@ -47,65 +49,57 @@ struct TimerConfig_V2: View {
                 .frame(width: screenWidth-20, alignment: .leading)
             }
             
-            VStack (alignment: .leading, spacing: 5){
-                Text("Sessions: \(sessionCounts, specifier: "%.f")")
-                    .bold()
-                    .font(.system(size: 15))
-                
-                Slider(value: $sessionCounts, in: 0...8, step: 1){
-                    Text("Sessions")
-                }
-                .tint(getColor(themeManager.secondaryColor))
-            }
-            
-            VStack (alignment: .leading, spacing: 5){
-                Text("Short Break: \(shortBreakTime, specifier: "%.f") mins")
-                    .bold()
-                    .font(.system(size: 15))
-                
-                Slider(value: $shortBreakTime, in: 0...10, step: 1)
-                    .tint(getColor(themeManager.secondaryColor))
-            }
-            
-            VStack (alignment: .leading, spacing: 5){
-                Text("Long Break: \(longBreakTime, specifier: "%.f") mins")
-                    .bold()
-                    .font(.system(size: 15))
-                
-                Slider(value: $longBreakTime, in: 10...30, step: 1)
-                    .tint(getColor(themeManager.secondaryColor))
-            }
-            
-            VStack(alignment: .leading, spacing: 5){
-                Text("Upgrades")
-                    .bold()
-                    .font(.system(size: 15))
-                
-                HStack {
+            HStack {
+                if selectedView == 0 {
                     RoundedRectangle(cornerRadius: 10)
-                        .frame(width: ((screenWidth-40)/3), height: 50)
-                        .foregroundStyle(themeManager.mainColor)
+                        .frame(width: 150, height: 40)
+                        .foregroundStyle(themeManager.textColor)
                         .overlay {
-                            Text("Cash Boost")
+                            Text("Beach View")
+                                .foregroundStyle(themeManager.mainColor)
                         }
-                    
+                } else {
                     RoundedRectangle(cornerRadius: 10)
-                        .frame(width: ((screenWidth-40)/3), height: 50)
-                        .foregroundStyle(themeManager.mainColor)
+                        .stroke(.white, lineWidth: 4)
+                        .frame(width: 150, height: 40)
                         .overlay {
-                            Text("Cost Reduction")
+                            Text("Beach View")
+                                .foregroundStyle(themeManager.textColor)
                         }
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: ((screenWidth-40)/3), height: 50)
-                        .foregroundStyle(themeManager.mainColor)
-                        .overlay {
-                            Text("XP Boost")
+                        .onTapGesture {
+                            withAnimation(.linear, {
+                                selectedView = 0
+                            })
                         }
                 }
-                .font(.system(size: 12))
-                .bold()
+                
+                
+                if selectedView == 1 {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 150, height: 40)
+                        .foregroundStyle(themeManager.textColor)
+                        .overlay {
+                            Text("Sunset View")
+                                .foregroundStyle(themeManager.mainColor)
+                        }
+                        
+                } else {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.white, lineWidth: 4)
+                        .frame(width: 150, height: 40)
+                        .overlay {
+                            Text("Sunset View")
+                                .foregroundStyle(themeManager.textColor)
+                        }
+                        .onTapGesture {
+                            withAnimation(.linear, {
+                                selectedView = 1
+                            })
+                        }
+                }
             }
+            .padding(.leading, 4)
+
             Spacer()
             HStack {
                 Spacer()
@@ -130,7 +124,11 @@ struct TimerConfig_V2: View {
         .fullScreenCover(isPresented: $isTimerActive) {
             if selectedBusiness.businessName != "" {
 //                Timer3(selectedBusiness: selectedBusiness, setTime: 3600, isTimerActive: $isTimerActive)
-                BeachViewTimer(business: selectedBusiness, isTimerActive: $isTimerActive)
+                if selectedView == 0 {
+                    BeachViewTimer(business: selectedBusiness, isTimerActive: $isTimerActive)
+                } else if selectedView == 1 {
+                    SunsetViewTimer(business: selectedBusiness, isTimerActive: $isTimerActive)
+                }
             } else {
                 Text("Hello")
             }

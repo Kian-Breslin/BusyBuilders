@@ -725,3 +725,9 @@ func SessionStop(user: UserDataModel, business: BusinessDataModel, time: Int) ->
     
     return newSession
 }
+
+extension Font {
+    static func londrina(size: Int) -> Font {
+        return Font.custom("LondrinaOutline-Regular", size: CGFloat(size) )
+    }
+}
