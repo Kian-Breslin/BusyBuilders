@@ -9,87 +9,43 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    
-    @Query var users: [UserDataModel]
-    
-    @State var selectedView = 0
-    @State var isTaskActive = false
-    @State var isNavShowing = false
-    @State var isSettingsShowing = false
     @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var themeManager: ThemeManager
-    
+    @State var selectedView = "Dashboard"
     var body: some View {
-        if userManager.isUserCreated == false {
-            Onboarding()
-        }
-        else {
-            ZStack {
-                if (selectedView == 0) {
-                    Dashboard(dashboardSelection: $selectedView, isSettingsShowing: $isSettingsShowing)
-                } else if selectedView == 1 {
-//                    Communities()
+        ZStack {
+            userManager.mainColor.ignoresSafeArea()
+            
+            VStack {
+                if selectedView == "Dashboard" {
+                    Dashboard()
+                }
+                else if selectedView == "person.2" {
+                    Social()
+                }
+                else if selectedView == "play" {
+                    Play()
+                }
+                else if selectedView == "store" {
                     
-                } else if selectedView == 2 {
-//                    StartTask(isTimerActive: $isTaskActive)
-                    Play(isTimerActive: $isTaskActive, isTaskActive: $isNavShowing, isSettingsShowing: $isSettingsShowing)
-                } else if selectedView == 3 {
-                    Store(isSettingsShowing: $isSettingsShowing)
-                } else if selectedView == 4 {
-                    Portfolio(isSettingsShowing: $isSettingsShowing)
                 }
-                
-                VStack {
-                    Spacer()
-                    NavigationBar(selectedView: $selectedView)
-                        .opacity(isTaskActive || isNavShowing ? 0 : 1)
+                else if selectedView == "person" {
+                    Portfolio()
                 }
-                .ignoresSafeArea()
             }
-            .fullScreenCover(isPresented: $isSettingsShowing) {
-                Settings()
+            .padding(.top, 40)
+            
+            
+            VStack {
+                Spacer()
+                BottomNavigation(selectedIcon: $selectedView)
             }
+            .ignoresSafeArea()
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: [UserDataModel.self], inMemory: true)
         .environmentObject(UserManager())
-        .environmentObject(ThemeManager())
 }
 
-/*
- 
- Update : Update Name
- 
- Dashboard:
-
- - N/A
-
- Communities:
-
- - N/A
-
- Play:
-
- - N/A
-
- Store:
-
- - N/A
-
- Portfolio:
-
- - N/A
-
- Back-End:
-
- - N/A
-
- Other:
-
- - N/A
- 
- */

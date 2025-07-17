@@ -1,10 +1,11 @@
 //
-//  UserModel.swift
+//  UserDataModel.swift
 //  BusyBuilders
 //
-//  Created by Kian Breslin on 04/10/2024.
+//  Created by Kian Breslin on 16/07/2025.
 //
-import Foundation
+
+import SwiftUI
 import SwiftData
 
 @Model
@@ -14,66 +15,92 @@ public class UserDataModel: Identifiable, ObservableObject {
     var name: String // User's chosen username
     var email: String // User's email address
     var password: String
-    var businesses: [BusinessDataModel] // List of businesses owned by the user
-    var availableBalance: Int
-    var level: Int
-    var created: Date
-    var flashcards: [DeckModel]
-    var transactions: [TransactionDataModel]
-    var miniGameSessions: [MiniGameSessionModel]
-    var flashcardSessions: [FlashcardSessionDataModel]
-    var inventory: [String : Int] = [:]
-    var stocks: [companyStocks] = []
-    var netWorth: Int {
-        let businessWorth = businesses.reduce(0) {$0 + $1.netWorth}
-        let stocksWorth = stocks.reduce(0) { $0 + ($1.amount * $1.company.stockPrice) }
-        return businessWorth + availableBalance + stocksWorth
-    }
-    var tokens : Int = 0
-    var soldBusinesses : [BusinessDataModel] = []
     
-    // Initialize the UserDataModel with default values
-    init(id: UUID = UUID(),
-         username: String,
-         name: String,
-         email: String,
-         password: String = "",
-         availableBalance: Int = 0,
-         level: Int = 0,
-         created: Date = Date.now,
-         flashcards: [DeckModel] = [],
-         transactions: [TransactionDataModel] = [],
-         miniGameSessions: [MiniGameSessionModel] = [],
-         flashcardSessions: [FlashcardSessionDataModel] = [],
-         stocks: [companyStocks] = []) {
+    // User Cash
+    var netWorth: Int = 0
+    var availableBalance: Int = 0
+    
+    // Social
+    var friends: [UUID] = []
+    var referralCode: String?
+    var invitedByUserId: UUID?
+    
+    // Business Data Model
+    var businesses: [BusinessDataModel] = []
+
+    // Agencies
+    var Agencies: [String: Bool] = [:]
+    // Mini-Games
+    var tokens: Int = 0
+    // Sessions
+    var sessionHistory: [SessionDataModel] = []
+        
+    // Basic user level
+    var userLevel: Int = 0
+    
+    // Achievements or badges
+    var badges: [String] = []
+    
+    // Inventory of items or upgrades
+    var inventory: [ItemModel] = []
+    
+    init(id: UUID, username: String, name: String, email: String, password: String, netWorth: Int, availableBalance: Int, friends: [UUID], referralCode: String? = nil, invitedByUserId: UUID? = nil, business: [BusinessDataModel], Agencies: [String : Bool] = [:], tokens: Int, sessionHistory: [SessionDataModel], userLevel: Int, badges: [String], inventory: [ItemModel]) {
         self.id = id
         self.username = username
         self.name = name
         self.email = email
         self.password = password
-        self.businesses = []
+        self.netWorth = netWorth
         self.availableBalance = availableBalance
-        self.level = level
-        self.created = created
-        self.inventory = [
-            "Cash Booster" : 0,
-            "Experience Booster" : 0,
-            "Cost Reduction" : 0,
-            "Break Booster" : 0
-        ]
-        self.stocks = stocks
-        self.flashcards = flashcards
-        self.transactions = transactions
-        self.miniGameSessions = miniGameSessions
-        self.flashcardSessions = flashcardSessions
+        self.friends = friends
+        self.referralCode = referralCode
+        self.invitedByUserId = invitedByUserId
+        self.businesses = business
+        self.Agencies = Agencies
+        self.tokens = tokens
+        self.sessionHistory = sessionHistory
+        self.userLevel = userLevel
+        self.badges = badges
+        self.inventory = inventory
     }
 }
 
-
 extension UserDataModel {
-    func addTransaction(image: String, name: String, category: String, amount: Int, description: String, income: Bool) {
+    func OpenBusiness(name: String, theme: String, type: String, icon: String) {
         
-        let newTransaction = TransactionDataModel(image: image, name: name, category: category, amount: amount, transactionDescription: description, createdAt: Date.now, income: income)
-        self.transactions.append(newTransaction)
+        let newBusiness = BusinessDataModel(businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0, building: "")
+        self.businesses.append(newBusiness)
+    }
+    
+    func MakeSession(time: Int) -> SessionDataModel {
+        var businessSummaries: [BusinessSessionSummary] = []
+        for business in self.businesses {
+            let baseIncome = business.cashPerMinute * time
+            let businessSessison = BusinessSessionSummary(
+                // Income
+                businessId: business.id,
+                baseIncome: baseIncome,
+                productIncome: 0,
+                rentalIncome: 0,
+                serviceIncome: 0,
+                // Costs
+                taxCost: 0,
+                wageCost: 0,
+                premisesCost: 0,
+                productStorageCost: 0,
+                adCampaignCost: 0,
+                researchCost: 0,
+                finesCost: 0,
+                securityCost: 0,
+                insuranceCost: 0
+            )
+            
+            businessSummaries.append(businessSessison)
+        }
+        
+        let newSession = SessionDataModel(date: Date.now, totalTime: time, businessSummaries: businessSummaries)
+        self.sessionHistory.append(newSession)
+        
+        return newSession
     }
 }

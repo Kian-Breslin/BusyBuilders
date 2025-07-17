@@ -12,14 +12,12 @@ import SwiftData
 struct BusyBuilders: App {
     
     var userManager = UserManager()
-    var themeManager = ThemeManager()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: [UserDataModel.self, BusinessDataModel.self, DeckModel.self, CompanyDataModel.self])
+                .modelContainer(for: [UserDataModel.self, BusinessDataModel.self])
                 .environmentObject(UserManager())
-                .environmentObject(ThemeManager())
         }
     }
 }

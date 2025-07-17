@@ -6,13 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		10D674922E129D8F008B2017 /* ConfirmDeletePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D674912E129D8F008B2017 /* ConfirmDeletePopUp.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		10B671FF2CA2772000B6C010 /* BusyBuilders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusyBuilders.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		10D674912E129D8F008B2017 /* ConfirmDeletePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeletePopUp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,7 +45,6 @@
 		10B671F62CA2772000B6C010 = {
 			isa = PBXGroup;
 			children = (
-				10D674912E129D8F008B2017 /* ConfirmDeletePopUp.swift */,
 				10B672012CA2772000B6C010 /* BusyBuilders */,
 				10B672002CA2772000B6C010 /* Products */,
 			);
@@ -139,7 +133,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10D674922E129D8F008B2017 /* ConfirmDeletePopUp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
