@@ -2,139 +2,45 @@
 //  Portfolio.swift
 //  BusyBuilders
 //
-//  Created by Kian Breslin on 23/09/2024.
+//  Created by Kian Breslin on 17/07/2025.
 //
 
 import SwiftUI
 import SwiftData
 
 struct Portfolio: View {
+    @EnvironmentObject var userManager: UserManager
+    @State var selectedIcon = "book.pages"
     
-    @EnvironmentObject var themeManager: ThemeManager
-    @Environment(\.modelContext) var context
-    @Query var users: [UserDataModel]
-    @Query var businesses: [BusinessDataModel]
-    
-    @Binding var isSettingsShowing : Bool
-    @State var selectedScreen = "person"
-    
-    @State var searchForUser = ""
-    @State var selectedBusinessToDelete : BusinessDataModel?
-    @State var confirmDeleteBusiness = false
-    
-    @State var Title = "Portfolio"
-    @State var buttonImages = ["person", "building", "building.columns", "banknote"]
-    @State var buttonText = ["My Stats", "My Businesses", "My City", "Investments"]
-    
-    let randomNames = ["Nova Nexus",
-                       "Echo Ventures",
-                       "Aspire Dynamics",
-                       "Vertex Innovations",
-                       "PulsePoint Solutions",
-                       "Summit Strategies",
-                       "Luminary Labs",
-                       "Momentum Works",
-                       "Catalyst Collective",
-                       "Fusion Horizons"]
-
     var body: some View {
-        NavigationView {
-            ZStack {
-                themeManager.mainColor
-                    .ignoresSafeArea()
-                VStack {
-                    VStack {
-                        // Top Header
-                        HStack {
-                            Text(Title)
-                                .font(.system(size: 35))
-                                .foregroundStyle(themeManager.textColor)
-                                .fontWeight(.bold)
-                            Spacer()
-                            HStack (spacing: 15){
-                                ZStack {
-                                    Image(systemName: "bell.fill")
-                                    Image(systemName: "2.circle.fill")
-                                        .font(.system(size: 15))
-                                        .offset(x: 10, y: -10)
-                                        .onTapGesture {
-                                            
-                                        }
-                                }
-                                .foregroundStyle(themeManager.textColor)
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 40, height: 40)
-                                    .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
-                                    .overlay(content: {
-                                        Image("userImage-2")
-                                            .resizable()
-                                            .frame(width: 40,height: 40)
-                                    })
-                                    .onTapGesture {
-                                        isSettingsShowing.toggle()
-                                    }                            }
-                            .font(.system(size: 25))
-                        }
-                        .frame(width: screenWidth-20, height: 60)
-                        
-                        HStack {
-                            ForEach(0..<4) { i in
-                                VStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 60, height: 60)
-                                        .foregroundStyle(themeManager.isDarkMode ? Color.gray.opacity(0.5) : getColor("light"))
-                                        .overlay {
-                                            Image(systemName: buttonImages[i] == selectedScreen ? "\(buttonImages[i]).fill" : "\(buttonImages[i])")
-                                                .font(.system(size: 30))
-                                                .foregroundStyle(themeManager.textColor)
-                                        }
-                                        .onTapGesture {
-                                            selectedScreen = buttonImages[i]
-                                        }
-                                    Text(buttonText[i])
-                                        .font(.system(size: 10))
-                                        .scaledToFit()
-                                }
-                                .frame(width: 60, height: 80)
-                                
-                                // Add a spacer after each VStack, except for the last one
-                                if i < 3 {
-                                    Spacer()
-                                }
-                            }
-                        }
-                        .font(.system(size: 12))
-                        .foregroundStyle(themeManager.textColor)
-                        .frame(width: screenWidth - 30, height: 100)
-                    }
-                    .frame(width: screenWidth-20, height: 160)
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: screenWidth)
-                        .foregroundStyle(themeManager.isDarkMode ? getColor(themeManager.mainDark) : getColor("light"))
-                        .overlay {
-                            if selectedScreen == "person" {
-                                MyStats()
-                            }
-                            else if selectedScreen == "building" {
-                                MyBusinesses()
-                            }
-                            else if selectedScreen == "building.columns" {
-                                Text("My City")
-                                    .foregroundStyle(.black)
-                            }
-                            else if selectedScreen == "banknote" {
-                                InvestmentView()
-                            }
-                        }
-                    }
+        VStack {
+            TopNavigation(
+                title: "Portfolio",
+                iconNames: ["book.pages", "building.2", "chart.line.uptrend.xyaxis", "building.columns"],
+                iconLabels: ["My Stats", "Businesses", "Stocks", "City"],
+                selectedIcon: $selectedIcon
+            )
+            Spacer()
+        }
+        .background(userManager.mainColor)
+        
+        VStack {
+            if selectedIcon == "book.pages" {
+                PortfolioMyStats()
+            } else if selectedIcon == "building.2" {
+                PortfolioBusinesses()
+            } else if selectedIcon == "chart.line.uptrend.xyaxis" {
+                
+            }
+            else if selectedIcon == "building.columns" {
+                
             }
         }
+        .background(userManager.mainColor)
     }
 }
 
 #Preview {
-    Portfolio(isSettingsShowing: .constant(false))
+    Portfolio()
         .environmentObject(UserManager())
-        .environmentObject(ThemeManager())
 }
