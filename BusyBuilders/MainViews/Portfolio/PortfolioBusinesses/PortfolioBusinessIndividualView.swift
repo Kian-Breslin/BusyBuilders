@@ -37,7 +37,7 @@ struct PortfolioBusinessIndividualView: View {
                             Image(systemName: "cart")
                                 .onTapGesture {
                                     print("Buy Employee")
-                                    if business.departments["Hiring Department"] == true {
+                                    if business.departments["Hiring Department"]?.isUnlocked == true {
                                         business.employees += 1
                                     } else {
                                         hiringDptNotOwnedAlert.toggle()
@@ -53,19 +53,21 @@ struct PortfolioBusinessIndividualView: View {
                             .font(.headline)
                             .foregroundColor(userManager.textColor)
 
-                        ForEach(business.departments.sorted(by: { $0.key < $1.key }), id: \.key) { dept, isUnlocked in
+                        ForEach(business.departments.sorted(by: { $0.key < $1.key }), id: \.key) { dept, info in
                             HStack {
-                                Image(systemName: isUnlocked ? "checkmark.circle.fill" : "circle")
-                                    .foregroundColor(isUnlocked ? .green : .gray)
+                                Image(systemName: info.isUnlocked ? "checkmark.circle.fill" : "circle")
+                                    .foregroundColor(info.isUnlocked ? .green : .gray)
                                 Text(dept)
                                     .foregroundColor(userManager.textColor)
                                 Spacer()
-                                Image(systemName: isUnlocked ? "" : "cart")
-                                    .onTapGesture {
-                                        if !isUnlocked {
-                                            business.departments[dept] = true
+                                if !info.isUnlocked {
+                                    Image(systemName: "cart")
+                                        .onTapGesture {
+                                            var updatedInfo = info
+                                            updatedInfo.isUnlocked = true
+                                            business.departments[dept] = updatedInfo
                                         }
-                                    }
+                                }
                             }
                         }
                     }

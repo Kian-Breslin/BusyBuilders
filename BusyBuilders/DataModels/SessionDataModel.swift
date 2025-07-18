@@ -12,12 +12,57 @@ struct SessionDataModel: Codable, Hashable {
     let date: Date
     var totalTime: Int
     var businessSummaries: [BusinessSessionSummary]
+    // Income
+    var totalBusinessProductIncome: Int {
+        var base = 0
+        for business in businessSummaries {
+            base += business.productIncome
+        }
+        return base
+    }
+    var totalBusinessBaseIncome: Int {
+        businessSummaries.reduce(0) { $0 + $1.baseIncome }
+    }
+    var totalBusinessRentalIncome: Int {
+        businessSummaries.reduce(0) { $0 + $1.rentalIncome }
+    }
+    var totalBusinessServiceIncome: Int {
+        businessSummaries.reduce(0) { $0 + $1.serviceIncome }
+    }
     var totalBusinessIncome: Int {
         var total = 0
         for businessSummary in businessSummaries {
-            total += businessSummary.total
+            total += businessSummary.totalIncome
         }
         return total
+    }
+    // Costs
+    var totalBusinessTaxCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.taxCost }
+    }
+    var totalBusinessWageCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.wageCost }
+    }
+    var totalBusinessPremisesCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.premisesCost }
+    }
+    var totalBusinessProductStorageCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.productStorageCost }
+    }
+    var totalBusinessAdCampaignCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.adCampaignCost }
+    }
+    var totalBusinessResearchCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.researchCost }
+    }
+    var totalBusinessFinesCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.finesCost }
+    }
+    var totalBusinessSecurityCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.securityCost }
+    }
+    var totalBusinessInsuranceCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.insuranceCost }
     }
     var totalBusinessCosts: Int {
         var total = 0
@@ -25,6 +70,11 @@ struct SessionDataModel: Codable, Hashable {
             total += businessSummary.totalCost
         }
         return total
+    }
+    
+    // Total
+    var total: Int {
+        return totalBusinessIncome - totalBusinessCosts
     }
 }
 
@@ -65,5 +115,10 @@ struct BusinessSessionSummary: Codable, Hashable {
 }
 
 extension SessionDataModel {
-    static let sessionForPreview = SessionDataModel(date: Date.now, totalTime: 60, businessSummaries: [])
+    static let sessionForPreview = SessionDataModel(
+        date: Date.now,
+        totalTime: 60,
+        businessSummaries: [
+            BusinessSessionSummary(businessId: UUID(), baseIncome: 6000, productIncome: 100, rentalIncome: 100, serviceIncome: 100, taxCost: 1000, wageCost: 100, premisesCost: 200, productStorageCost: 100, adCampaignCost: 100, researchCost: 100, finesCost: 0, securityCost: 0, insuranceCost: 0)
+        ])
 }
