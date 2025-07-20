@@ -41,6 +41,9 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
         }
+        .fullScreenCover(isPresented: $userManager.showSettings) {
+            Settings()
+        }
     }
 }
 

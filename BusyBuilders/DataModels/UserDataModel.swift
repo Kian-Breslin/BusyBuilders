@@ -10,10 +10,10 @@ import SwiftData
 
 @Model
 public class UserDataModel: Identifiable, ObservableObject {
-    public var id: UUID // Unique identifier for the user
+    public var id: UUID
     var username: String
-    var name: String // User's chosen username
-    var email: String // User's email address
+    var name: String
+    var email: String
     var password: String
     
     // User Cash

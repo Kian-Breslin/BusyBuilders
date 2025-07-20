@@ -13,6 +13,7 @@ class UserManager: ObservableObject {
     @AppStorage("isUserCreated") var isUserCreated: Bool = false
     @AppStorage("isDarkMode") var isDarkMode: Bool = true
     @AppStorage("accentColor") var accentColor: String = "red"
+    @Published var showSettings: Bool = false
     
     var mainColor: Color {
         isDarkMode ? getColor("black") : getColor("white")

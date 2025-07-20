@@ -43,14 +43,7 @@ struct TopNavigation: View {
                             }
                         })
                         .onTapGesture {
-                            let newUser = UserDataModel(id: UUID(), username: "Keano517", name: "Kian", email: "Kianbreslin517@gmail.com", password: "Password", netWorth: 0, availableBalance: 0, friends: [], business: [], tokens: 0, sessionHistory: [], userLevel: 0, badges: [], inventory: [])
-                            context.insert(newUser)
-                            do {
-                                try context.save()
-                            } catch {
-                                print("Error Creating a user")
-                            }
-                            
+                            userManager.showSettings.toggle()
                         }
                 }
             }

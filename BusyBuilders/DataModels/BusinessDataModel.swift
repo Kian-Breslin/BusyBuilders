@@ -47,8 +47,8 @@ class BusinessDataModel : ObservableObject, Identifiable {
     
     // Costs
     var costPerMinute: Int {
-        let baseCost = 20 + (level * 10)
-        return baseCost + employeeCostperMinute + taxAmount
+        let baseCost = 20 + (level * 4)
+        return baseCost + employeeCostperMinute
     }
     
     // Add-ons
