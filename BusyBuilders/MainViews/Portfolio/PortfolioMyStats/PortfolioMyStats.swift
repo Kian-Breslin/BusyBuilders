@@ -182,7 +182,7 @@ struct PortfolioSesisonIndividualView: View {
                             Label("$\(session.totalBusinessTaxCost)", systemImage: "chart.pie.fill")
                                 .foregroundStyle(.red)
                             // Premises
-                            Label("$\(session.totalBusinessPremisesCost)", systemImage: "building.2")
+                            Label("$\(session.totalBusinessRentCost)", systemImage: "building.2")
                                 .foregroundStyle(.white)
                             // Employees
                             Label("$\(session.totalBusinessWageCost)", systemImage: "person.2.fill")

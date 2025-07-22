@@ -95,7 +95,7 @@ struct AgencyInfo: Codable, Hashable {
 extension UserDataModel {
     func OpenBusiness(name: String, theme: String, type: String, icon: String) {
         
-        let newBusiness = BusinessDataModel(businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0, building: "")
+        let newBusiness = BusinessDataModel(businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0)
         self.businesses.append(newBusiness)
     }
     
@@ -108,18 +108,19 @@ extension UserDataModel {
                 businessId: business.id,
                 baseIncome: business.cashPerMinute * time,
                 productIncome: 0,
-                rentalIncome: 0,
+                rentedBuildings: business.rentedBuildings,
                 serviceIncome: 0,
                 // Costs
                 taxCost: business.taxAmount,
                 wageCost: business.employeeCostperMinute * time,
-                premisesCost: 0,
                 productStorageCost: 0,
                 adCampaignCost: 0,
                 researchCost: 0,
                 finesCost: 0,
                 securityCost: 0,
-                insuranceCost: 0
+                insuranceCost: 0,
+                ownedBuildings: business.buildings,
+                rentingBuildings: business.rentingBuildings
             )
             
             businessSummaries.append(businessSessison)

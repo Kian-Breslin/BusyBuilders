@@ -150,5 +150,5 @@ struct BeachViewEndScreen: View {
 }
 
 #Preview {
-    BeachViewEndScreen(sessionStats: SessionDataModel(date: Date.now, totalTime: 60, businessSummaries: [BusinessSessionSummary(businessId: UUID(), baseIncome: 1000, productIncome: 0, rentalIncome: 0, serviceIncome: 0, taxCost: 200, wageCost: 0, premisesCost: 0, productStorageCost: 0, adCampaignCost: 0, researchCost: 0, finesCost: 0, securityCost: 0, insuranceCost: 0)]))
+    BeachViewEndScreen(sessionStats: SessionDataModel.sessionForPreview)
 }

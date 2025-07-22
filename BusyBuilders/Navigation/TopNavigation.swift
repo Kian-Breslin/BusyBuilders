@@ -36,15 +36,25 @@ struct TopNavigation: View {
                                 Circle()
                                     .fill(.green)
                                     .frame(width: 20, height: 20)
+                                    .onTapGesture {
+                                        userManager.showSettings.toggle()
+                                    }
                             } else {
                                 Circle()
                                     .fill(.red)
                                     .frame(width: 20, height: 20)
+                                    .onTapGesture {
+                                        let newUser = UserDataModel(id: UUID(), username: "Keano317", name: "Kian", email: "kianbreslin@gmail.com", password: "Password", netWorth: 0, availableBalance: 0, friends: [], business: [], tokens: 0, sessionHistory: [], userLevel: 0, badges: [], inventory: [])
+                                        context.insert(newUser)
+                                        do {
+                                            try context.save()
+                                        } catch {
+                                            print("Cannot save user: \(error)")
+                                        }
+                                        
+                                    }
                             }
                         })
-                        .onTapGesture {
-                            userManager.showSettings.toggle()
-                        }
                 }
             }
             
