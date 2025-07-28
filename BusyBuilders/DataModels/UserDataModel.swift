@@ -10,10 +10,10 @@ import SwiftData
 
 @Model
 public class UserDataModel: Identifiable, ObservableObject {
-    public var id: UUID // Unique identifier for the user
+    public var id: UUID
     var username: String
-    var name: String // User's chosen username
-    var email: String // User's email address
+    var name: String
+    var email: String
     var password: String
     
     // User Cash
@@ -95,7 +95,7 @@ struct AgencyInfo: Codable, Hashable {
 extension UserDataModel {
     func OpenBusiness(name: String, theme: String, type: String, icon: String) {
         
-        let newBusiness = BusinessDataModel(businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0, building: "")
+        let newBusiness = BusinessDataModel(businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0)
         self.businesses.append(newBusiness)
     }
     
@@ -103,23 +103,26 @@ extension UserDataModel {
         let time = time/60
         var businessSummaries: [BusinessSessionSummary] = []
         for business in self.businesses {
+            // Product Logic
+            
             let businessSessison = BusinessSessionSummary(
                 // Income
                 businessId: business.id,
                 baseIncome: business.cashPerMinute * time,
-                productIncome: 0,
-                rentalIncome: 0,
+                products: business.products,
+                rentedBuildings: business.rentedBuildings,
                 serviceIncome: 0,
                 // Costs
                 taxCost: business.taxAmount,
                 wageCost: business.employeeCostperMinute * time,
-                premisesCost: 0,
                 productStorageCost: 0,
                 adCampaignCost: 0,
                 researchCost: 0,
                 finesCost: 0,
                 securityCost: 0,
-                insuranceCost: 0
+                insuranceCost: 0,
+                ownedBuildings: business.buildings,
+                rentingBuildings: business.rentingBuildings
             )
             
             businessSummaries.append(businessSessison)
@@ -128,9 +131,11 @@ extension UserDataModel {
         let newSession = SessionDataModel(date: Date.now, totalTime: time, businessSummaries: businessSummaries)
         self.sessionHistory.append(newSession)
         
+        self.availableBalance += newSession.total
+        
         return newSession
     }
-    
+
     
     func getBusinessSummaries() -> [[String]] {
         return businesses.map { business in

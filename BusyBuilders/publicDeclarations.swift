@@ -13,6 +13,7 @@ class UserManager: ObservableObject {
     @AppStorage("isUserCreated") var isUserCreated: Bool = false
     @AppStorage("isDarkMode") var isDarkMode: Bool = true
     @AppStorage("accentColor") var accentColor: String = "red"
+    @Published var showSettings: Bool = false
     
     var mainColor: Color {
         isDarkMode ? getColor("black") : getColor("white")
@@ -65,3 +66,16 @@ extension Font {
         return Font.custom("LondrinaOutline-Regular", size: CGFloat(size) )
     }
 }
+
+let buildings: [Building] = [
+    Building(name: "Garage", image: "garageBuilding", cost: 0, employeeCap: 50, bills: 50, rent: 0, boostPerSession: 0),
+    Building(name: "Studio", image: "studioBuilding", cost: 25000, employeeCap: 100, bills: 100, rent: 500, boostPerSession: 5),
+    Building(name: "Small Office", image: "smallOffice", cost: 50000, employeeCap: 150, bills: 150, rent: 1000, boostPerSession: 10),
+    Building(name: "Shared Workspace", image: "sharedWorkspace", cost: 50000, employeeCap: 180, bills: 180, rent: 800, boostPerSession: 8),
+    Building(name: "Downtown Office", image: "downtownOffice", cost: 100000, employeeCap: 300, bills: 300, rent: 2000, boostPerSession: 15),
+    Building(name: "Industrial Loft", image: "industrialLoft", cost: 100000, employeeCap: 280, bills: 270, rent: 1800, boostPerSession: 12),
+    Building(name: "Corporate Floor", image: "corporateFloor", cost: 200000, employeeCap: 500, bills: 450, rent: 4000, boostPerSession: 25),
+    Building(name: "Tech Hub", image: "techHub", cost: 300000, employeeCap: 600, bills: 500, rent: 3500, boostPerSession: 30),
+    Building(name: "Business Tower", image: "businessTower", cost: 500000, employeeCap: 1000, bills: 800, rent: 6000, boostPerSession: 50),
+    Building(name: "Smart Campus", image: "smartCampus", cost: 750000, employeeCap: 1200, bills: 850, rent: 5500, boostPerSession: 60)
+]

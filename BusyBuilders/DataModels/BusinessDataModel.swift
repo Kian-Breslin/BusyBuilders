@@ -47,8 +47,8 @@ class BusinessDataModel : ObservableObject, Identifiable {
     
     // Costs
     var costPerMinute: Int {
-        let baseCost = 20 + (level * 10)
-        return baseCost + employeeCostperMinute + taxAmount
+        let baseCost = 20 + (level * 4)
+        return baseCost + employeeCostperMinute
     }
     
     // Add-ons
@@ -63,26 +63,30 @@ class BusinessDataModel : ObservableObject, Identifiable {
     // Hiring Department : Can hire Employees
     var hiringCost: Int {
         let baseHiringCost = 100
-        let hiringLevel = departments["Hiring Department"]?.level ?? 0
-        let discount = min(hiringLevel * 10, 50) // Max 50% discount
-        return baseHiringCost * (100 - discount) / 100
+        return (baseHiringCost) + (4 * employees)
     }
-    var employeeCashperMinute : Int {
-        let levelFactor = max(0, (level - 1) / 5)
-        let employeeCash = employees * (2 + (levelFactor * 5))
-        return employeeCash
+    var employeeCashperMinute: Int {
+        let baseIncome = 5
+        let incomePerLevel = 2
+        return employees * (baseIncome + (level * incomePerLevel))
     }
-    var employeeCostperMinute : Int {
-        let levelFactor = max(0, (level - 1) / 5)
-        let employeeCost = employees * (2 + (levelFactor * 4))
-        return employeeCost
+    var employeeCostperMinute: Int {
+        let baseCost = 2
+        let costPerLevel = 2
+        let financeLevel = departments["Finance Department"]?.level ?? 0
+        let discount = financeLevel * 2
+        let adjustedCostPerEmployee = max(baseCost + (level * costPerLevel) - discount, 0)
+        return employees * adjustedCostPerEmployee
     }
     var employees : Int = 0
     
     // Operations Department : Can upgrade Premises
-    var building : String = ""
+    var buildings: [Building] = [Building(name: "Garage", image: "garageBuilding", cost: 0, employeeCap: 10, bills: 10, rent: 0, boostPerSession: 0)]
+    var rentingBuildings: [Building] = []
+    var rentedBuildings: [Building] = []
     // R&D Department : Can do Product Research
     var activeResearchProjects: [String] = []
+    var products: [ProductModel] = []
     // Marketing Department : Can run Ad Campaigns
     var currentCampaigns: [String] = []
     // Finance Department : Can be Investmented in
@@ -95,7 +99,7 @@ class BusinessDataModel : ObservableObject, Identifiable {
     }
     var investmentPortfolio: [String: Double] = [:]
     
-    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, creationDate: Date = Date.now, totalTime: Int, building: String) {
+    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, creationDate: Date = Date.now, totalTime: Int) {
         self.id = id
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -103,8 +107,20 @@ class BusinessDataModel : ObservableObject, Identifiable {
         self.businessIcon = businessIcon
         self.creationDate = creationDate
         self.totalTime = totalTime
-        self.building = building
     }
+}
+
+struct Building: Codable, Hashable {
+    var name: String
+    var image: String
+    var cost: Int
+    var employeeCap: Int
+    var bills: Int
+    var rent: Int
+    var costPerSession: Int {
+        return rent + bills
+    }
+    var boostPerSession: Int
 }
 
 struct DepartmentInfo: Codable, Hashable {
@@ -118,8 +134,59 @@ extension BusinessDataModel {
         businessTheme: "red",
         businessType: "Eco",
         businessIcon: "cup.and.saucer",
-        totalTime: 0,
-        building: "Corner Shop"
+        totalTime: 0
     )
+    
+    func upgradeDepartment(dept: String){
+        if var department = departments[dept], department.isUnlocked {
+            department.level += 1
+            departments[dept] = department
+        }
+    }
+    
+    func buyDepartment(dept: String) {
+        self.departments[dept]?.isUnlocked = true
+    }
+    
+    func addEmployee() {
+        employees += 1
+    }
+
+    func priceForNewDepartment() -> Int {
+        let unlockedCount = departments.values.filter { $0.isUnlocked }.count
+        return 25000 * (unlockedCount + 1)
+    }
+    
+    func createProduct() {
+        
+    }
+    
+    func createPreviwProduct() {
+        let productNames = ["Laptop", "Phone", "Bike", "Social App", "Cereal", "Car", "Delivery Service", "Gym"]
+        let newProduct = ProductModel(name: "\(productNames[Int.random(in: 0..<8)])", type: .service, quantity: 0)
+        self.products.append(newProduct)
+    }
+    
 }
 
+
+
+
+extension BusinessDataModel {
+    func checkBuildingOwnership(buildingName: String) -> (Bool, String) {
+        if buildings.contains(where: { $0.name == buildingName }) {
+            return (true, "You already own this building")
+        } else if rentingBuildings.contains(where: { $0.name == buildingName }) {
+            return (true, "You are already renting this building")
+        } else if rentedBuildings.contains(where: { $0.name == buildingName }) {
+            return (true, "You are already renting out this buidling")
+        } else {
+            return (false, "not found")
+        }
+    }
+
+    var ownedBuildings: [Building] {
+        return buildings
+    }
+    
+}

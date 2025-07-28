@@ -30,7 +30,7 @@ struct Play: View {
             } else if selectedIcon == "book" {
                 
             } else if selectedIcon == "gamecontroller" {
-                
+                PlayGames()
             }
             else if selectedIcon == "chart.line.uptrend.xyaxis" {
                 

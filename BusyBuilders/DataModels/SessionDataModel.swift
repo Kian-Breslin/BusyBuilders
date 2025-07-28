@@ -8,7 +8,8 @@
 import SwiftUI
 import Foundation
 
-struct SessionDataModel: Codable, Hashable {
+struct SessionDataModel: Codable {
+    var id = UUID()
     let date: Date
     var totalTime: Int
     var businessSummaries: [BusinessSessionSummary]
@@ -43,8 +44,11 @@ struct SessionDataModel: Codable, Hashable {
     var totalBusinessWageCost: Int {
         businessSummaries.reduce(0) { $0 + $1.wageCost }
     }
-    var totalBusinessPremisesCost: Int {
-        businessSummaries.reduce(0) { $0 + $1.premisesCost }
+    var totalBusinessRentCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.rentCost }
+    }
+    var totalBusinessBillsCost: Int {
+        businessSummaries.reduce(0) { $0 + $1.billsCost }
     }
     var totalBusinessProductStorageCost: Int {
         businessSummaries.reduce(0) { $0 + $1.productStorageCost }
@@ -80,13 +84,23 @@ struct SessionDataModel: Codable, Hashable {
 
 
 // MARK: - Business Session Summary
-struct BusinessSessionSummary: Codable, Hashable {
+struct BusinessSessionSummary: Codable {
     let businessId: UUID
     
     // Income sources
     let baseIncome: Int        // From time studied (cash per minute)
-    let productIncome: Int     // From selling products
-    let rentalIncome: Int      // From leasing previous buildings
+    var products: [ProductModel]
+    var productIncome: Int {
+        var netIncome = 0
+        for product in products {
+            netIncome += product.runProductSim()
+        }
+        return netIncome
+    }
+    let rentedBuildings: [Building]
+    var rentalIncome: Int {
+        rentedBuildings.reduce(0) { $0 + $1.rent }
+    }     // From leasing previous buildings
     let serviceIncome: Int     // From offering services
     
     var totalIncome: Int {
@@ -96,16 +110,26 @@ struct BusinessSessionSummary: Codable, Hashable {
     // Cost sources
     let taxCost: Int
     let wageCost: Int
-    let premisesCost: Int
     let productStorageCost: Int
     let adCampaignCost: Int
     let researchCost: Int
     let finesCost: Int
     let securityCost: Int
     let insuranceCost: Int
+    
+    let ownedBuildings: [Building]
+    let rentingBuildings: [Building]
+    
+    var rentCost: Int {
+        rentingBuildings.reduce(0) { $0 + $1.rent }
+    }
+
+    var billsCost: Int {
+        ownedBuildings.reduce(0) { $0 + $1.bills } + rentingBuildings.reduce(0) { $0 + $1.bills }
+    }
 
     var totalCost: Int {
-        taxCost + wageCost + premisesCost + productStorageCost +
+        taxCost + wageCost + rentCost + billsCost + productStorageCost +
         adCampaignCost + researchCost + finesCost + securityCost + insuranceCost
     }
     
@@ -119,6 +143,22 @@ extension SessionDataModel {
         date: Date.now,
         totalTime: 60,
         businessSummaries: [
-            BusinessSessionSummary(businessId: UUID(), baseIncome: 6000, productIncome: 100, rentalIncome: 100, serviceIncome: 100, taxCost: 1000, wageCost: 100, premisesCost: 200, productStorageCost: 100, adCampaignCost: 100, researchCost: 100, finesCost: 0, securityCost: 0, insuranceCost: 0)
+            BusinessSessionSummary(
+                businessId: UUID(),
+                baseIncome: 6000,
+                products: [],
+                rentedBuildings: [],
+                serviceIncome: 100,
+                taxCost: 1000,
+                wageCost: 100,
+                productStorageCost: 100,
+                adCampaignCost: 100,
+                researchCost: 100,
+                finesCost: 0,
+                securityCost: 0,
+                insuranceCost: 0,
+                ownedBuildings: [buildings[0]],
+                rentingBuildings: []
+            )
         ])
 }

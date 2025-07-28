@@ -75,6 +75,7 @@ struct TimerSunset: View {
                                         if let user = users.first {
                                             let newSession = user.MakeSession(time: timerManager.timeElapsed)
                                             sessionStats = newSession
+                                            user.availableBalance += newSession.total
                                             showSessionStats.toggle()
                                         }
                                     }
