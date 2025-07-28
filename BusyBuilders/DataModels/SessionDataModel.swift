@@ -8,7 +8,8 @@
 import SwiftUI
 import Foundation
 
-struct SessionDataModel: Codable, Hashable {
+struct SessionDataModel: Codable {
+    var id = UUID()
     let date: Date
     var totalTime: Int
     var businessSummaries: [BusinessSessionSummary]
@@ -83,12 +84,19 @@ struct SessionDataModel: Codable, Hashable {
 
 
 // MARK: - Business Session Summary
-struct BusinessSessionSummary: Codable, Hashable {
+struct BusinessSessionSummary: Codable {
     let businessId: UUID
     
     // Income sources
     let baseIncome: Int        // From time studied (cash per minute)
-    let productIncome: Int     // From selling products
+    var products: [ProductModel]
+    var productIncome: Int {
+        var netIncome = 0
+        for product in products {
+            netIncome += product.runProductSim()
+        }
+        return netIncome
+    }
     let rentedBuildings: [Building]
     var rentalIncome: Int {
         rentedBuildings.reduce(0) { $0 + $1.rent }
@@ -138,7 +146,7 @@ extension SessionDataModel {
             BusinessSessionSummary(
                 businessId: UUID(),
                 baseIncome: 6000,
-                productIncome: 100,
+                products: [],
                 rentedBuildings: [],
                 serviceIncome: 100,
                 taxCost: 1000,

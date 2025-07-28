@@ -9,7 +9,8 @@ struct PortfolioBusinessIndividualView: View {
     
     @State var hiringDptNotOwnedAlert = false
     @State private var selectedDepartment: String = "none"
-
+    @State var showDepartment = false
+    
 
     var body: some View {
         NavigationView {
@@ -31,7 +32,7 @@ struct PortfolioBusinessIndividualView: View {
                         InfoItemView(business: business)
                             .foregroundColor(userManager.textColor)
 
-                        DepartmentHolderView(business: business)
+                        DepartmentHolderView(business: business, showDepartments: $showDepartment)
 
                         Spacer()
                     }
@@ -100,7 +101,7 @@ struct ExtractedView: View {
         VStack(alignment: .leading, spacing: 15) {
             HStack {
                 Text("Buildings")
-                    .font(.subheadline)
+                    .font(.headline)
                 Spacer()
                 Group{
                     Text("\(showBuilding ? "Hide" : "Show")")
@@ -123,11 +124,11 @@ struct ExtractedView: View {
                 }
                 .pickerStyle(.segmented)
                 .animation(.linear, value: chosenCategory)
-                .transition(.move(edge: .trailing))
+                .transition(.move(edge: .bottom).combined(with: .opacity))
                 
                 ForEach(buildingsToDisplay, id: \.self) { building in
                     BuildingView(business: business, buildings: building)
-                        .transition(.move(edge: .trailing))
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                         .opacity(business.buildings.contains(where: { $0.name == building.name }) && chosenCategory == "Buy" ? 0.3 : 1)
                         .onTapGesture {
                             if chosenCategory == "Buy" {
@@ -187,6 +188,7 @@ struct DepartmentItem: View {
     @Binding var selectedDept : String
     let dept : String
     let business: BusinessDataModel
+    @State var showProductLaunchScreen = false
     
     @State var isErrorBuying = false
     var body: some View {
@@ -236,7 +238,7 @@ struct DepartmentItem: View {
                             OperationsDeptView(business: business)
                                 .transition(.scale.combined(with: .opacity))
                         case "Research and Development Department":
-                            ResearchDeptView(business: business)
+                            ResearchDeptView(business: business, showProductLaunchScreen: $showProductLaunchScreen)
                                 .transition(.scale.combined(with: .opacity))
                         default:
                             Text("Not Found")
@@ -250,6 +252,9 @@ struct DepartmentItem: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text("You do not have enough cash to buy a \(dept.capitalized), Start a session to earn some cash")
+            }
+            .fullScreenCover(isPresented: $showProductLaunchScreen) {
+                ProductLaunch(business: business)
             }
     }
 }

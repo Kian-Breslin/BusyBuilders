@@ -72,6 +72,16 @@ struct Settings: View {
                         Text("Admin Settings")
                             .font(.caption)
                         HStack {
+                            Text("Increase Available Balance")
+                            Spacer()
+                            Image(systemName: "plus.square")
+                                .onTapGesture {
+                                    if let user = users.first {
+                                        user.availableBalance += 10000
+                                    }
+                                }
+                        }
+                        HStack {
                             Text("Reset Account")
                             Spacer()
                             Image(systemName: "arrow.trianglehead.counterclockwise")
@@ -199,11 +209,6 @@ struct editBusinessItem: View {
                     }
             }
     }
-}
-
-#Preview {
-    editBusinessItem(business: BusinessDataModel.previewBusiness)
-        .environmentObject(UserManager())
 }
 
 #Preview {

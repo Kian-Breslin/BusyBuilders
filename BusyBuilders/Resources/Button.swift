@@ -15,6 +15,7 @@ struct customButton: View {
     var width: CGFloat
     var height: CGFloat
     var action: () -> Void
+    var textColor: Color? = UserManager().textColor
 
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
@@ -26,7 +27,7 @@ struct customButton: View {
             .frame(width: width, height: height)
             .overlay(
                 Text(text)
-                    .foregroundColor(userManager.textColor)
+                    .foregroundColor(textColor)
                     .bold()
             )
             .onTapGesture {

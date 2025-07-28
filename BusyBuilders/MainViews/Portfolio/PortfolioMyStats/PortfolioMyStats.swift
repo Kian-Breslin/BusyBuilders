@@ -61,50 +61,8 @@ struct PortfolioMyStats: View {
                                 }
                             }
                         }
-                        // --- End Businesses Net Worth Section ---
                     }
                 }
-                
-                Text("Session History: \(users.first?.sessionHistory.count ?? 0)")
-                    .font(.caption)
-                ScrollView (.horizontal){
-                    HStack {
-                        if let user = users.first{
-                            ForEach(user.sessionHistory, id: \.self){ session in
-                                PortfolioSessionItem(session: session)
-                                    .onLongPressGesture {
-                                        user.sessionHistory.removeAll(where: { $0.date == session.date })
-                                    }
-                                    .onTapGesture {
-                                        withAnimation(.bouncy){
-                                            selectedSession = session
-                                        }
-                                    }
-                            }
-                        }
-                    }
-                    .padding(4)
-                }
-                
-                if let session = selectedSession {
-                    PortfolioSesisonIndividualView(session: session)
-                        .transition(.move(edge: .leading).combined(with: .scale))
-                        .onTapGesture {
-                            withAnimation(.bouncy) {
-                                selectedSession = nil
-                            }
-                        }
-                }
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(userManager.mainColor)
-                    .frame(width: screenWidth-20, height: 180)
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(userManager.mainColor)
-                    .frame(width: screenWidth-20, height: 180)
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(userManager.mainColor)
-                    .frame(width: screenWidth-20, height: 180)
-                
             }
             .frame(width: screenWidth-20, alignment: .leading)
             .foregroundStyle(userManager.textColor)
@@ -219,11 +177,10 @@ struct PortfolioSesisonIndividualView: View {
     }
 }
 
-#Preview {
-    PortfolioSesisonIndividualView(session: SessionDataModel.sessionForPreview)
-}
+
 
 #Preview {
     Portfolio(selectedIcon: "book.pages")
         .environmentObject(UserManager())
 }
+

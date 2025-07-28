@@ -103,11 +103,13 @@ extension UserDataModel {
         let time = time/60
         var businessSummaries: [BusinessSessionSummary] = []
         for business in self.businesses {
+            // Product Logic
+            
             let businessSessison = BusinessSessionSummary(
                 // Income
                 businessId: business.id,
                 baseIncome: business.cashPerMinute * time,
-                productIncome: 0,
+                products: business.products,
                 rentedBuildings: business.rentedBuildings,
                 serviceIncome: 0,
                 // Costs
@@ -129,9 +131,11 @@ extension UserDataModel {
         let newSession = SessionDataModel(date: Date.now, totalTime: time, businessSummaries: businessSummaries)
         self.sessionHistory.append(newSession)
         
+        self.availableBalance += newSession.total
+        
         return newSession
     }
-    
+
     
     func getBusinessSummaries() -> [[String]] {
         return businesses.map { business in

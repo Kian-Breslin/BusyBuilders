@@ -11,6 +11,7 @@ import SwiftData
 struct ResearchDeptView: View {
     @Query var users: [UserDataModel]
     let business: BusinessDataModel
+    @Binding var showProductLaunchScreen: Bool
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -30,15 +31,30 @@ struct ResearchDeptView: View {
             .padding(.top, 10)
             HStack {
                 VStack(alignment: .leading) {
-                    Label("Products Launched: 3", systemImage: "cube.box")
                     Label("R&D Efficiency: High", systemImage: "flame")
                 }
                 Spacer()
                 customButton(text: "Research", color: getColor(business.businessTheme), width: 150, height: 50, action: {})
+            }
+            
+            HStack {
+                VStack(alignment: .leading) {
+                    Label("Products Launched: 3", systemImage: "cube.box")
+                }
+                Spacer()
+                customButton(text: "Lauch", color: getColor(business.businessTheme), width: 150, height: 50, action: {
+                    showProductLaunchScreen.toggle()
+                })
             }
             Spacer()
         }
         .frame(width: screenWidth-40, height: 200, alignment: .leading)
         .padding(.top, 10)
     }
+}
+
+#Preview {
+    ResearchDeptView(business: BusinessDataModel.previewBusiness, showProductLaunchScreen: .constant(false))
+        .background(UserManager().secondaryColor)
+        .environmentObject(UserManager())
 }

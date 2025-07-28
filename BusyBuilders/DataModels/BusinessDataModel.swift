@@ -86,6 +86,7 @@ class BusinessDataModel : ObservableObject, Identifiable {
     var rentedBuildings: [Building] = []
     // R&D Department : Can do Product Research
     var activeResearchProjects: [String] = []
+    var products: [ProductModel] = []
     // Marketing Department : Can run Ad Campaigns
     var currentCampaigns: [String] = []
     // Finance Department : Can be Investmented in
@@ -156,6 +157,16 @@ extension BusinessDataModel {
         return 25000 * (unlockedCount + 1)
     }
     
+    func createProduct() {
+        
+    }
+    
+    func createPreviwProduct() {
+        let productNames = ["Laptop", "Phone", "Bike", "Social App", "Cereal", "Car", "Delivery Service", "Gym"]
+        let newProduct = ProductModel(name: "\(productNames[Int.random(in: 0..<8)])", type: .service, quantity: 0)
+        self.products.append(newProduct)
+    }
+    
 }
 
 
@@ -177,4 +188,5 @@ extension BusinessDataModel {
     var ownedBuildings: [Building] {
         return buildings
     }
+    
 }
