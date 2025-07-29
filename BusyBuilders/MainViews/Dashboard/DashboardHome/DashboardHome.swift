@@ -10,29 +10,22 @@ import SwiftData
 
 struct DashboardHome: View {
     @EnvironmentObject var userManager: UserManager
-    let smallWidgetSize = CGSize(width: (screenWidth - 20) / 2, height: 90)
-    let largeWidgetSize = CGSize(width: (screenWidth - 20) / 2, height: 190)
-    let miniWidgetSize = CGSize(width: ((screenWidth - 20) / 2 - 5) / 2, height: (190 - 5) / 2)
-    let xLargeWidgetSize = CGSize(width: (screenWidth - 15), height: 190)
     
     var body: some View {
         ScrollView {
             VStack(spacing: 5) {
                 HStack(spacing: 5) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: smallWidgetSize.width, height: smallWidgetSize.height)
+                    SmallWidgetAvailableBalance()
                     
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: smallWidgetSize.width, height: smallWidgetSize.height)
+                    SmallWidgetAvailableBalance()
+                        
                 }
                 HStack(spacing: 5) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: largeWidgetSize.width, height: largeWidgetSize.height)
+                    LargeWidgetRecentSession()
                     
                     VStack(spacing: 5) {
                         HStack(spacing: 5) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: miniWidgetSize.width, height: miniWidgetSize.height)
+                            MiniWidgetStartSession(quickStartSession: $userManager.quickStartSession)
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: miniWidgetSize.width, height: miniWidgetSize.height)
                         }
@@ -76,6 +69,9 @@ struct DashboardHome: View {
         .background(userManager.secondaryColor)
         .foregroundStyle(userManager.mainColor)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .fullScreenCover(isPresented: $userManager.quickStartSession) {
+            TimerSunset()
+        }
     }
 }
 
