@@ -47,7 +47,7 @@ struct PlayTimer: View {
             if selectedTimer == "Beach" {
                 BeachViewTimer(isTimerActive: $isTimerActive)
             } else if selectedTimer == "Sunset" {
-                TimerSunset(isTimerActive: $isTimerActive)
+                TimerSunset()
             }
         }
     }

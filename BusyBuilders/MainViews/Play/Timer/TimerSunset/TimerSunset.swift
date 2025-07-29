@@ -14,11 +14,8 @@ struct TimerSunset: View {
     @Query var users : [UserDataModel]
     
     @StateObject var timerManager = TimerManager()
-    @Binding var isTimerActive : Bool
     
-    @State var showSessionStats = false
-    
-    @State private var sessionStats: SessionDataModel? = nil
+    @State private var sessionStats: SessionDataModel? = nil // Also used to trigger sheet
     
     @State var showClockOutButton = false
     @State var changeIcon = false
@@ -76,7 +73,6 @@ struct TimerSunset: View {
                                             let newSession = user.MakeSession(time: timerManager.timeElapsed)
                                             sessionStats = newSession
                                             user.availableBalance += newSession.total
-                                            showSessionStats.toggle()
                                         }
                                     }
                                 }
@@ -146,19 +142,15 @@ struct TimerSunset: View {
                 icon1Color = "red"
             }
             timerManager.start()
-            isTimerActive = true
+            
         }
-        .sheet(isPresented: $showSessionStats) {
-            if let sessionStats = sessionStats {
-                BeachViewEndScreen(sessionStats: sessionStats)
-                    .presentationDetents([.fraction(0.7)])
-                    .onDisappear {
-                        print("Closed Sheet -> Close Timer")
-                        dismiss()
-                    }
-            } else {
-                Text("No session data available.")
-            }
+        .sheet(item: $sessionStats) { session in
+            BeachViewEndScreen(sessionStats: session)
+                .presentationDetents([.fraction(0.7)])
+                .onDisappear {
+                    print("Closed Sheet -> Close Timer")
+                    dismiss()
+                }
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
@@ -171,6 +163,6 @@ struct TimerSunset: View {
 }
 
 #Preview {
-    TimerSunset(isTimerActive: .constant(true))
+    TimerSunset()
         .environmentObject(UserManager())
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-struct SessionDataModel: Codable {
+struct SessionDataModel: Identifiable, Codable {
     var id = UUID()
     let date: Date
     var totalTime: Int

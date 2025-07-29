@@ -135,7 +135,6 @@ extension UserDataModel {
         
         return newSession
     }
-
     
     func getBusinessSummaries() -> [[String]] {
         return businesses.map { business in
@@ -146,5 +145,37 @@ extension UserDataModel {
                 String(business.netWorth)
             ]
         }
+    }
+    
+    func getDateIncome(date: String) -> Int {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2 // Ensure week starts on Monday
+        let now = Date()
+
+        let filteredSessions: [SessionDataModel] = sessionHistory.filter { session in
+            switch date.lowercased() {
+            case "todays":
+                return calendar.isDateInToday(session.date)
+            case "weekly":
+                if let weekInterval = calendar.dateInterval(of: .weekOfYear, for: now) {
+                    return weekInterval.contains(session.date)
+                }
+                return false
+            case "monthly":
+                if let monthInterval = calendar.dateInterval(of: .month, for: now) {
+                    return monthInterval.contains(session.date)
+                }
+                return false
+            default:
+                return false
+            }
+        }
+
+        return filteredSessions.reduce(0) { $0 + $1.total }
+    }
+    
+    func get5PreviousSessions() -> [SessionDataModel] {
+        let sortedSessions = sessionHistory.sorted(by: { $0.date > $1.date })
+        return Array(sortedSessions.prefix(5))
     }
 }
