@@ -15,6 +15,7 @@ class UserManager: ObservableObject {
     @AppStorage("accentColor") var accentColor: String = "red"
     @Published var showSettings: Bool = false
     @Published var quickStartSession: Bool = false
+    @Published var underConstruction: Bool = false
     
     var mainColor: Color {
         isDarkMode ? getColor("black") : getColor("white")
@@ -60,6 +61,12 @@ func getColor(_ name: String) -> Color {
     default:
         return Color.gray // Fallback if no color matches
     }
+}
+
+func secondsToMinutes(seconds: Int) -> String {
+    let minutes = seconds / 60
+    let remainingSeconds = seconds % 60
+    return String(format: "%02d:%02d", minutes, remainingSeconds)
 }
 
 extension Font {
