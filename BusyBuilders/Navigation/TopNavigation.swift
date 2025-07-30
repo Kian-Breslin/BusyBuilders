@@ -81,6 +81,8 @@ struct TopNavIcon: View {
     @State var textValue: String
     @Binding var selectedIcon: String
     
+    let underConstructionIcons = ["banknote", "newspaper", "helmet", "book", "gamecontroller", "chart.line.uptrend.xyaxis", "chart.line.uptrend.xyaxis", "building.columns", "hammer"]
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 10)
@@ -96,7 +98,11 @@ struct TopNavIcon: View {
         .foregroundColor(UserManager().textColor)
         .frame(maxWidth: 60)
         .onTapGesture {
-            selectedIcon = icon
+            if underConstructionIcons.contains(icon) {
+                userManager.underConstruction = true
+            } else {
+                selectedIcon = icon
+            }
         }
     }
 }

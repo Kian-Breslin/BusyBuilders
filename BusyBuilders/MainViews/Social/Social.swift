@@ -9,8 +9,8 @@ struct Social: View {
         VStack {
             TopNavigation(
                 title: "Social",
-                iconNames: ["envelope", "square", "square", "square"],
-                iconLabels: ["Messages", "", "", ""],
+                iconNames: ["envelope", "hammer", "hammer", "hammer"],
+                iconLabels: ["Messages", "Placeholder", "Placeholder", "Placeholder"],
                 selectedIcon: $selectedIcon
             )
             Spacer()

@@ -25,8 +25,8 @@ struct ContentView: View {
                 else if selectedView == "play" {
                     Play()
                 }
-                else if selectedView == "store" {
-                    
+                else if selectedView == "cart" {
+                    Store()
                 }
                 else if selectedView == "person" {
                     Portfolio()
@@ -43,6 +43,11 @@ struct ContentView: View {
         }
         .fullScreenCover(isPresented: $userManager.showSettings) {
             Settings()
+        }
+        .alert("Under Construction", isPresented: $userManager.underConstruction) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("This feature is not developed yet. This is a placeholder")
         }
     }
 }
