@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct BeachViewEndScreen: View {
+struct TimerEndScreen: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
     @Query var users : [UserDataModel]
@@ -150,5 +150,5 @@ struct BeachViewEndScreen: View {
 }
 
 #Preview {
-    BeachViewEndScreen(sessionStats: SessionDataModel.sessionForPreview)
+    TimerEndScreen(sessionStats: SessionDataModel.sessionForPreview)
 }

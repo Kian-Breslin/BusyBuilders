@@ -30,7 +30,7 @@ struct TimerSunset: View {
     
     var body: some View {
         ZStack {
-            Image("GrayscaleMountainView")
+            Image("GrayMountainBB")
                 .resizable()
                 .ignoresSafeArea()
             
@@ -145,7 +145,7 @@ struct TimerSunset: View {
             
         }
         .sheet(item: $sessionStats) { session in
-            BeachViewEndScreen(sessionStats: session)
+            TimerEndScreen(sessionStats: session)
                 .presentationDetents([.fraction(0.7)])
                 .onDisappear {
                     print("Closed Sheet -> Close Timer")

@@ -10,44 +10,54 @@ import SwiftData
 
 struct PlayTimer: View {
     @EnvironmentObject var userManager: UserManager
-    @Query var users : [UserDataModel]
-    @State var isTimerActive = false
-    @State var selectedTimer = "Beach"
+    @Query var users: [UserDataModel]
+    @State private var isTimerActive = false
+    @State private var selectedTimer = "Beach"
+    
+    private let timers = [
+        ("Beach", "Beach"),
+        ("GrayMountain", "Sunset"),
+        ("RedMountain", "Red Mountain"),
+        ("Lighthouse", "Lighthouse")
+    ]
+    
     var body: some View {
-        ScrollView {
-            VStack {
-                Button("Beach Timer - \(users.first?.businesses.count ?? 99)") {
-                    selectedTimer = "Beach"
-                }
-                .frame(width: 150, height: 80)
-                .background(selectedTimer == "Beach" ? .green : .red)
-                .foregroundStyle(.white)
-                
-                Button("Sunset Timer - \(users.first?.businesses.count ?? 99)") {
-                    selectedTimer = "Sunset"
-                }
-                .frame(width: 150, height: 80)
-                .background(selectedTimer == "Sunset" ? .green : .red)
-                .foregroundStyle(.white)
-                
-                Button("Start Timer") {
-                    isTimerActive.toggle()
-                }
-                .frame(width: 150, height: 80)
-                .background(userManager.textColor)
-                .foregroundStyle(.black)
+        VStack {
+            ForEach(timers, id: \.0) { timerKey, timerName in
+                customButton(text: timerName, color: selectedTimer == timerKey ? getColor(userManager.accentColor) : .black, width: 150, height: 50, action: {
+                    withAnimation(.linear){
+                        selectedTimer = timerKey
+                    }
+                })
+                .animation(.easeInOut, value: selectedTimer)
+                .padding(.horizontal)
             }
+            
+            Image("\(selectedTimer)BB")
+                .resizable()
+                .frame(width: 100, height: 200)
+                .transition(.slide)
+            Spacer()
+            customButton(text: "Start", color: .white, width: 150, height: 50, action: {
+                isTimerActive.toggle()
+            })
         }
-        .scrollIndicators(.hidden)
         .padding(.top, 15)
-        .frame(width: screenWidth, height: screenHeight-240)
+        .frame(width: screenWidth, height: screenHeight - 240)
         .background(userManager.secondaryColor)
-        .foregroundStyle(userManager.mainColor)
+        .foregroundColor(userManager.mainColor)
         .fullScreenCover(isPresented: $isTimerActive) {
-            if selectedTimer == "Beach" {
+            switch selectedTimer {
+            case "Beach":
                 BeachViewTimer(isTimerActive: $isTimerActive)
-            } else if selectedTimer == "Sunset" {
+            case "Sunset":
                 TimerSunset()
+            case "RedMountain":
+                RedMountainTimer()
+            case "Lighthouse":
+                TimerLighthouse()
+            default:
+                EmptyView()
             }
         }
     }

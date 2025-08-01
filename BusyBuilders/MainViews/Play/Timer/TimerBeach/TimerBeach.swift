@@ -31,7 +31,7 @@ struct BeachViewTimer: View {
     
     var body: some View {
         ZStack {
-            Image("SeaSideBackground")
+            Image("BeachBB")
                 .resizable()
                 .ignoresSafeArea()
                 
@@ -40,7 +40,7 @@ struct BeachViewTimer: View {
         }
         .sheet(isPresented: $showSessionStats) {
             if let sessionStats = sessionStats {
-                BeachViewEndScreen(sessionStats: sessionStats)
+                TimerEndScreen(sessionStats: sessionStats)
                     .presentationDetents([.fraction(0.7)])
                     .onDisappear {
                         dismiss()
