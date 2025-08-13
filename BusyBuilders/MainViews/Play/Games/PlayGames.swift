@@ -12,11 +12,16 @@ struct PlayGames: View {
     @EnvironmentObject var userManager: UserManager
     
     @State var isPlayCVSwiper = false
+    @State var isPlayOfficeSorter = false
     var body: some View {
         ScrollView {
             VStack {
                 Button("Play CV Swiper") {
                     isPlayCVSwiper.toggle()
+                }
+                
+                customButton(text: "Office Sorter", color: .blue, width: 150, height: 40) {
+                    isPlayOfficeSorter.toggle()
                 }
             }
         }
@@ -29,6 +34,9 @@ struct PlayGames: View {
         .fullScreenCover(isPresented: $isPlayCVSwiper) {
             CVSwiper()
         }
+//        .fullScreenCover(isPresented: $isPlayOfficeSorter) {
+//            OfficeSorter()
+//        }
     }
 }
 

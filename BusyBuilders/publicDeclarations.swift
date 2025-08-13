@@ -14,7 +14,9 @@ class UserManager: ObservableObject {
     @AppStorage("isDarkMode") var isDarkMode: Bool = true
     @AppStorage("accentColor") var accentColor: String = "red"
     @Published var showSettings: Bool = false
+    // Quick Start Session
     @Published var quickStartSession: Bool = false
+    @Published var quickSessionScreen: String = "Beach"
     @Published var underConstruction: Bool = false
     
     var mainColor: Color {
@@ -88,6 +90,7 @@ let buildings: [Building] = [
     Building(name: "Smart Campus", image: "smartCampus", cost: 750000, employeeCap: 1200, bills: 850, rent: 5500, boostPerSession: 60)
 ]
 let smallWidgetSize = CGSize(width: (screenWidth - 20) / 2, height: 90)
+let small1x4WidgetSize = CGSize(width: (screenWidth-15), height: 90)
 let largeWidgetSize = CGSize(width: (screenWidth - 20) / 2, height: 190)
 let miniWidgetSize = CGSize(width: ((screenWidth - 20) / 2 - 5) / 2, height: (190 - 5) / 2)
 let xLargeWidgetSize = CGSize(width: (screenWidth - 15), height: 190)

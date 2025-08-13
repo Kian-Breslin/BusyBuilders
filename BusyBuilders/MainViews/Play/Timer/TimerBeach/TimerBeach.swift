@@ -16,7 +16,6 @@ struct BeachViewTimer: View {
     
     
     @StateObject var timerManager = TimerManager()
-    @Binding var isTimerActive : Bool
     
     @State var showSessionStats = false
 
@@ -52,7 +51,6 @@ struct BeachViewTimer: View {
         .onAppear {
             setupTimerAndBattery()
             timerManager.start()
-            isTimerActive = true
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
@@ -167,6 +165,6 @@ func iconItems(icon: String, iconColor: String, text: String, textValue: Binding
 }
 
 #Preview {
-    BeachViewTimer(isTimerActive: .constant(false))
+    BeachViewTimer()
         .environmentObject(UserManager())
 }

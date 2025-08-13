@@ -81,7 +81,7 @@ struct TopNavIcon: View {
     @State var textValue: String
     @Binding var selectedIcon: String
     
-    let underConstructionIcons = ["banknote", "newspaper", "helmet", "book", "gamecontroller", "chart.line.uptrend.xyaxis", "chart.line.uptrend.xyaxis", "building.columns", "hammer"]
+    let underConstructionIcons = ["banknote", "newspaper", "helmet", "book", "chart.line.uptrend.xyaxis", "chart.line.uptrend.xyaxis", "building.columns", "hammer"]
     
     var body: some View {
         VStack {

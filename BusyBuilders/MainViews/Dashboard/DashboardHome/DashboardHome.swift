@@ -26,20 +26,17 @@ struct DashboardHome: View {
                     VStack(spacing: 5) {
                         HStack(spacing: 5) {
                             MiniWidgetStartSession(quickStartSession: $userManager.quickStartSession)
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: miniWidgetSize.width, height: miniWidgetSize.height)
+                            MiniWidgetStreakCounter()
                         }
                         HStack(spacing: 5) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: miniWidgetSize.width, height: miniWidgetSize.height)
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: miniWidgetSize.width, height: miniWidgetSize.height)
+                            MiniWidgetActiveBusinesses()
+                            MiniWidgetPortfolioLook()
                         }
                     }
                     .frame(width: largeWidgetSize.width, height: largeWidgetSize.height)
                 }
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: xLargeWidgetSize.width, height: xLargeWidgetSize.height)
+                MediumWidgerQuickBuyStock()
+                XLargeWidgetWeeklyGraph()
                 HStack(spacing: 5) {
                     VStack(spacing: 5) {
                         HStack(spacing: 5) {
@@ -65,12 +62,21 @@ struct DashboardHome: View {
         }
         .scrollIndicators(.hidden)
         .padding(.top, 15)
+        .padding(.bottom, 65)
         .frame(width: screenWidth, height: screenHeight-240)
         .background(userManager.secondaryColor)
         .foregroundStyle(userManager.mainColor)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .fullScreenCover(isPresented: $userManager.quickStartSession) {
-            TimerSunset()
+            if userManager.quickSessionScreen == "Beach" {
+                BeachViewTimer()
+            } else if userManager.quickSessionScreen == "Sunset" {
+                TimerSunset()
+            } else if userManager.quickSessionScreen == "Red Mountains" {
+                RedMountainTimer()
+            } else if userManager.quickSessionScreen == "Lighthouse" {
+                TimerLighthouse()
+            }
         }
     }
 }

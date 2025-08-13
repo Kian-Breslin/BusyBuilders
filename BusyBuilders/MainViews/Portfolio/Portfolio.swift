@@ -16,7 +16,7 @@ struct Portfolio: View {
         VStack {
             TopNavigation(
                 title: "Portfolio",
-                iconNames: ["book.pages", "building.2", "chart.line.uptrend.xyaxis", "building.columns"],
+                iconNames: ["book.pages", "building.2", "circle", "building.columns"],
                 iconLabels: ["My Stats", "Businesses", "Stocks", "City"],
                 selectedIcon: $selectedIcon
             )
@@ -29,8 +29,8 @@ struct Portfolio: View {
                 PortfolioMyStats()
             } else if selectedIcon == "building.2" {
                 PortfolioBusinesses()
-            } else if selectedIcon == "chart.line.uptrend.xyaxis" {
-                
+            } else if selectedIcon == "circle" {
+                PortfolioStocks()
             }
             else if selectedIcon == "building.columns" {
                 

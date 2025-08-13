@@ -56,6 +56,10 @@ public class UserDataModel: Identifiable, ObservableObject {
     ]
     // Mini-Games
     var tokens: Int = 0
+    
+    //Stocks
+    var stocksOwned: [String: Int] = [:]  // [stockName: amountOwned]
+    
     // Sessions
     var sessionHistory: [SessionDataModel] = []
         

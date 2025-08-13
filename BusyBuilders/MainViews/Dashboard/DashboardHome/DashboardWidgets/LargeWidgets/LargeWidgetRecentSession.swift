@@ -36,7 +36,7 @@ struct LargeWidgetRecentSession: View {
                             }
                         }
                     }
-                    .frame(width: widgetSize.width-30, height: widgetSize.height-40)
+                    .frame(width: widgetSize.width-30, height: widgetSize.height-50)
                 }
                 .frame(width: widgetSize.width-20, height: widgetSize.height-20, alignment: .leading)
                 .foregroundStyle(userManager.textColor)
