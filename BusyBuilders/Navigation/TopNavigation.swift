@@ -44,13 +44,14 @@ struct TopNavigation: View {
                                     .fill(.red)
                                     .frame(width: 20, height: 20)
                                     .onTapGesture {
-                                        let newUser = UserDataModel(id: UUID(), username: "Keano317", name: "Kian", email: "kianbreslin@gmail.com", password: "Password", netWorth: 0, availableBalance: 0, friends: [], business: [], tokens: 0, sessionHistory: [], userLevel: 0, badges: [], inventory: [])
-                                        context.insert(newUser)
-                                        do {
-                                            try context.save()
-                                        } catch {
-                                            print("Cannot save user: \(error)")
-                                        }
+                                        userManager.showSettings.toggle()
+//                                        let newUser = UserDataModel(id: UUID(), username: "Keano317", name: "Kian", email: "kianbreslin@gmail.com", password: "Password", netWorth: 0, availableBalance: 0, friends: [], business: [], tokens: 0, sessionHistory: [], userLevel: 0, badges: [], inventory: [])
+//                                        context.insert(newUser)
+//                                        do {
+//                                            try context.save()
+//                                        } catch {
+//                                            print("Cannot save user: \(error)")
+//                                        }
                                         
                                     }
                             }
@@ -108,6 +109,6 @@ struct TopNavIcon: View {
 }
 
 #Preview {
-    TopNavigation(title: "Dashboard", iconNames: ["house", "banknote", "newspaper", ""], iconLabels: ["Home", "Bank", "News", ""], selectedIcon: .constant("house"))
+    TopNavigation(title: "Dashboard", iconNames: ["house", "banknote", "newspaper", "circle"], iconLabels: ["Home", "Bank", "News", "Test"], selectedIcon: .constant("house"))
         .environmentObject(UserManager())
 }

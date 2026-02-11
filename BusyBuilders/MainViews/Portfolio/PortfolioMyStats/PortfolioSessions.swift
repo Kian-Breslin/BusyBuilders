@@ -28,6 +28,9 @@ struct PortfolioSessions: View {
                                         selectedSession = session
                                     }
                                 }
+                                .onLongPressGesture {
+                                    user.sessionHistory.removeAll(where: {session.id == $0.id})
+                                }
                         }
                     }
                 }

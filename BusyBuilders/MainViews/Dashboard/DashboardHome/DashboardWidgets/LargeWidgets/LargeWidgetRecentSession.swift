@@ -53,7 +53,7 @@ struct SessionCirle: View {
     let circleWidth: Int
     let circlePosition: CGPoint
     let sessionTotal: Double
-    let circleColor: Color = .red
+    let circleColor: Color = getColor(UserManager().accentColor)
     var body: some View {
         Circle()
             .stroke(circleColor, lineWidth: 2)

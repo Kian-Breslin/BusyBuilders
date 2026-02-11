@@ -9,8 +9,8 @@ struct Social: View {
         VStack {
             TopNavigation(
                 title: "Social",
-                iconNames: ["envelope", "hammer", "hammer", "hammer"],
-                iconLabels: ["Messages", "Placeholder", "Placeholder", "Placeholder"],
+                iconNames: ["envelope", "hammer", "hammer", "calendar.circle"],
+                iconLabels: ["Messages", "Placeholder", "Placeholder", "Planned Sessions"],
                 selectedIcon: $selectedIcon
             )
             Spacer()
@@ -24,8 +24,8 @@ struct Social: View {
                 
             } else if selectedIcon == "Messages" {
                 
-            } else if selectedIcon == "Messages" {
-                
+            } else if selectedIcon == "calendar.circle" {
+                SocialPlannedSessions()
             }
         }
         .background(userManager.mainColor)

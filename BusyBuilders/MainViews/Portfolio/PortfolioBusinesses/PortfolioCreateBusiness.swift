@@ -61,7 +61,7 @@ struct PortfolioCreateBusiness: View {
                         }
                         print("Created")
                         if let user = users.first {
-                            user.OpenBusiness(name: name, theme: theme, type: type, icon: icon)
+                            user.OpenBusiness(name: name, theme: theme, type: type, icon: icon, user: user)
                             do {
                                  try context.save()
                             }

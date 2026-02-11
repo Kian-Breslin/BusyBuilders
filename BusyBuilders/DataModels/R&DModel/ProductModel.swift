@@ -62,7 +62,7 @@ enum ProductType: Codable {
 extension ProductModel {
     func runProductSim() -> Int {
         guard quantity > 0 else {return 0}
-        var quantitySold = Int.random(in: 0...quantity)
+        let quantitySold = Int.random(in: 0...quantity)
         self.quantity -= quantitySold
         self.lifetimeIncome += quantitySold * profit
         

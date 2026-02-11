@@ -29,10 +29,10 @@ struct TimerLighthouse: View {
                 .ignoresSafeArea()
             
             VStack (alignment: .leading, spacing: 5){
-                Text("14:06")
+                Text(formatTime(Date()))
                     .font(.londrina(size: 60))
 //                    .font(.system(size: 60))
-                Text("Friday, August 1st")
+                Text(formatLongDate(Date()))
                 Label("22", systemImage: "cloud.sun")
                 
                 HStack {

@@ -9,18 +9,18 @@ import SwiftUI
 import SwiftData
 
 @Model
-public class UserDataModel: Identifiable, ObservableObject {
-    public var id: UUID
-    var username: String
-    var name: String
-    var email: String
-    var password: String
+public class UserDataModel: Identifiable {
+    public var id: UUID = UUID()
+    var username: String = "N/A"
+    var name: String = "N/A"
+    var email: String = "N/A"
+    var password: String = "N/A"
     
     // User Cash
     var netWorth: Int {
         var total = availableBalance
 
-        for business in businesses {
+        for business in businesses ?? [] {
             total += business.netWorth
         }
 
@@ -44,7 +44,9 @@ public class UserDataModel: Identifiable, ObservableObject {
     var invitedByUserId: UUID?
     
     // Business Data Model
-    var businesses: [BusinessDataModel] = []
+    @Relationship var businesses: [BusinessDataModel]? = []
+    
+    @Relationship var plannedSessions: [PlannedSession]? = []
 
     // Agencies
     var Agencies: [String: AgencyInfo] = [
@@ -72,7 +74,7 @@ public class UserDataModel: Identifiable, ObservableObject {
     // Inventory of items or upgrades
     var inventory: [ItemModel] = []
     
-    init(id: UUID, username: String, name: String, email: String, password: String, netWorth: Int, availableBalance: Int, friends: [UUID], referralCode: String? = nil, invitedByUserId: UUID? = nil, business: [BusinessDataModel], Agencies: [String : Bool] = [:], tokens: Int, sessionHistory: [SessionDataModel], userLevel: Int, badges: [String], inventory: [ItemModel]) {
+    init(id: UUID, username: String, name: String, email: String, password: String, netWorth: Int, availableBalance: Int, friends: [UUID], referralCode: String? = nil, invitedByUserId: UUID? = nil, businesses: [BusinessDataModel], agencies: [String : AgencyInfo] = [:], tokens: Int, sessionHistory: [SessionDataModel], userLevel: Int, badges: [String], inventory: [ItemModel]) {
         self.id = id
         self.username = username
         self.name = name
@@ -82,7 +84,8 @@ public class UserDataModel: Identifiable, ObservableObject {
         self.friends = friends
         self.referralCode = referralCode
         self.invitedByUserId = invitedByUserId
-        self.businesses = business
+        self.businesses = businesses
+        if !agencies.isEmpty { self.Agencies = agencies }
         self.tokens = tokens
         self.sessionHistory = sessionHistory
         self.userLevel = userLevel
@@ -96,17 +99,19 @@ struct AgencyInfo: Codable, Hashable {
     var level: Int
 }
 
+
+
 extension UserDataModel {
-    func OpenBusiness(name: String, theme: String, type: String, icon: String) {
-        
-        let newBusiness = BusinessDataModel(businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0)
-        self.businesses.append(newBusiness)
+    func OpenBusiness(name: String, theme: String, type: String, icon: String, user: UserDataModel) {
+        let newBusiness = BusinessDataModel(user: user, businessName: name, businessTheme: theme, businessType: type, businessIcon: icon, totalTime: 0)
+        if businesses == nil { businesses = [] }
+        businesses?.append(newBusiness)
     }
     
     func MakeSession(time: Int) -> SessionDataModel {
         let time = time/60
         var businessSummaries: [BusinessSessionSummary] = []
-        for business in self.businesses {
+        for business in businesses ?? [] {
             // Product Logic
             
             let businessSessison = BusinessSessionSummary(
@@ -141,8 +146,8 @@ extension UserDataModel {
     }
     
     func getBusinessSummaries() -> [[String]] {
-        return businesses.map { business in
-            return [
+        (businesses ?? []).map { business in
+            [
                 business.businessName,
                 business.businessIcon,
                 business.businessTheme,
@@ -182,4 +187,38 @@ extension UserDataModel {
         let sortedSessions = sessionHistory.sorted(by: { $0.date > $1.date })
         return Array(sortedSessions.prefix(5))
     }
+    
+    func getRandomBusiness() -> BusinessDataModel {
+        let businessCount = self.businesses?.count ?? 0
+        let randomIndex: Int = Int.random(in: 0..<businessCount)
+        return self.businesses![randomIndex]
+    }
 }
+
+@Model
+class PlannedSession: Identifiable {
+    @Relationship var user: UserDataModel? = nil
+    var id: UUID = UUID()
+    var startTime: Date? = Date.now
+    var endTime: Date? = Date.now
+    var type: String? = ""
+    var completed: Bool? = false
+    var completedAt: Date? = Date.now
+//    PlannedSession
+//    - id
+//    - startTime
+//    - endTime
+//    - type
+//    - sourceApp
+//    - completed
+//    - completedAt
+    init(id: UUID, startTime: Date? = nil, endTime: Date? = nil, type: String? = nil, completed: Bool? = nil, completedAt: Date? = nil) {
+        self.id = id
+        self.startTime = startTime
+        self.endTime = endTime
+        self.type = type
+        self.completed = completed
+        self.completedAt = completedAt
+    }
+}
+

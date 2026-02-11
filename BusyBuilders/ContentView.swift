@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Query var users: [UserDataModel]
     @EnvironmentObject var userManager: UserManager
     @State var selectedView = "Dashboard"
     var body: some View {

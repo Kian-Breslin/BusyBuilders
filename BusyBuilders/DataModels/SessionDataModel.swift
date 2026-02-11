@@ -157,7 +157,7 @@ extension SessionDataModel {
                 finesCost: 0,
                 securityCost: 0,
                 insuranceCost: 0,
-                ownedBuildings: [buildings[0]],
+                ownedBuildings: [],
                 rentingBuildings: []
             )
         ])

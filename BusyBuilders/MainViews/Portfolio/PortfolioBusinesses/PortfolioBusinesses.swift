@@ -18,7 +18,7 @@ struct PortfolioBusinesses: View {
         ScrollView {
             VStack {
                 if let user = users.first {
-                    ForEach(user.businesses){ business in
+                    ForEach(user.businesses ?? []){ business in
                         portfolioBusinessItem(business: business)
                             .onTapGesture {
                                 selectedBusiness = business

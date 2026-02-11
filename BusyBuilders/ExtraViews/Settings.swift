@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct Settings: View {
+    @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var userManager: UserManager
     @Query var users : [UserDataModel]
@@ -82,9 +83,15 @@ struct Settings: View {
                                 }
                         }
                         HStack {
-                            Text("Reset Account")
+                            Text("Reset Account: \(users.count)")
                             Spacer()
                             Image(systemName: "arrow.trianglehead.counterclockwise")
+                                .onTapGesture {
+                                    userManager.isUserCreated = false
+                                    if let user = users.first {
+                                        context.delete(user)
+                                    }
+                                }
                         }
                         HStack {
                             Text("Delete All Businesses")
@@ -106,7 +113,7 @@ struct Settings: View {
                             ScrollView(.horizontal) {
                                 HStack {
                                     if let user = users.first {
-                                        ForEach(user.businesses) { business in
+                                        ForEach(user.businesses ?? []) { business in
                                             editBusinessItem(business: business)
                                                 .padding(5)
                                         }

@@ -108,7 +108,7 @@ struct StockCardView: View {
 
             if let price = stock.price {
                 let costToBuy = Int(ceil(price))
-                let tax = Double(costToBuy) - price
+//                let tax = Double(costToBuy) - price
                 
                 Text("Price: $\(String(format: "%.2f", price))")
                     .font(.system(.body, design: .monospaced))

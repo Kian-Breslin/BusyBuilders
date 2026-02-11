@@ -54,22 +54,25 @@ struct TimerEndScreen: View {
                             .font(.callout)
                             .bold()
                     }
-                    Spacer()
-                    VStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 90, height: CGFloat(productSize))
-                            .foregroundStyle(Color(red: 0.349, green: 0.451, blue: 0.443))
-                            .overlay(content: {
-                                Text("$500")
-                                    .font(.system(size: 20))
-                                    .foregroundStyle(background)
-                                    .opacity(productSize > 10 ? 1 : 0)
-                                    .frame(width: 200, height: 100)
-                            })
-                        
-                        Text("Products")
-                            .font(.callout)
-                            .bold()
+                    
+                    if sessionStats.totalBusinessProductIncome > 0 {
+                        Spacer()
+                        VStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 90, height: CGFloat(productSize))
+                                .foregroundStyle(Color(red: 0.349, green: 0.451, blue: 0.443))
+                                .overlay(content: {
+                                    Text("$500")
+                                        .font(.system(size: 20))
+                                        .foregroundStyle(background)
+                                        .opacity(productSize > 10 ? 1 : 0)
+                                        .frame(width: 200, height: 100)
+                                })
+                            
+                            Text("Products")
+                                .font(.callout)
+                                .bold()
+                        }
                     }
                     Spacer()
                     VStack {
@@ -126,7 +129,7 @@ struct TimerEndScreen: View {
             .frame(width: screenWidth-20, alignment: .leading)
             .onAppear {
                 let income = sessionStats.totalBusinessIncome
-                let products = 500 // Replace with actual product income when available
+                let products = sessionStats.totalBusinessProductIncome 
                 let costs = sessionStats.totalBusinessCosts
                 let xp = sessionStats.totalTime
 

@@ -16,8 +16,8 @@ struct Play: View {
         VStack {
             TopNavigation(
                 title: "Play",
-                iconNames: ["stopwatch", "book", "gamecontroller", "circle"],
-                iconLabels: ["Timer", "Study", "Games", "Stocks"],
+                iconNames: ["stopwatch", "book", "gamecontroller", "hammer"],
+                iconLabels: ["Timer", "Study", "Games", "Placeholder"],
                 selectedIcon: $selectedIcon
             )
             Spacer()
@@ -33,7 +33,8 @@ struct Play: View {
                 PlayGames()
             }
             else if selectedIcon == "circle" {
-                PlayStocks()
+//                PlayStocks()
+                EmptyView()
             }
         }
         .background(userManager.mainColor)

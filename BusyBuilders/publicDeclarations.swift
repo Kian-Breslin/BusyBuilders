@@ -17,6 +17,7 @@ class UserManager: ObservableObject {
     // Quick Start Session
     @Published var quickStartSession: Bool = false
     @Published var quickSessionScreen: String = "Beach"
+    
     @Published var underConstruction: Bool = false
     
     var mainColor: Color {
@@ -43,7 +44,7 @@ func getColor(_ name: String) -> Color {
     case "green":
         return Color(red: 85/255, green: 107/255, blue: 47/255)
     case "blue":
-        return Color(red: 70/255, green: 130/255, blue: 180/255) // Steel Blue
+        return Color(red: 70/255, green: 130/255, blue: 180/255)
     case "yellow":
         return Color(red: 240/255, green: 210/255, blue: 80/255)
     case "purple":
@@ -75,6 +76,46 @@ extension Font {
     static func londrina(size: Int) -> Font {
         return Font.custom("LondrinaOutline-Regular", size: CGFloat(size) )
     }
+}
+
+func formatTime(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale.current
+    formatter.dateFormat = "HH:mm"
+    return formatter.string(from: date)
+}
+func formatLongDate(_ date: Date) -> String {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.weekday, .month, .day], from: date)
+
+    // Weekday name (e.g., Sunday)
+    let weekdayFormatter = DateFormatter()
+    weekdayFormatter.locale = Locale.current
+    weekdayFormatter.dateFormat = "EEEE"
+    let weekday = weekdayFormatter.string(from: date)
+
+    // Short month name (e.g., Jan)
+    let monthFormatter = DateFormatter()
+    monthFormatter.locale = Locale.current
+    monthFormatter.dateFormat = "MMMM"
+    let month = monthFormatter.string(from: date)
+
+    // Day with ordinal suffix (e.g., 4th)
+    let day = components.day ?? 0
+    let suffix: String
+    let tens = day % 100
+    if tens >= 11 && tens <= 13 {
+        suffix = "th"
+    } else {
+        switch day % 10 {
+        case 1: suffix = "st"
+        case 2: suffix = "nd"
+        case 3: suffix = "rd"
+        default: suffix = "th"
+        }
+    }
+
+    return "\(weekday), \(month) \(day)\(suffix)"
 }
 
 let buildings: [Building] = [

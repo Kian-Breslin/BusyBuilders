@@ -13,6 +13,8 @@ struct PlayGames: View {
     
     @State var isPlayCVSwiper = false
     @State var isPlayOfficeSorter = false
+    @State var isPlayStockWatcher = false
+    @State var isClockOutRace = false
     var body: some View {
         ScrollView {
             VStack {
@@ -22,6 +24,14 @@ struct PlayGames: View {
                 
                 customButton(text: "Office Sorter", color: .blue, width: 150, height: 40) {
                     isPlayOfficeSorter.toggle()
+                }
+                
+                customButton(text: "Stock Watcher", color: .red, width: 150, height: 40) {
+                    isPlayStockWatcher.toggle()
+                }
+                
+                customButton(text: "Clock Out Race", color: .red, width: 150, height: 40) {
+                    isClockOutRace.toggle()
                 }
             }
         }
@@ -33,6 +43,12 @@ struct PlayGames: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .fullScreenCover(isPresented: $isPlayCVSwiper) {
             CVSwiper()
+        }
+        .fullScreenCover(isPresented: $isPlayStockWatcher) {
+            StockWatcher()
+        }
+        .fullScreenCover(isPresented: $isClockOutRace) {
+            ClockOutRace()
         }
 //        .fullScreenCover(isPresented: $isPlayOfficeSorter) {
 //            OfficeSorter()

@@ -16,8 +16,8 @@ struct Store: View {
         VStack {
             TopNavigation(
                 title: "Store",
-                iconNames: ["hammer", "hammer", "hammer", "hammer"],
-                iconLabels: ["Placeholder", "Placeholder", "Placeholder", "Placeholder"],
+                iconNames: ["gamecontroller", "hammer", "hammer", "hammer"],
+                iconLabels: ["Tokens", "Placeholder", "Placeholder", "Placeholder"],
                 selectedIcon: $selectedIcon
             )
             Spacer()
@@ -25,8 +25,8 @@ struct Store: View {
         .background(userManager.mainColor)
         
         VStack {
-            if selectedIcon == "hammer" {
-                Placeholder()
+            if selectedIcon == "gamecontroller" {
+                Tokens()
             } else if selectedIcon == "hammer" {
                 Placeholder()
             } else if selectedIcon == "hammer" {

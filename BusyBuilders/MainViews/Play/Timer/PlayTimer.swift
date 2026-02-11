@@ -43,6 +43,41 @@ struct PlayTimer: View {
             }
             .frame(width: screenWidth-20)
             Spacer()
+            
+//            ScrollView (.horizontal) {
+//                HStack {
+//                    if let user = users.first {
+//                        ForEach(user.plannedSessions ?? [], id: \.self){ session in
+//                            plannedSessionItem(session: session)
+//                                .padding()
+//                                .onTapGesture {
+//                                    session.completed?.toggle()
+//                                }
+//                                .onLongPressGesture {
+//                                    user.plannedSessions?.removeAll(where: {$0.id == session.id})
+//                                }
+//                        }
+//                    }
+//                }
+//            }
+            
+//            customButton(text: "Start Upcoming Session", color: .white, width: 200, height: 50) {
+//                guard let user = users.first else { return }
+//                
+//                let now = Date()
+//                let oneHourFromNow = now.addingTimeInterval(60 * 60)
+//
+//                var count = 0
+//                for session in user.plannedSessions ?? [] {
+//                    if let start = session.startTime, start >= now && start <= oneHourFromNow {
+//                        count += 1
+//                    }
+//                }
+//
+//                print("Sessions starting within the next hour:", count)
+//            }
+            
+            
             customButton(text: "Start", color: .white, width: 150, height: 50, action: {
                 isTimerActive.toggle()
             })
@@ -56,7 +91,7 @@ struct PlayTimer: View {
             switch selectedTimer {
             case "Beach":
                 BeachViewTimer()
-            case "Sunset":
+            case "GrayMountain":
                 TimerSunset()
             case "RedMountain":
                 RedMountainTimer()
@@ -68,6 +103,7 @@ struct PlayTimer: View {
         }
     }
 }
+    
 
 #Preview {
     Play()

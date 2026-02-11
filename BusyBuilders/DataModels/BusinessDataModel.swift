@@ -9,14 +9,15 @@ import SwiftUI
 import SwiftData
 
 @Model
-class BusinessDataModel : ObservableObject, Identifiable {
-    var id: UUID
+class BusinessDataModel : Identifiable {
+    @Relationship var user: UserDataModel? = nil
+    var id: UUID = UUID()
     // Details
-    var businessName: String
-    var businessTheme: String
-    var businessType: String
-    var businessIcon: String
-    var creationDate: Date
+    var businessName: String = "N/A"
+    var businessTheme: String = "N/A"
+    var businessType: String = "N/A"
+    var businessIcon: String = "N/A"
+    var creationDate: Date = Date.now
     var netWorth: Int {
         var value = 0
         value += level * 1000
@@ -99,7 +100,8 @@ class BusinessDataModel : ObservableObject, Identifiable {
     }
     var investmentPortfolio: [String: Double] = [:]
     
-    init(id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, creationDate: Date = Date.now, totalTime: Int) {
+    init(user: UserDataModel, id: UUID = UUID(), businessName: String, businessTheme: String, businessType: String, businessIcon: String, creationDate: Date = Date.now, totalTime: Int) {
+        self.user = user
         self.id = id
         self.businessName = businessName
         self.businessTheme = businessTheme
@@ -130,6 +132,7 @@ struct DepartmentInfo: Codable, Hashable {
 
 extension BusinessDataModel {
     static let previewBusiness = BusinessDataModel(
+        user: UserDataModel(id: UUID(), username: "Kian", name: "Kian", email: "Kian@gmail.com", password: "Passowrd", netWorth: 0, availableBalance: 0, friends: [], businesses: [], tokens: 0, sessionHistory: [], userLevel: 0, badges: [], inventory: []),
         businessName: "Kian's Coffee",
         businessTheme: "red",
         businessType: "Eco",
@@ -190,3 +193,4 @@ extension BusinessDataModel {
     }
     
 }
+

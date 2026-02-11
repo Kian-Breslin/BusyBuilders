@@ -16,8 +16,8 @@ struct Portfolio: View {
         VStack {
             TopNavigation(
                 title: "Portfolio",
-                iconNames: ["book.pages", "building.2", "circle", "building.columns"],
-                iconLabels: ["My Stats", "Businesses", "Stocks", "City"],
+                iconNames: ["book.pages", "building.2", "hammer", "building.columns"],
+                iconLabels: ["My Stats", "Businesses", "Placeholder", "City"],
                 selectedIcon: $selectedIcon
             )
             Spacer()

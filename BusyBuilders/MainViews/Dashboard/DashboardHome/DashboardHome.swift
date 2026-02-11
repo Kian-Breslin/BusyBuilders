@@ -17,7 +17,7 @@ struct DashboardHome: View {
                 HStack(spacing: 5) {
                     SmallWidgetAvailableBalance()
                     
-                    SmallWidgetAvailableBalance()
+                    SmallWidgetIncomeDate()
                         
                 }
                 HStack(spacing: 5) {
@@ -35,7 +35,8 @@ struct DashboardHome: View {
                     }
                     .frame(width: largeWidgetSize.width, height: largeWidgetSize.height)
                 }
-                MediumWidgerQuickBuyStock()
+                MediumRandomBusiness()
+                MediumRandomBusiness()
                 XLargeWidgetWeeklyGraph()
                 HStack(spacing: 5) {
                     VStack(spacing: 5) {
