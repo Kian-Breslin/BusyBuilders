@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Hammer.png",
+      "filename" : "Hammer 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Hammer.png",
+      "filename" : "Hammer 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -31,7 +31,7 @@
       "size" : "1024x1024"
     },
     {
-      "filename" : "Hammer.png",
+      "filename" : "Hammer 3.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
