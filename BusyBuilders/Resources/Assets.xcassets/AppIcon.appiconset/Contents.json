@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Hammer 1.png",
+      "filename" : "WhiteBaseBlackAccentNoText.jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Hammer 2.png",
+      "filename" : "WhiteBaseBlackAccentNoText 1.jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,13 +25,13 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "Hammer.png",
+      "filename" : "WhiteBaseBlackAccentNoText 2.jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
     },
     {
-      "filename" : "Hammer 3.png",
+      "filename" : "WhiteBaseBlackAccentNoText 3.jpg",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
