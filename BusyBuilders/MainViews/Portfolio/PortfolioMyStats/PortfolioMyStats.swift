@@ -19,50 +19,39 @@ struct PortfolioMyStats: View {
         ScrollView {
             VStack (alignment: .leading, spacing: 10){
                 VStack (alignment: .leading){
-                    Text("Total Networth:")
-                        .font(.caption)
+//                    Text("Total Networth:")
+//                        .font(.caption)
                     if let user = users.first {
-                        Text("$\(user.netWorth)")
+//                        Text("$\(user.netWorth)")
+//                        
+//                        Text("Available Balance:")
+//                            .font(.caption)
+//                        Text("$\(user.availableBalance)")
                         
-                        Text("Available Balance:")
-                            .font(.caption)
-                        Text("$\(user.availableBalance)")
-                            .font(.body)
-                            .foregroundStyle(.green)
+//                        Label("\(user.userLevel)", systemImage: "star.fill")
+//                            .foregroundStyle(.yellow)
                         
-                        Label("\(user.userLevel)", systemImage: "star.fill")
-                            .foregroundStyle(.yellow)
+//                        Text("Balance: $\(user.getUserNetworthBreakdown()[0])")
+//                        Text("Businesses: $\(user.getUserNetworthBreakdown()[1])")
+//                        Text("Items: $\(user.getUserNetworthBreakdown()[2])")
+//                        Text("Agencies: $\(user.getUserNetworthBreakdown()[3])")
 
-                        Button(action: {
-                            showBusinesses.toggle()
-                        }) {
-                            Label(showBusinesses ? "Hide Businesses" : "Show Businesses", systemImage: showBusinesses ? "chevron.up" : "chevron.down")
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                        }
-                        if showBusinesses {
-                            Text("Businesses Net Worth")
-                                .font(.caption)
-                            
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(user.getBusinessSummaries(), id: \.self) { business in
-                                    HStack(spacing: 12) {
-                                        Image(systemName: business[1])
-                                            .foregroundColor(getColor(business[2]))
-                                        Text(business[0])
-                                            .foregroundColor(getColor(business[2]))
-                                        Spacer()
-                                        Text("$\(business[3])")
-                                            .foregroundColor(getColor(business[2]))
-                                    }
-                                    .padding(8)
-                                    .background(getColor(business[2]).opacity(0.1))
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                                }
-                            }
-                        }
+                        UserChart(values: [
+                            user.getUserNetworthBreakdown()[0],
+                            user.getUserNetworthBreakdown()[1],
+                            user.getUserNetworthBreakdown()[2],
+                            user.getUserNetworthBreakdown()[3]
+                        ])
                         
-                        PortfolioSessions(selectedSession: $selectedSession)
+                        BusinessChart(businessNetWorth: user.getUserBusinessNetWorth(), businessArray: user.getUserBusinessNetWorthBreakdown())
+                        
+//                        HStack {
+//                            RoundedRectangle(cornerRadius: 10)
+//                                .frame(width: (screenWidth-30)/2, height: (screenWidth-30)/2)
+//                            
+//                            RoundedRectangle(cornerRadius: 10)
+//                                .frame(width: (screenWidth-30)/2, height: (screenWidth-30)/2)
+//                        }
                     }
                 }
             }
@@ -71,6 +60,7 @@ struct PortfolioMyStats: View {
         }
         .scrollIndicators(.hidden)
         .padding(.top, 15)
+        .padding(.bottom, 85)
         .frame(width: screenWidth, height: screenHeight-240)
         .background(userManager.secondaryColor)
         .foregroundStyle(userManager.mainColor)

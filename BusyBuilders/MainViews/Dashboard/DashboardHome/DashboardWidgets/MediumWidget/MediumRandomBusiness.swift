@@ -21,7 +21,7 @@ struct MediumRandomBusiness: View {
                     let business = user.getRandomBusiness()
                     HStack {
                         VStack {
-                            Text("Business Name: \(business.businessName)")
+                            Text("Business Name: \(business?.businessName ?? "No Business Found")")
                         }
                     }
                 }

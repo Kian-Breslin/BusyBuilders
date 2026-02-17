@@ -188,10 +188,67 @@ extension UserDataModel {
         return Array(sortedSessions.prefix(5))
     }
     
-    func getRandomBusiness() -> BusinessDataModel {
+    func getRandomBusiness() -> BusinessDataModel? {
         let businessCount = self.businesses?.count ?? 0
-        let randomIndex: Int = Int.random(in: 0..<businessCount)
-        return self.businesses![randomIndex]
+        if businessCount > 0 {
+            let randomIndex: Int = Int.random(in: 0..<businessCount)
+            return self.businesses![randomIndex]
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func getUserNetworthBreakdown() -> [Int]{
+        var finalArray: [Int] = []
+        var balance = availableBalance
+        var businessesAmount: Int = 0
+        var items: Int = 0
+        var agencies: Int = 0
+        
+        for business in businesses ?? [] {
+            businessesAmount += business.netWorth
+        }
+
+        for item in inventory {
+            items += item.price
+        }
+
+        for agency in Agencies.values {
+            if agency.isUnlocked {
+                agencies += 100000 + (agency.level * 10000)
+            }
+        }
+        
+        finalArray.append(balance)
+        finalArray.append(businessesAmount)
+        finalArray.append(items)
+        finalArray.append(agencies)
+        
+        
+        return finalArray
+    }
+    
+    func getUserBusinessNetWorth() -> Int {
+        var total = 0
+        for business in businesses ?? [] {
+            total += business.netWorth
+        }
+        return total
+    }
+    
+    func getUserBusinessNetWorthBreakdown() -> [Double] {
+        // Safely unwrap businesses and map net worths
+        let netWorths: [Int] = (businesses ?? []).map { $0.netWorth }
+        // If no businesses, return empty array
+        guard !netWorths.isEmpty else { return [] }
+        // Compute total net worth across all businesses
+        let total = netWorths.reduce(0, +)
+        // If total is zero, return an array of zeros with same count
+        guard total > 0 else { return Array(repeating: 0.0, count: netWorths.count) }
+        // Compute percentage breakdowns as Double fractions
+        let breakdown = netWorths.map { Double($0) / Double(total) }
+        return breakdown
     }
 }
 

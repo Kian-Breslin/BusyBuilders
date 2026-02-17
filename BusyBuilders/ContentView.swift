@@ -13,42 +13,47 @@ struct ContentView: View {
     @EnvironmentObject var userManager: UserManager
     @State var selectedView = "Dashboard"
     var body: some View {
-        ZStack {
-            userManager.mainColor.ignoresSafeArea()
-            
-            VStack {
-                if selectedView == "Dashboard" {
-                    Dashboard()
+        if userManager.isUserCreated == true {
+            ZStack {
+                userManager.mainColor.ignoresSafeArea()
+                
+                VStack {
+                    if selectedView == "Dashboard" {
+                        Dashboard()
+                    }
+                    else if selectedView == "person.2" {
+                        Social()
+                    }
+                    else if selectedView == "play" {
+                        Play()
+                    }
+                    else if selectedView == "cart" {
+                        Store()
+                    }
+                    else if selectedView == "person" {
+                        Portfolio()
+                    }
                 }
-                else if selectedView == "person.2" {
-                    Social()
+                .padding(.top, 40)
+                
+                
+                VStack {
+                    Spacer()
+                    BottomNavigation(selectedIcon: $selectedView)
                 }
-                else if selectedView == "play" {
-                    Play()
-                }
-                else if selectedView == "cart" {
-                    Store()
-                }
-                else if selectedView == "person" {
-                    Portfolio()
-                }
+                .ignoresSafeArea()
             }
-            .padding(.top, 40)
-            
-            
-            VStack {
-                Spacer()
-                BottomNavigation(selectedIcon: $selectedView)
+            .fullScreenCover(isPresented: $userManager.showSettings) {
+                Settings()
             }
-            .ignoresSafeArea()
+            .alert("Under Construction", isPresented: $userManager.underConstruction) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("This feature is not developed yet. This is a placeholder")
+            }
         }
-        .fullScreenCover(isPresented: $userManager.showSettings) {
-            Settings()
-        }
-        .alert("Under Construction", isPresented: $userManager.underConstruction) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("This feature is not developed yet. This is a placeholder")
+        else {
+            OnboardingMain()
         }
     }
 }

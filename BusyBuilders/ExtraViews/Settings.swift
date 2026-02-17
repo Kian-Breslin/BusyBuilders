@@ -88,7 +88,7 @@ struct Settings: View {
                             Image(systemName: "arrow.trianglehead.counterclockwise")
                                 .onTapGesture {
                                     userManager.isUserCreated = false
-                                    if let user = users.first {
+                                    for user in users {
                                         context.delete(user)
                                     }
                                 }
@@ -158,6 +158,7 @@ struct DayNighCycle: View {
 }
 
 struct editBusinessItem: View {
+    @Environment(\.modelContext) var context
     @EnvironmentObject var userManager: UserManager
     let business : BusinessDataModel
     var body: some View {
@@ -213,6 +214,15 @@ struct editBusinessItem: View {
                         }
                         .foregroundStyle(getColor(business.businessTheme))
                         .frame(width: 160, height: 80,alignment: .leading)
+                    }
+                    .onLongPressGesture {
+                        context.delete(business)
+                        do {
+                            try context.save()
+                        }
+                        catch {
+                            print("Error")
+                        }
                     }
             }
     }
